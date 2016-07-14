@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `lcms2` crate.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, lcms2">
+
+    <title>lcms2 - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc mod">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        <div class="sidebar-menu">&#9776;</div>
+        <a href='../lcms2/index.html'><img src='https://pornel.github.io/rust-lcms2/lcms_logo.png' alt='logo' width='100'></a>
+        <p class='location'>Crate lcms2</p><div class="sidebar-elems"><div class="block items"><ul><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#traits">Traits</a></li><li><a href="#functions">Functions</a></li><li><a href="#types">Type Definitions</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'lcms2', ty: 'mod', relpath: '../'};</script></div>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Crate <a class="mod" href=''>lcms2</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/lcms2/lib.rs.html#1-105' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>See <a href="https://pornel.github.io/rust-lcms2-sys/">Little CMS full documentation</a> for more in-depth information about LCMS functions.</p>
+
+<p>The main types you need to use in this crate are <code>Profile</code> and <code>Transform</code></p>
+</div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.AllowCache.html"
+                                  title='struct lcms2::AllowCache'>AllowCache</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.CIECAM02.html"
+                                  title='struct lcms2::CIECAM02'>CIECAM02</a></td>
+                           <td class='docblock-short'>
+                                <p>CIE CAM02</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.CIELab.html"
+                                  title='struct lcms2::CIELab'>CIELab</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.CIEXYZ.html"
+                                  title='struct lcms2::CIEXYZ'>CIEXYZ</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.DisallowCache.html"
+                                  title='struct lcms2::DisallowCache'>DisallowCache</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.Flags.html"
+                                  title='struct lcms2::Flags'>Flags</a></td>
+                           <td class='docblock-short'>
+                                <p>Flags for creating <code>Transform</code>. Can be OR-ed together with <code>|</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.Locale.html"
+                                  title='struct lcms2::Locale'>Locale</a></td>
+                           <td class='docblock-short'>
+                                <p>Language code from ISO-639/2 and region code from ISO-3166.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.MLU.html"
+                                  title='struct lcms2::MLU'>MLU</a></td>
+                           <td class='docblock-short'>
+                                <p>This represents owned Multi Localized Unicode type. Most methods are implemented on <code>MLURef</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.MLURef.html"
+                                  title='struct lcms2::MLURef'>MLURef</a></td>
+                           <td class='docblock-short'>
+                                <p>This is a borrwed Multi Localized Unicode type. It holds Unicode strings associated with <code>Locale</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.NamedColorInfo.html"
+                                  title='struct lcms2::NamedColorInfo'>NamedColorInfo</a></td>
+                           <td class='docblock-short'>
+                                <p>Color in the palette</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.NamedColorList.html"
+                                  title='struct lcms2::NamedColorList'>NamedColorList</a></td>
+                           <td class='docblock-short'>
+                                <p>Owned version of <code>NamedColorListRef</code></p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.NamedColorListRef.html"
+                                  title='struct lcms2::NamedColorListRef'>NamedColorListRef</a></td>
+                           <td class='docblock-short'>
+                                <p>Palette of colors with names</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.Pipeline.html"
+                                  title='struct lcms2::Pipeline'>Pipeline</a></td>
+                           <td class='docblock-short'>
+                                <p>This is an owned version of <code>PipelineRef</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.PipelineRef.html"
+                                  title='struct lcms2::PipelineRef'>PipelineRef</a></td>
+                           <td class='docblock-short'>
+                                <p>Pipelines are a convenient way to model complex operations on image data.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.Profile.html"
+                                  title='struct lcms2::Profile'>Profile</a></td>
+                           <td class='docblock-short'>
+                                <p>An ICC color profile</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.Stage.html"
+                                  title='struct lcms2::Stage'>Stage</a></td>
+                           <td class='docblock-short'>
+                                <p>This is an owned version of <code>Stage</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.StageRef.html"
+                                  title='struct lcms2::StageRef'>StageRef</a></td>
+                           <td class='docblock-short'>
+                                <p>Stage functions</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.StagesIter.html"
+                                  title='struct lcms2::StagesIter'>StagesIter</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ThreadContext.html"
+                                  title='struct lcms2::ThreadContext'>ThreadContext</a></td>
+                           <td class='docblock-short'>
+                                <p>Per-thread context for multi-threaded operation.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ToneCurve.html"
+                                  title='struct lcms2::ToneCurve'>ToneCurve</a></td>
+                           <td class='docblock-short'>
+                                <p>Owned version of <code>ToneCurveRef</code></p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ToneCurveRef.html"
+                                  title='struct lcms2::ToneCurveRef'>ToneCurveRef</a></td>
+                           <td class='docblock-short'>
+                                <p>Tone curves are powerful constructs that can contain curves specified in diverse ways.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.Transform.html"
+                                  title='struct lcms2::Transform'>Transform</a></td>
+                           <td class='docblock-short'>
+                                <p>Conversion between two ICC profiles.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ViewingConditions.html"
+                                  title='struct lcms2::ViewingConditions'>ViewingConditions</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="enum" href="enum.ColorSpaceSignature.html"
+                                  title='enum lcms2::ColorSpaceSignature'>ColorSpaceSignature</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="enum" href="enum.Error.html"
+                                  title='enum lcms2::Error'>Error</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="enum" href="enum.InfoType.html"
+                                  title='enum lcms2::InfoType'>InfoType</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="enum" href="enum.Intent.html"
+                                  title='enum lcms2::Intent'>Intent</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="enum" href="enum.PixelFormat.html"
+                                  title='enum lcms2::PixelFormat'>PixelFormat</a></td>
+                           <td class='docblock-short'>
+                                <p>Format of pixel is defined by one cmsUInt32Number, using bit fields as follows</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="enum" href="enum.ProfileClassSignature.html"
+                                  title='enum lcms2::ProfileClassSignature'>ProfileClassSignature</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="enum" href="enum.Tag.html"
+                                  title='enum lcms2::Tag'>Tag</a></td>
+                           <td class='docblock-short'>
+                                <p>Value of a tag in an ICC profile</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="enum" href="enum.TagSignature.html"
+                                  title='enum lcms2::TagSignature'>TagSignature</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="trait" href="trait.CIELabExt.html"
+                                  title='trait lcms2::CIELabExt'>CIELabExt</a></td>
+                           <td class='docblock-short'>
+                                <p>Delta E</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="trait" href="trait.CIEXYZExt.html"
+                                  title='trait lcms2::CIEXYZExt'>CIEXYZExt</a></td>
+                           <td class='docblock-short'>
+                                <p>Chromatic adaptation</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="trait" href="trait.CIExzYExt.html"
+                                  title='trait lcms2::CIExzYExt'>CIExzYExt</a></td>
+                           <td class='docblock-short'>
+                                <p>White point</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="trait" href="trait.CacheFlag.html"
+                                  title='trait lcms2::CacheFlag'>CacheFlag</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="trait" href="trait.ColorSpaceSignatureExt.html"
+                                  title='trait lcms2::ColorSpaceSignatureExt'>ColorSpaceSignatureExt</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.version.html"
+                                  title='fn lcms2::version'>version</a></td>
+                           <td class='docblock-short'>
+                                <p>LCMS version</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.white_point_from_temp.html"
+                                  title='fn lcms2::white_point_from_temp'>white_point_from_temp</a></td>
+                           <td class='docblock-short'>
+                                <p>Temperature &lt;-&gt; Chromaticity (Black body)
+Color temperature is a characteristic of visible light that has important applications.</p>
+                           </td>
+                       </tr></table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.LCMSResult.html"
+                                  title='type lcms2::LCMSResult'>LCMSResult</a></td>
+                           <td class='docblock-short'>
+                                <p>This is a regular <code>Result</code> type with LCMS-specific <code>Error</code></p>
+                           </td>
+                       </tr></table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>↑</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>↓</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>↹</dt>
+                    <dd>Switch tab</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt style="width:31px;">+ / -</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "lcms2";
+    </script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

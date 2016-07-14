@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Flags` struct in crate `lcms2`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Flags">
+
+    <title>lcms2::Flags - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc struct">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        <div class="sidebar-menu">&#9776;</div>
+        <a href='../lcms2/index.html'><img src='https://pornel.github.io/rust-lcms2/lcms_logo.png' alt='logo' width='100'></a>
+        <p class='location'>Struct Flags</p><div class="sidebar-elems"><div class="block items"><a class="sidebar-title" href="#methods">Methods</a><div class="sidebar-links"><a href="#method.has">has</a></div><a class="sidebar-title" href="#implementations">Trait Implementations</a><div class="sidebar-links"><a href="#impl-Debug">Debug</a><a href="#impl-Copy">Copy</a><a href="#impl-Clone">Clone</a><a href="#impl-BitOr%3CFlags%3CT%3E%3E">BitOr&lt;Flags&lt;T&gt;&gt;</a><a href="#impl-Default">Default</a></div></div><p class='location'><a href='index.html'>lcms2</a></p><script>window.sidebarCurrent = {name: 'Flags', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script></div>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>lcms2</a>::<wbr><a class="struct" href=''>Flags</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/lcms2/flags.rs.html#8' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct Flags&lt;T:&nbsp;<a class="trait" href="../lcms2/trait.CacheFlag.html" title="trait lcms2::CacheFlag">CacheFlag</a>&nbsp;=&nbsp;<a class="struct" href="../lcms2/struct.AllowCache.html" title="struct lcms2::AllowCache">AllowCache</a>&gt;(pub <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>, _);</pre><div class='docblock'><p>Flags for creating <code>Transform</code>. Can be OR-ed together with <code>|</code>.</p>
+
+<p>There&#39;s a special <code>NO_CACHE</code> flag that enables sharing transform between threads.</p>
+</div>
+                    <h2 id='methods' class='small-section-header'>
+                      Methods<a href='#methods' class='anchor'></a>
+                    </h2>
+                <h3 id='impl' class='impl'><span class='in-band'><code>impl <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a></code><a href='#impl' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/flags.rs.html#10-58' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='associatedconstant.NO_CACHE' class="associatedconstant"><span id='NO_CACHE.v' class='invisible'><code>pub const <a href='#associatedconstant.NO_CACHE' class="constant"><b>NO_CACHE</b></a>: <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a>&lt;<a class="struct" href="../lcms2/struct.DisallowCache.html" title="struct lcms2::DisallowCache">DisallowCache</a>&gt;</code></span></h4>
+<div class='docblock'><pre class="rust ">
+<span class="ident">NO_CACHE</span>: <span class="ident">Flags</span><span class="op">&lt;</span><span class="ident">DisallowCache</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Flags</span>(<span class="ident">ffi</span>::<span class="ident">FLAGS_NOCACHE</span>, <span class="ident">DisallowCache</span>)</pre>
+<p>Inhibit 1-pixel cache. This is required to make <code>Transform</code> implement <code>Sync</code></p>
+</div><h4 id='associatedconstant.NO_OPTIMIZE' class="associatedconstant"><span id='NO_OPTIMIZE.v' class='invisible'><code>pub const <a href='#associatedconstant.NO_OPTIMIZE' class="constant"><b>NO_OPTIMIZE</b></a>: <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a></code></span></h4>
+<div class='docblock'><pre class="rust ">
+<span class="ident">NO_OPTIMIZE</span>: <span class="ident">Flags</span> <span class="op">=</span> <span class="ident">Flags</span>(<span class="ident">ffi</span>::<span class="ident">FLAGS_NOOPTIMIZE</span>, <span class="ident">AllowCache</span>)</pre>
+<p>Inhibit optimizations</p>
+</div><h4 id='associatedconstant.NULL_TRANSFORM' class="associatedconstant"><span id='NULL_TRANSFORM.v' class='invisible'><code>pub const <a href='#associatedconstant.NULL_TRANSFORM' class="constant"><b>NULL_TRANSFORM</b></a>: <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a></code></span></h4>
+<div class='docblock'><pre class="rust ">
+<span class="ident">NULL_TRANSFORM</span>: <span class="ident">Flags</span> <span class="op">=</span> <span class="ident">Flags</span>(<span class="ident">ffi</span>::<span class="ident">FLAGS_NULLTRANSFORM</span>, <span class="ident">AllowCache</span>)</pre>
+<p>Don&#39;t transform anyway</p>
+</div><h4 id='associatedconstant.GAMUT_CHECK' class="associatedconstant"><span id='GAMUT_CHECK.v' class='invisible'><code>pub const <a href='#associatedconstant.GAMUT_CHECK' class="constant"><b>GAMUT_CHECK</b></a>: <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a></code></span></h4>
+<div class='docblock'><pre class="rust ">
+<span class="ident">GAMUT_CHECK</span>: <span class="ident">Flags</span> <span class="op">=</span> <span class="ident">Flags</span>(<span class="ident">ffi</span>::<span class="ident">FLAGS_GAMUTCHECK</span>, <span class="ident">AllowCache</span>)</pre>
+<p>Proofing flags
+Out of Gamut alarm</p>
+</div><h4 id='associatedconstant.SOFT_PROOFING' class="associatedconstant"><span id='SOFT_PROOFING.v' class='invisible'><code>pub const <a href='#associatedconstant.SOFT_PROOFING' class="constant"><b>SOFT_PROOFING</b></a>: <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a></code></span></h4>
+<div class='docblock'><pre class="rust ">
+<span class="ident">SOFT_PROOFING</span>: <span class="ident">Flags</span> <span class="op">=</span> <span class="ident">Flags</span>(<span class="ident">ffi</span>::<span class="ident">FLAGS_SOFTPROOFING</span>, <span class="ident">AllowCache</span>)</pre>
+<p>Do softproofing</p>
+</div><h4 id='associatedconstant.BLACKPOINT_COMPENSATION' class="associatedconstant"><span id='BLACKPOINT_COMPENSATION.v' class='invisible'><code>pub const <a href='#associatedconstant.BLACKPOINT_COMPENSATION' class="constant"><b>BLACKPOINT_COMPENSATION</b></a>: <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a></code></span></h4>
+<div class='docblock'><pre class="rust ">
+<span class="ident">BLACKPOINT_COMPENSATION</span>: <span class="ident">Flags</span> <span class="op">=</span> <span class="ident">Flags</span>(<span class="ident">ffi</span>::<span class="ident">FLAGS_BLACKPOINTCOMPENSATION</span>, <span class="ident">AllowCache</span>)</pre>
+</div><h4 id='associatedconstant.NO_WHITE_ON_WHITE_FIXUP' class="associatedconstant"><span id='NO_WHITE_ON_WHITE_FIXUP.v' class='invisible'><code>pub const <a href='#associatedconstant.NO_WHITE_ON_WHITE_FIXUP' class="constant"><b>NO_WHITE_ON_WHITE_FIXUP</b></a>: <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a></code></span></h4>
+<div class='docblock'><pre class="rust ">
+<span class="ident">NO_WHITE_ON_WHITE_FIXUP</span>: <span class="ident">Flags</span> <span class="op">=</span> <span class="ident">Flags</span>(<span class="ident">ffi</span>::<span class="ident">FLAGS_NOWHITEONWHITEFIXUP</span>, <span class="ident">AllowCache</span>)</pre>
+<p>Don&#39;t fix scum dot</p>
+</div><h4 id='associatedconstant.HIGHRES_PRECALC' class="associatedconstant"><span id='HIGHRES_PRECALC.v' class='invisible'><code>pub const <a href='#associatedconstant.HIGHRES_PRECALC' class="constant"><b>HIGHRES_PRECALC</b></a>: <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a></code></span></h4>
+<div class='docblock'><pre class="rust ">
+<span class="ident">HIGHRES_PRECALC</span>: <span class="ident">Flags</span> <span class="op">=</span> <span class="ident">Flags</span>(<span class="ident">ffi</span>::<span class="ident">FLAGS_HIGHRESPRECALC</span>, <span class="ident">AllowCache</span>)</pre>
+<p>Use more memory to give better accurancy</p>
+</div><h4 id='associatedconstant.LOWRES_PRECALC' class="associatedconstant"><span id='LOWRES_PRECALC.v' class='invisible'><code>pub const <a href='#associatedconstant.LOWRES_PRECALC' class="constant"><b>LOWRES_PRECALC</b></a>: <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a></code></span></h4>
+<div class='docblock'><pre class="rust ">
+<span class="ident">LOWRES_PRECALC</span>: <span class="ident">Flags</span> <span class="op">=</span> <span class="ident">Flags</span>(<span class="ident">ffi</span>::<span class="ident">FLAGS_LOWRESPRECALC</span>, <span class="ident">AllowCache</span>)</pre>
+<p>Use less memory to minimize resources</p>
+</div><h4 id='associatedconstant.DEVICELINK_8BITS' class="associatedconstant"><span id='DEVICELINK_8BITS.v' class='invisible'><code>pub const <a href='#associatedconstant.DEVICELINK_8BITS' class="constant"><b>DEVICELINK_8BITS</b></a>: <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a></code></span></h4>
+<div class='docblock'><pre class="rust ">
+<span class="ident">DEVICELINK_8BITS</span>: <span class="ident">Flags</span> <span class="op">=</span> <span class="ident">Flags</span>(<span class="ident">ffi</span>::<span class="ident">FLAGS_8BITS_DEVICELINK</span>, <span class="ident">AllowCache</span>)</pre>
+<p>For devicelink creation
+Create 8 bits devicelinks</p>
+</div><h4 id='associatedconstant.GUESS_DEVICE_CLASS' class="associatedconstant"><span id='GUESS_DEVICE_CLASS.v' class='invisible'><code>pub const <a href='#associatedconstant.GUESS_DEVICE_CLASS' class="constant"><b>GUESS_DEVICE_CLASS</b></a>: <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a></code></span></h4>
+<div class='docblock'><pre class="rust ">
+<span class="ident">GUESS_DEVICE_CLASS</span>: <span class="ident">Flags</span> <span class="op">=</span> <span class="ident">Flags</span>(<span class="ident">ffi</span>::<span class="ident">FLAGS_GUESSDEVICECLASS</span>, <span class="ident">AllowCache</span>)</pre>
+<p>Guess device class (for transform2devicelink)</p>
+</div><h4 id='associatedconstant.KEEP_SEQUENCE' class="associatedconstant"><span id='KEEP_SEQUENCE.v' class='invisible'><code>pub const <a href='#associatedconstant.KEEP_SEQUENCE' class="constant"><b>KEEP_SEQUENCE</b></a>: <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a></code></span></h4>
+<div class='docblock'><pre class="rust ">
+<span class="ident">KEEP_SEQUENCE</span>: <span class="ident">Flags</span> <span class="op">=</span> <span class="ident">Flags</span>(<span class="ident">ffi</span>::<span class="ident">FLAGS_KEEP_SEQUENCE</span>, <span class="ident">AllowCache</span>)</pre>
+<p>Keep profile sequence for devicelink creation</p>
+</div><h4 id='associatedconstant.FORCE_CLUT' class="associatedconstant"><span id='FORCE_CLUT.v' class='invisible'><code>pub const <a href='#associatedconstant.FORCE_CLUT' class="constant"><b>FORCE_CLUT</b></a>: <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a></code></span></h4>
+<div class='docblock'><pre class="rust ">
+<span class="ident">FORCE_CLUT</span>: <span class="ident">Flags</span> <span class="op">=</span> <span class="ident">Flags</span>(<span class="ident">ffi</span>::<span class="ident">FLAGS_FORCE_CLUT</span>, <span class="ident">AllowCache</span>)</pre>
+<p>Specific to a particular optimizations
+Force CLUT optimization</p>
+</div><h4 id='associatedconstant.CLUT_POST_LINEARIZATION' class="associatedconstant"><span id='CLUT_POST_LINEARIZATION.v' class='invisible'><code>pub const <a href='#associatedconstant.CLUT_POST_LINEARIZATION' class="constant"><b>CLUT_POST_LINEARIZATION</b></a>: <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a></code></span></h4>
+<div class='docblock'><pre class="rust ">
+<span class="ident">CLUT_POST_LINEARIZATION</span>: <span class="ident">Flags</span> <span class="op">=</span> <span class="ident">Flags</span>(<span class="ident">ffi</span>::<span class="ident">FLAGS_CLUT_POST_LINEARIZATION</span>, <span class="ident">AllowCache</span>)</pre>
+<p>create postlinearization tables if possible</p>
+</div><h4 id='associatedconstant.CLUT_PRE_LINEARIZATION' class="associatedconstant"><span id='CLUT_PRE_LINEARIZATION.v' class='invisible'><code>pub const <a href='#associatedconstant.CLUT_PRE_LINEARIZATION' class="constant"><b>CLUT_PRE_LINEARIZATION</b></a>: <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a></code></span></h4>
+<div class='docblock'><pre class="rust ">
+<span class="ident">CLUT_PRE_LINEARIZATION</span>: <span class="ident">Flags</span> <span class="op">=</span> <span class="ident">Flags</span>(<span class="ident">ffi</span>::<span class="ident">FLAGS_CLUT_PRE_LINEARIZATION</span>, <span class="ident">AllowCache</span>)</pre>
+<p>create prelinearization tables if possible</p>
+</div><h4 id='associatedconstant.NO_NEGATIVES' class="associatedconstant"><span id='NO_NEGATIVES.v' class='invisible'><code>pub const <a href='#associatedconstant.NO_NEGATIVES' class="constant"><b>NO_NEGATIVES</b></a>: <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a></code></span></h4>
+<div class='docblock'><pre class="rust ">
+<span class="ident">NO_NEGATIVES</span>: <span class="ident">Flags</span> <span class="op">=</span> <span class="ident">Flags</span>(<span class="ident">ffi</span>::<span class="ident">FLAGS_NONEGATIVES</span>, <span class="ident">AllowCache</span>)</pre>
+<p>Specific to unbounded mode
+Prevent negative numbers in floating point transforms</p>
+</div><h4 id='associatedconstant.COPY_ALPHA' class="associatedconstant"><span id='COPY_ALPHA.v' class='invisible'><code>pub const <a href='#associatedconstant.COPY_ALPHA' class="constant"><b>COPY_ALPHA</b></a>: <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a></code></span></h4>
+<div class='docblock'><pre class="rust ">
+<span class="ident">COPY_ALPHA</span>: <span class="ident">Flags</span> <span class="op">=</span> <span class="ident">Flags</span>(<span class="ident">ffi</span>::<span class="ident">FLAGS_COPY_ALPHA</span>, <span class="ident">AllowCache</span>)</pre>
+<p>Alpha channels are copied on cmsDoTransform()</p>
+</div><h4 id='associatedconstant.NO_DEFAULT_RESOURCE_DEF' class="associatedconstant"><span id='NO_DEFAULT_RESOURCE_DEF.v' class='invisible'><code>pub const <a href='#associatedconstant.NO_DEFAULT_RESOURCE_DEF' class="constant"><b>NO_DEFAULT_RESOURCE_DEF</b></a>: <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a></code></span></h4>
+<div class='docblock'><pre class="rust ">
+<span class="ident">NO_DEFAULT_RESOURCE_DEF</span>: <span class="ident">Flags</span> <span class="op">=</span> <span class="ident">Flags</span>(<span class="ident">ffi</span>::<span class="ident">FLAGS_NODEFAULTRESOURCEDEF</span>, <span class="ident">AllowCache</span>)</pre>
+<p>CRD special</p>
+</div></div><h3 id='impl-1' class='impl'><span class='in-band'><code>impl&lt;T:&nbsp;<a class="trait" href="../lcms2/trait.CacheFlag.html" title="trait lcms2::CacheFlag">CacheFlag</a>&gt; <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a>&lt;T&gt;</code><a href='#impl-1' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/flags.rs.html#74-86' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.has' class="method"><span id='has.v' class='invisible'><code>pub fn <a href='#method.has' class='fnname'>has</a>&lt;F:&nbsp;<a class="trait" href="../lcms2/trait.CacheFlag.html" title="trait lcms2::CacheFlag">CacheFlag</a>&gt;(&amp;mut self, flag: <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a>&lt;F&gt;) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/flags.rs.html#83-85' title='goto source code'>[src]</a></span></h4>
+</div>
+            <h2 id='implementations' class='small-section-header'>
+              Trait Implementations<a href='#implementations' class='anchor'></a>
+            </h2>
+        <h3 id='impl-Debug' class='impl'><span class='in-band'><code>impl&lt;T:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> + <a class="trait" href="../lcms2/trait.CacheFlag.html" title="trait lcms2::CacheFlag">CacheFlag</a>&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> for <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a>&lt;T&gt;</code><a href='#impl-Debug' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/flags.rs.html#4' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class="method"><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html" title="struct core::fmt::Formatter">Formatter</a>) -&gt; <a class="type" href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html" title="type core::fmt::Result">Result</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/flags.rs.html#4' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter. <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt">Read more</a></p>
+</div></div><h3 id='impl-Copy' class='impl'><span class='in-band'><code>impl&lt;T:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> + <a class="trait" href="../lcms2/trait.CacheFlag.html" title="trait lcms2::CacheFlag">CacheFlag</a>&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> for <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a>&lt;T&gt;</code><a href='#impl-Copy' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/flags.rs.html#4' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'></div><h3 id='impl-Clone' class='impl'><span class='in-band'><code>impl&lt;T:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + <a class="trait" href="../lcms2/trait.CacheFlag.html" title="trait lcms2::CacheFlag">CacheFlag</a>&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> for <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a>&lt;T&gt;</code><a href='#impl-Clone' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/flags.rs.html#4' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.clone' class="method"><span id='clone.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a>&lt;T&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/flags.rs.html#4' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
+</div><h4 id='method.clone_from' class="method"><span id='clone_from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>Self)</code></span><span class='out-of-band'><div class='ghost'></div><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div><a class='srclink' href='https://doc.rust-lang.org/nightly/src/core/clone.rs.html#112-114' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
+</div></div><h3 id='impl-BitOr%3CFlags%3CT%3E%3E' class='impl'><span class='in-band'><code>impl&lt;T:&nbsp;<a class="trait" href="../lcms2/trait.CacheFlag.html" title="trait lcms2::CacheFlag">CacheFlag</a>&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/bit/trait.BitOr.html" title="trait core::ops::bit::BitOr">BitOr</a>&lt;<a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a>&lt;T&gt;&gt; for <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a>&lt;<a class="struct" href="../lcms2/struct.DisallowCache.html" title="struct lcms2::DisallowCache">DisallowCache</a>&gt;</code><a href='#impl-BitOr%3CFlags%3CT%3E%3E' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/flags.rs.html#60-65' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='associatedtype.Output' class="type"><span id='Output.t' class='invisible'><code>type <a href='https://doc.rust-lang.org/nightly/core/ops/bit/trait.BitOr.html#associatedtype.Output' class="type">Output</a> = <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a>&lt;<a class="struct" href="../lcms2/struct.DisallowCache.html" title="struct lcms2::DisallowCache">DisallowCache</a>&gt;</code></span></h4>
+<div class='docblock'><p>The resulting type after applying the <code>|</code> operator.</p>
+</div><h4 id='method.bitor' class="method"><span id='bitor.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/bit/trait.BitOr.html#tymethod.bitor' class='fnname'>bitor</a>(self, other: <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a>&lt;T&gt;) -&gt; <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a>&lt;<a class="struct" href="../lcms2/struct.DisallowCache.html" title="struct lcms2::DisallowCache">DisallowCache</a>&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/flags.rs.html#62-64' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Performs the <code>|</code> operation.</p>
+</div></div><h3 id='impl-BitOr%3CFlags%3CT%3E%3E-1' class='impl'><span class='in-band'><code>impl&lt;T:&nbsp;<a class="trait" href="../lcms2/trait.CacheFlag.html" title="trait lcms2::CacheFlag">CacheFlag</a>&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/bit/trait.BitOr.html" title="trait core::ops::bit::BitOr">BitOr</a>&lt;<a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a>&lt;T&gt;&gt; for <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a>&lt;<a class="struct" href="../lcms2/struct.AllowCache.html" title="struct lcms2::AllowCache">AllowCache</a>&gt;</code><a href='#impl-BitOr%3CFlags%3CT%3E%3E-1' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/flags.rs.html#67-72' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='associatedtype.Output-1' class="type"><span id='Output.t-1' class='invisible'><code>type <a href='https://doc.rust-lang.org/nightly/core/ops/bit/trait.BitOr.html#associatedtype.Output' class="type">Output</a> = <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a>&lt;T&gt;</code></span></h4>
+<div class='docblock'><p>The resulting type after applying the <code>|</code> operator.</p>
+</div><h4 id='method.bitor-1' class="method"><span id='bitor.v-1' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/bit/trait.BitOr.html#tymethod.bitor' class='fnname'>bitor</a>(self, other: <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a>&lt;T&gt;) -&gt; <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a>&lt;T&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/flags.rs.html#69-71' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Performs the <code>|</code> operation.</p>
+</div></div><h3 id='impl-Default' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html" title="trait core::default::Default">Default</a> for <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a></code><a href='#impl-Default' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/flags.rs.html#88-95' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.default' class="method"><span id='default.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default' class='fnname'>default</a>() -&gt; Self</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/flags.rs.html#92-94' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Default flags</p>
+
+<p>By default allows non-thread-safe cache, which improves performance, but limits transforms to use by one thread only.</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>↑</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>↓</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>↹</dt>
+                    <dd>Switch tab</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt style="width:31px;">+ / -</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "lcms2";
+    </script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

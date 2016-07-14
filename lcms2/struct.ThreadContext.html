@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `ThreadContext` struct in crate `lcms2`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, ThreadContext">
+
+    <title>lcms2::ThreadContext - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc struct">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        <div class="sidebar-menu">&#9776;</div>
+        <a href='../lcms2/index.html'><img src='https://pornel.github.io/rust-lcms2/lcms_logo.png' alt='logo' width='100'></a>
+        <p class='location'>Struct ThreadContext</p><div class="sidebar-elems"><div class="block items"><a class="sidebar-title" href="#methods">Methods</a><div class="sidebar-links"><a href="#method.new">new</a><a href="#method.user_data">user_data</a><a href="#method.install_plugin">install_plugin</a><a href="#method.unregister_plugins">unregister_plugins</a><a href="#method.supported_intents">supported_intents</a><a href="#method.adaptation_state">adaptation_state</a><a href="#method.set_adaptation_state">set_adaptation_state</a><a href="#method.set_alarm_codes">set_alarm_codes</a><a href="#method.alarm_codes">alarm_codes</a></div><a class="sidebar-title" href="#implementations">Trait Implementations</a><div class="sidebar-links"><a href="#impl-Send">Send</a><a href="#impl-Clone">Clone</a><a href="#impl-Drop">Drop</a><a href="#impl-Default">Default</a></div></div><p class='location'><a href='index.html'>lcms2</a></p><script>window.sidebarCurrent = {name: 'ThreadContext', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script></div>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>lcms2</a>::<wbr><a class="struct" href=''>ThreadContext</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/lcms2/context.rs.html#66-68' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct ThreadContext { /* fields omitted */ }</pre><div class='docblock'><p>Per-thread context for multi-threaded operation.</p>
+
+<p>There are situations where several instances of Little CMS engine have to coexist but on different conditions.
+For example, when the library is used as a DLL or a shared object, diverse applications may want to use different plug-ins.
+Another example is when multiple threads are being used in same task and the user wants to pass thread-dependent information to the memory allocators or the logging system.
+The context is a pointer to an internal structure that keeps track of all plug-ins and static data needed by the THR corresponding function.</p>
+
+<p>A context-aware app could allocate a new context by calling new() or duplicate a yet-existing one by using clone().
+Each context can hold different plug-ins, defined by the Plugin parameter. The context can also hold loggers.</p>
+
+<p>Users may associate private data across a void pointer when creating the context, and can retrieve this pointer later.</p>
+
+<p>When you see an error &quot;expected reference, found struct <code>lcms2::GlobalContext</code>&quot;, it means you&#39;ve mixed global and thread-context objects. They don&#39;t work together.
+For example, if you create a <code>Transform</code> with a context (calling <code>new_*_context()</code>), then it will only support <code>Profile</code> with a context as well.</p>
+</div>
+                    <h2 id='methods' class='small-section-header'>
+                      Methods<a href='#methods' class='anchor'></a>
+                    </h2>
+                <h3 id='impl' class='impl'><span class='in-band'><code>impl <a class="struct" href="../lcms2/struct.ThreadContext.html" title="struct lcms2::ThreadContext">ThreadContext</a></code><a href='#impl' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/context.rs.html#84-155' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.new' class="method"><span id='new.v' class='invisible'><code>pub fn <a href='#method.new' class='fnname'>new</a>() -&gt; Self</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/context.rs.html#85-89' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.user_data' class="method"><span id='user_data.v' class='invisible'><code>pub fn <a href='#method.user_data' class='fnname'>user_data</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.pointer.html">*mut </a><a class="enum" href="https://doc.rust-lang.org/nightly/std/os/raw/enum.c_void.html" title="enum std::os::raw::c_void">c_void</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/context.rs.html#96-100' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.install_plugin' class="method"><span id='install_plugin.v' class='invisible'><code>pub unsafe fn <a href='#method.install_plugin' class='fnname'>install_plugin</a>(&amp;mut self, plugin: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.pointer.html">*mut </a><a class="enum" href="https://doc.rust-lang.org/nightly/std/os/raw/enum.c_void.html" title="enum std::os::raw::c_void">c_void</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/context.rs.html#102-104' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.unregister_plugins' class="method"><span id='unregister_plugins.v' class='invisible'><code>pub fn <a href='#method.unregister_plugins' class='fnname'>unregister_plugins</a>(&amp;mut self)</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/context.rs.html#106-110' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.supported_intents' class="method"><span id='supported_intents.v' class='invisible'><code>pub fn <a href='#method.supported_intents' class='fnname'>supported_intents</a>(&amp;self) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html" title="struct std::collections::hash::map::HashMap">HashMap</a>&lt;<a class="enum" href="../lcms2/enum.Intent.html" title="enum lcms2::Intent">Intent</a>, &amp;<a class="struct" href="https://doc.rust-lang.org/nightly/std/ffi/c_str/struct.CStr.html" title="struct std::ffi::c_str::CStr">CStr</a>&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/context.rs.html#112-123' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.adaptation_state' class="method"><span id='adaptation_state.v' class='invisible'><code>pub fn <a href='#method.adaptation_state' class='fnname'>adaptation_state</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/context.rs.html#126-128' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Adaptation state for absolute colorimetric intent, on all but cmsCreateExtendedTransform.</p>
+</div><h4 id='method.set_adaptation_state' class="method"><span id='set_adaptation_state.v' class='invisible'><code>pub fn <a href='#method.set_adaptation_state' class='fnname'>set_adaptation_state</a>(&amp;mut self, value: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>)</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/context.rs.html#134-138' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Sets adaptation state for absolute colorimetric intent in the given context.  Adaptation state applies on all but cmsCreateExtendedTransformTHR().
+Little CMS can handle incomplete adaptation states.</p>
+
+<p>Degree on adaptation 0=Not adapted, 1=Complete adaptation,  in-between=Partial adaptation.</p>
+</div><h4 id='method.set_alarm_codes' class="method"><span id='set_alarm_codes.v' class='invisible'><code>pub fn <a href='#method.set_alarm_codes' class='fnname'>set_alarm_codes</a>(&amp;mut self, codes: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 16]</a>)</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/context.rs.html#143-145' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Sets the codes used to mark out-out-gamut on Proofing transforms for a given context. Values are meant to be encoded in 16 bits.</p>
+
+<p>AlarmCodes: Array [16] of codes. ALL 16 VALUES MUST BE SPECIFIED, set to zero unused channels.</p>
+</div><h4 id='method.alarm_codes' class="method"><span id='alarm_codes.v' class='invisible'><code>pub fn <a href='#method.alarm_codes' class='fnname'>alarm_codes</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 16]</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/context.rs.html#148-154' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Gets the current codes used to mark out-out-gamut on Proofing transforms for the given context. Values are meant to be encoded in 16 bits.</p>
+</div></div>
+            <h2 id='implementations' class='small-section-header'>
+              Trait Implementations<a href='#implementations' class='anchor'></a>
+            </h2>
+        <h3 id='impl-Send' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> for <a class="struct" href="../lcms2/struct.ThreadContext.html" title="struct lcms2::ThreadContext">ThreadContext</a></code><a href='#impl-Send' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/context.rs.html#36' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'></div><h3 id='impl-Clone' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> for <a class="struct" href="../lcms2/struct.ThreadContext.html" title="struct lcms2::ThreadContext">ThreadContext</a></code><a href='#impl-Clone' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/context.rs.html#157-161' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.clone' class="method"><span id='clone.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; Self</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/context.rs.html#158-160' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
+</div><h4 id='method.clone_from' class="method"><span id='clone_from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>Self)</code></span><span class='out-of-band'><div class='ghost'></div><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div><a class='srclink' href='https://doc.rust-lang.org/nightly/src/core/clone.rs.html#112-114' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
+</div></div><h3 id='impl-Drop' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html" title="trait core::ops::drop::Drop">Drop</a> for <a class="struct" href="../lcms2/struct.ThreadContext.html" title="struct lcms2::ThreadContext">ThreadContext</a></code><a href='#impl-Drop' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/context.rs.html#163-167' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.drop' class="method"><span id='drop.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html#tymethod.drop' class='fnname'>drop</a>(&amp;mut self)</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/context.rs.html#164-166' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Executes the destructor for this type. <a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html#tymethod.drop">Read more</a></p>
+</div></div><h3 id='impl-Default' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html" title="trait core::default::Default">Default</a> for <a class="struct" href="../lcms2/struct.ThreadContext.html" title="struct lcms2::ThreadContext">ThreadContext</a></code><a href='#impl-Default' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/context.rs.html#175-179' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.default' class="method"><span id='default.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default' class='fnname'>default</a>() -&gt; Self</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/context.rs.html#176-178' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns the &quot;default value&quot; for a type. <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">Read more</a></p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>↑</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>↓</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>↹</dt>
+                    <dd>Switch tab</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt style="width:31px;">+ / -</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "lcms2";
+    </script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

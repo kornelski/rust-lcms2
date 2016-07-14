@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `ColorSpaceSignature` enum in crate `lcms2`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, ColorSpaceSignature">
+
+    <title>lcms2::ColorSpaceSignature - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc enum">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        <div class="sidebar-menu">&#9776;</div>
+        <a href='../lcms2/index.html'><img src='https://pornel.github.io/rust-lcms2/lcms_logo.png' alt='logo' width='100'></a>
+        <p class='location'>Enum ColorSpaceSignature</p><div class="sidebar-elems"><div class="block items"><a class="sidebar-title" href="#variants">Variants</a><div class="sidebar-links"><a href="#variant.XYZData">XYZData</a><a href="#variant.LabData">LabData</a><a href="#variant.LuvData">LuvData</a><a href="#variant.YCbCrData">YCbCrData</a><a href="#variant.YxyData">YxyData</a><a href="#variant.RgbData">RgbData</a><a href="#variant.GrayData">GrayData</a><a href="#variant.HsvData">HsvData</a><a href="#variant.HlsData">HlsData</a><a href="#variant.CmykData">CmykData</a><a href="#variant.CmyData">CmyData</a><a href="#variant.MCH1Data">MCH1Data</a><a href="#variant.MCH2Data">MCH2Data</a><a href="#variant.MCH3Data">MCH3Data</a><a href="#variant.MCH4Data">MCH4Data</a><a href="#variant.MCH5Data">MCH5Data</a><a href="#variant.MCH6Data">MCH6Data</a><a href="#variant.MCH7Data">MCH7Data</a><a href="#variant.MCH8Data">MCH8Data</a><a href="#variant.MCH9Data">MCH9Data</a><a href="#variant.MCHAData">MCHAData</a><a href="#variant.MCHBData">MCHBData</a><a href="#variant.MCHCData">MCHCData</a><a href="#variant.MCHDData">MCHDData</a><a href="#variant.MCHEData">MCHEData</a><a href="#variant.MCHFData">MCHFData</a><a href="#variant.NamedData">NamedData</a><a href="#variant.Sig1colorData">Sig1colorData</a><a href="#variant.Sig2colorData">Sig2colorData</a><a href="#variant.Sig3colorData">Sig3colorData</a><a href="#variant.Sig4colorData">Sig4colorData</a><a href="#variant.Sig5colorData">Sig5colorData</a><a href="#variant.Sig6colorData">Sig6colorData</a><a href="#variant.Sig7colorData">Sig7colorData</a><a href="#variant.Sig8colorData">Sig8colorData</a><a href="#variant.Sig9colorData">Sig9colorData</a><a href="#variant.Sig10colorData">Sig10colorData</a><a href="#variant.Sig11colorData">Sig11colorData</a><a href="#variant.Sig12colorData">Sig12colorData</a><a href="#variant.Sig13colorData">Sig13colorData</a><a href="#variant.Sig14colorData">Sig14colorData</a><a href="#variant.Sig15colorData">Sig15colorData</a><a href="#variant.LuvKData">LuvKData</a></div><a class="sidebar-title" href="#implementations">Trait Implementations</a><div class="sidebar-links"><a href="#impl-PartialEq%3CColorSpaceSignature%3E">PartialEq&lt;ColorSpaceSignature&gt;</a><a href="#impl-Copy">Copy</a><a href="#impl-Debug">Debug</a><a href="#impl-Eq">Eq</a><a href="#impl-Hash">Hash</a><a href="#impl-Clone">Clone</a><a href="#impl-ColorSpaceSignatureExt">ColorSpaceSignatureExt</a></div></div><p class='location'><a href='index.html'>lcms2</a></p><script>window.sidebarCurrent = {name: 'ColorSpaceSignature', ty: 'enum', relpath: ''};</script><script defer src="sidebar-items.js"></script></div>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>lcms2</a>::<wbr><a class="enum" href=''>ColorSpaceSignature</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span></span></h1>
+<pre class='rust enum'><div class="docblock attributes">#[repr(u32)]
+</div>pub enum ColorSpaceSignature {
+    XYZData,
+    LabData,
+    LuvData,
+    YCbCrData,
+    YxyData,
+    RgbData,
+    GrayData,
+    HsvData,
+    HlsData,
+    CmykData,
+    CmyData,
+    MCH1Data,
+    MCH2Data,
+    MCH3Data,
+    MCH4Data,
+    MCH5Data,
+    MCH6Data,
+    MCH7Data,
+    MCH8Data,
+    MCH9Data,
+    MCHAData,
+    MCHBData,
+    MCHCData,
+    MCHDData,
+    MCHEData,
+    MCHFData,
+    NamedData,
+    Sig1colorData,
+    Sig2colorData,
+    Sig3colorData,
+    Sig4colorData,
+    Sig5colorData,
+    Sig6colorData,
+    Sig7colorData,
+    Sig8colorData,
+    Sig9colorData,
+    Sig10colorData,
+    Sig11colorData,
+    Sig12colorData,
+    Sig13colorData,
+    Sig14colorData,
+    Sig15colorData,
+    LuvKData,
+}</pre><h2 id='variants' class='variants small-section-header'>
+                   Variants<a href='#variants' class='anchor'></a></h2>
+<span id="variant.XYZData" class="variant small-section-header"><a href="#variant.XYZData" class="anchor field"></a><span id='XYZData.v' class='invisible'><code>XYZData</code></span></span><div class='docblock'><p>&#39;XYZ &#39;</p>
+</div><span id="variant.LabData" class="variant small-section-header"><a href="#variant.LabData" class="anchor field"></a><span id='LabData.v' class='invisible'><code>LabData</code></span></span><div class='docblock'><p>&#39;Lab &#39;</p>
+</div><span id="variant.LuvData" class="variant small-section-header"><a href="#variant.LuvData" class="anchor field"></a><span id='LuvData.v' class='invisible'><code>LuvData</code></span></span><div class='docblock'><p>&#39;Luv &#39;</p>
+</div><span id="variant.YCbCrData" class="variant small-section-header"><a href="#variant.YCbCrData" class="anchor field"></a><span id='YCbCrData.v' class='invisible'><code>YCbCrData</code></span></span><div class='docblock'><p>&#39;YCbr&#39;</p>
+</div><span id="variant.YxyData" class="variant small-section-header"><a href="#variant.YxyData" class="anchor field"></a><span id='YxyData.v' class='invisible'><code>YxyData</code></span></span><div class='docblock'><p>&#39;Yxy &#39;</p>
+</div><span id="variant.RgbData" class="variant small-section-header"><a href="#variant.RgbData" class="anchor field"></a><span id='RgbData.v' class='invisible'><code>RgbData</code></span></span><div class='docblock'><p>&#39;RGB &#39;</p>
+</div><span id="variant.GrayData" class="variant small-section-header"><a href="#variant.GrayData" class="anchor field"></a><span id='GrayData.v' class='invisible'><code>GrayData</code></span></span><div class='docblock'><p>&#39;GRAY&#39;</p>
+</div><span id="variant.HsvData" class="variant small-section-header"><a href="#variant.HsvData" class="anchor field"></a><span id='HsvData.v' class='invisible'><code>HsvData</code></span></span><div class='docblock'><p>&#39;HSV &#39;</p>
+</div><span id="variant.HlsData" class="variant small-section-header"><a href="#variant.HlsData" class="anchor field"></a><span id='HlsData.v' class='invisible'><code>HlsData</code></span></span><div class='docblock'><p>&#39;HLS &#39;</p>
+</div><span id="variant.CmykData" class="variant small-section-header"><a href="#variant.CmykData" class="anchor field"></a><span id='CmykData.v' class='invisible'><code>CmykData</code></span></span><div class='docblock'><p>&#39;CMYK&#39;</p>
+</div><span id="variant.CmyData" class="variant small-section-header"><a href="#variant.CmyData" class="anchor field"></a><span id='CmyData.v' class='invisible'><code>CmyData</code></span></span><div class='docblock'><p>&#39;CMY &#39;</p>
+</div><span id="variant.MCH1Data" class="variant small-section-header"><a href="#variant.MCH1Data" class="anchor field"></a><span id='MCH1Data.v' class='invisible'><code>MCH1Data</code></span></span><div class='docblock'><p>&#39;MCH1&#39;</p>
+</div><span id="variant.MCH2Data" class="variant small-section-header"><a href="#variant.MCH2Data" class="anchor field"></a><span id='MCH2Data.v' class='invisible'><code>MCH2Data</code></span></span><div class='docblock'><p>&#39;MCH2&#39;</p>
+</div><span id="variant.MCH3Data" class="variant small-section-header"><a href="#variant.MCH3Data" class="anchor field"></a><span id='MCH3Data.v' class='invisible'><code>MCH3Data</code></span></span><div class='docblock'><p>&#39;MCH3&#39;</p>
+</div><span id="variant.MCH4Data" class="variant small-section-header"><a href="#variant.MCH4Data" class="anchor field"></a><span id='MCH4Data.v' class='invisible'><code>MCH4Data</code></span></span><div class='docblock'><p>&#39;MCH4&#39;</p>
+</div><span id="variant.MCH5Data" class="variant small-section-header"><a href="#variant.MCH5Data" class="anchor field"></a><span id='MCH5Data.v' class='invisible'><code>MCH5Data</code></span></span><div class='docblock'><p>&#39;MCH5&#39;</p>
+</div><span id="variant.MCH6Data" class="variant small-section-header"><a href="#variant.MCH6Data" class="anchor field"></a><span id='MCH6Data.v' class='invisible'><code>MCH6Data</code></span></span><div class='docblock'><p>&#39;MCH6&#39;</p>
+</div><span id="variant.MCH7Data" class="variant small-section-header"><a href="#variant.MCH7Data" class="anchor field"></a><span id='MCH7Data.v' class='invisible'><code>MCH7Data</code></span></span><div class='docblock'><p>&#39;MCH7&#39;</p>
+</div><span id="variant.MCH8Data" class="variant small-section-header"><a href="#variant.MCH8Data" class="anchor field"></a><span id='MCH8Data.v' class='invisible'><code>MCH8Data</code></span></span><div class='docblock'><p>&#39;MCH8&#39;</p>
+</div><span id="variant.MCH9Data" class="variant small-section-header"><a href="#variant.MCH9Data" class="anchor field"></a><span id='MCH9Data.v' class='invisible'><code>MCH9Data</code></span></span><div class='docblock'><p>&#39;MCH9&#39;</p>
+</div><span id="variant.MCHAData" class="variant small-section-header"><a href="#variant.MCHAData" class="anchor field"></a><span id='MCHAData.v' class='invisible'><code>MCHAData</code></span></span><div class='docblock'><p>&#39;MCHA&#39;</p>
+</div><span id="variant.MCHBData" class="variant small-section-header"><a href="#variant.MCHBData" class="anchor field"></a><span id='MCHBData.v' class='invisible'><code>MCHBData</code></span></span><div class='docblock'><p>&#39;MCHB&#39;</p>
+</div><span id="variant.MCHCData" class="variant small-section-header"><a href="#variant.MCHCData" class="anchor field"></a><span id='MCHCData.v' class='invisible'><code>MCHCData</code></span></span><div class='docblock'><p>&#39;MCHC&#39;</p>
+</div><span id="variant.MCHDData" class="variant small-section-header"><a href="#variant.MCHDData" class="anchor field"></a><span id='MCHDData.v' class='invisible'><code>MCHDData</code></span></span><div class='docblock'><p>&#39;MCHD&#39;</p>
+</div><span id="variant.MCHEData" class="variant small-section-header"><a href="#variant.MCHEData" class="anchor field"></a><span id='MCHEData.v' class='invisible'><code>MCHEData</code></span></span><div class='docblock'><p>&#39;MCHE&#39;</p>
+</div><span id="variant.MCHFData" class="variant small-section-header"><a href="#variant.MCHFData" class="anchor field"></a><span id='MCHFData.v' class='invisible'><code>MCHFData</code></span></span><div class='docblock'><p>&#39;MCHF&#39;</p>
+</div><span id="variant.NamedData" class="variant small-section-header"><a href="#variant.NamedData" class="anchor field"></a><span id='NamedData.v' class='invisible'><code>NamedData</code></span></span><div class='docblock'><p>&#39;nmcl&#39;</p>
+</div><span id="variant.Sig1colorData" class="variant small-section-header"><a href="#variant.Sig1colorData" class="anchor field"></a><span id='Sig1colorData.v' class='invisible'><code>Sig1colorData</code></span></span><div class='docblock'><p>&#39;1CLR&#39;</p>
+</div><span id="variant.Sig2colorData" class="variant small-section-header"><a href="#variant.Sig2colorData" class="anchor field"></a><span id='Sig2colorData.v' class='invisible'><code>Sig2colorData</code></span></span><div class='docblock'><p>&#39;2CLR&#39;</p>
+</div><span id="variant.Sig3colorData" class="variant small-section-header"><a href="#variant.Sig3colorData" class="anchor field"></a><span id='Sig3colorData.v' class='invisible'><code>Sig3colorData</code></span></span><div class='docblock'><p>&#39;3CLR&#39;</p>
+</div><span id="variant.Sig4colorData" class="variant small-section-header"><a href="#variant.Sig4colorData" class="anchor field"></a><span id='Sig4colorData.v' class='invisible'><code>Sig4colorData</code></span></span><div class='docblock'><p>&#39;4CLR&#39;</p>
+</div><span id="variant.Sig5colorData" class="variant small-section-header"><a href="#variant.Sig5colorData" class="anchor field"></a><span id='Sig5colorData.v' class='invisible'><code>Sig5colorData</code></span></span><div class='docblock'><p>&#39;5CLR&#39;</p>
+</div><span id="variant.Sig6colorData" class="variant small-section-header"><a href="#variant.Sig6colorData" class="anchor field"></a><span id='Sig6colorData.v' class='invisible'><code>Sig6colorData</code></span></span><div class='docblock'><p>&#39;6CLR&#39;</p>
+</div><span id="variant.Sig7colorData" class="variant small-section-header"><a href="#variant.Sig7colorData" class="anchor field"></a><span id='Sig7colorData.v' class='invisible'><code>Sig7colorData</code></span></span><div class='docblock'><p>&#39;7CLR&#39;</p>
+</div><span id="variant.Sig8colorData" class="variant small-section-header"><a href="#variant.Sig8colorData" class="anchor field"></a><span id='Sig8colorData.v' class='invisible'><code>Sig8colorData</code></span></span><div class='docblock'><p>&#39;8CLR&#39;</p>
+</div><span id="variant.Sig9colorData" class="variant small-section-header"><a href="#variant.Sig9colorData" class="anchor field"></a><span id='Sig9colorData.v' class='invisible'><code>Sig9colorData</code></span></span><div class='docblock'><p>&#39;9CLR&#39;</p>
+</div><span id="variant.Sig10colorData" class="variant small-section-header"><a href="#variant.Sig10colorData" class="anchor field"></a><span id='Sig10colorData.v' class='invisible'><code>Sig10colorData</code></span></span><div class='docblock'><p>&#39;ACLR&#39;</p>
+</div><span id="variant.Sig11colorData" class="variant small-section-header"><a href="#variant.Sig11colorData" class="anchor field"></a><span id='Sig11colorData.v' class='invisible'><code>Sig11colorData</code></span></span><div class='docblock'><p>&#39;BCLR&#39;</p>
+</div><span id="variant.Sig12colorData" class="variant small-section-header"><a href="#variant.Sig12colorData" class="anchor field"></a><span id='Sig12colorData.v' class='invisible'><code>Sig12colorData</code></span></span><div class='docblock'><p>&#39;CCLR&#39;</p>
+</div><span id="variant.Sig13colorData" class="variant small-section-header"><a href="#variant.Sig13colorData" class="anchor field"></a><span id='Sig13colorData.v' class='invisible'><code>Sig13colorData</code></span></span><div class='docblock'><p>&#39;DCLR&#39;</p>
+</div><span id="variant.Sig14colorData" class="variant small-section-header"><a href="#variant.Sig14colorData" class="anchor field"></a><span id='Sig14colorData.v' class='invisible'><code>Sig14colorData</code></span></span><div class='docblock'><p>&#39;ECLR&#39;</p>
+</div><span id="variant.Sig15colorData" class="variant small-section-header"><a href="#variant.Sig15colorData" class="anchor field"></a><span id='Sig15colorData.v' class='invisible'><code>Sig15colorData</code></span></span><div class='docblock'><p>&#39;FCLR&#39;</p>
+</div><span id="variant.LuvKData" class="variant small-section-header"><a href="#variant.LuvKData" class="anchor field"></a><span id='LuvKData.v' class='invisible'><code>LuvKData</code></span></span><div class='docblock'><p>&#39;LuvK&#39;</p>
+</div>
+            <h2 id='implementations' class='small-section-header'>
+              Trait Implementations<a href='#implementations' class='anchor'></a>
+            </h2>
+        <h3 id='impl-PartialEq%3CColorSpaceSignature%3E' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html" title="trait core::cmp::PartialEq">PartialEq</a>&lt;<a class="enum" href="../lcms2/enum.ColorSpaceSignature.html" title="enum lcms2::ColorSpaceSignature">ColorSpaceSignature</a>&gt; for <a class="enum" href="../lcms2/enum.ColorSpaceSignature.html" title="enum lcms2::ColorSpaceSignature">ColorSpaceSignature</a></code><a href='#impl-PartialEq%3CColorSpaceSignature%3E' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.eq' class="method"><span id='eq.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#tymethod.eq' class='fnname'>eq</a>(&amp;self, __arg_0: &amp;<a class="enum" href="../lcms2/enum.ColorSpaceSignature.html" title="enum lcms2::ColorSpaceSignature">ColorSpaceSignature</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span></h4>
+<div class='docblock'><p>This method tests for <code>self</code> and <code>other</code> values to be equal, and is used by <code>==</code>. <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#tymethod.eq">Read more</a></p>
+</div><h4 id='method.ne' class="method"><span id='ne.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#method.ne' class='fnname'>ne</a>(&amp;self, other: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>Rhs) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span><span class='out-of-band'><div class='ghost'></div><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div><a class='srclink' href='https://doc.rust-lang.org/nightly/src/core/cmp.rs.html#121' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>This method tests for <code>!=</code>.</p>
+</div></div><h3 id='impl-Copy' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> for <a class="enum" href="../lcms2/enum.ColorSpaceSignature.html" title="enum lcms2::ColorSpaceSignature">ColorSpaceSignature</a></code><a href='#impl-Copy' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'></div><h3 id='impl-Debug' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> for <a class="enum" href="../lcms2/enum.ColorSpaceSignature.html" title="enum lcms2::ColorSpaceSignature">ColorSpaceSignature</a></code><a href='#impl-Debug' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class="method"><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html" title="struct core::fmt::Formatter">Formatter</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Error.html" title="struct core::fmt::Error">Error</a>&gt;</code></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter. <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt">Read more</a></p>
+</div></div><h3 id='impl-Eq' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html" title="trait core::cmp::Eq">Eq</a> for <a class="enum" href="../lcms2/enum.ColorSpaceSignature.html" title="enum lcms2::ColorSpaceSignature">ColorSpaceSignature</a></code><a href='#impl-Eq' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'></div><h3 id='impl-Hash' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html" title="trait core::hash::Hash">Hash</a> for <a class="enum" href="../lcms2/enum.ColorSpaceSignature.html" title="enum lcms2::ColorSpaceSignature">ColorSpaceSignature</a></code><a href='#impl-Hash' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.hash' class="method"><span id='hash.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html#tymethod.hash' class='fnname'>hash</a>&lt;__H&gt;(&amp;self, __arg_0: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;mut </a>__H) <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;__H: <a class="trait" href="https://doc.rust-lang.org/nightly/core/hash/trait.Hasher.html" title="trait core::hash::Hasher">Hasher</a>,&nbsp;</span></code></span></h4>
+</div><h3 id='impl-Clone' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> for <a class="enum" href="../lcms2/enum.ColorSpaceSignature.html" title="enum lcms2::ColorSpaceSignature">ColorSpaceSignature</a></code><a href='#impl-Clone' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.clone' class="method"><span id='clone.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class="enum" href="../lcms2/enum.ColorSpaceSignature.html" title="enum lcms2::ColorSpaceSignature">ColorSpaceSignature</a></code></span></h4>
+<div class='docblock'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
+</div><h4 id='method.clone_from' class="method"><span id='clone_from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>Self)</code></span><span class='out-of-band'><div class='ghost'></div><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div><a class='srclink' href='https://doc.rust-lang.org/nightly/src/core/clone.rs.html#112-114' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
+</div></div><h3 id='impl-ColorSpaceSignatureExt' class='impl'><span class='in-band'><code>impl <a class="trait" href="../lcms2/trait.ColorSpaceSignatureExt.html" title="trait lcms2::ColorSpaceSignatureExt">ColorSpaceSignatureExt</a> for <a class="enum" href="../lcms2/enum.ColorSpaceSignature.html" title="enum lcms2::ColorSpaceSignature">ColorSpaceSignature</a></code><a href='#impl-ColorSpaceSignatureExt' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/ext.rs.html#13-21' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.channels' class="method"><span id='channels.v' class='invisible'><code>fn <a href='../lcms2/trait.ColorSpaceSignatureExt.html#tymethod.channels' class='fnname'>channels</a>(self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/ext.rs.html#14-16' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns channel count for a given color space. <a href="../lcms2/trait.ColorSpaceSignatureExt.html#tymethod.channels">Read more</a></p>
+</div><h4 id='method.pixel_format' class="method"><span id='pixel_format.v' class='invisible'><code>fn <a href='../lcms2/trait.ColorSpaceSignatureExt.html#tymethod.pixel_format' class='fnname'>pixel_format</a>(self) -&gt; <a class="enum" href="../lcms2/enum.PixelFormat.html" title="enum lcms2::PixelFormat">PixelFormat</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/ext.rs.html#18-20' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Converts from ICC color space notation (LCMS PDF Table 10) to Little CMS color space notation (LCMS PDF Table 36).</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>↑</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>↓</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>↹</dt>
+                    <dd>Switch tab</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt style="width:31px;">+ / -</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "lcms2";
+    </script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

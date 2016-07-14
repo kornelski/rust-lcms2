@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Profile` struct in crate `lcms2`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Profile">
+
+    <title>lcms2::Profile - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc struct">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        <div class="sidebar-menu">&#9776;</div>
+        <a href='../lcms2/index.html'><img src='https://pornel.github.io/rust-lcms2/lcms_logo.png' alt='logo' width='100'></a>
+        <p class='location'>Struct Profile</p><div class="sidebar-elems"><div class="block items"><a class="sidebar-title" href="#methods">Methods</a><div class="sidebar-links"><a href="#method.new_icc">new_icc</a><a href="#method.new_file">new_file</a><a href="#method.new_srgb">new_srgb</a><a href="#method.new_rgb">new_rgb</a><a href="#method.new_gray">new_gray</a><a href="#method.new_xyz">new_xyz</a><a href="#method.new_null">new_null</a><a href="#method.new_placeholder">new_placeholder</a><a href="#method.ink_limiting">ink_limiting</a><a href="#method.new_device_link">new_device_link</a><a href="#method.icc">icc</a><a href="#method.device_class">device_class</a><a href="#method.set_device_class">set_device_class</a><a href="#method.encoded_icc_version">encoded_icc_version</a><a href="#method.set_encoded_icc_version">set_encoded_icc_version</a><a href="#method.header_attributes">header_attributes</a><a href="#method.set_header_attributes">set_header_attributes</a><a href="#method.header_creator">header_creator</a><a href="#method.header_flags">header_flags</a><a href="#method.set_header_flags">set_header_flags</a><a href="#method.header_manufacturer">header_manufacturer</a><a href="#method.set_header_manufacturer">set_header_manufacturer</a><a href="#method.header_model">header_model</a><a href="#method.set_header_model">set_header_model</a><a href="#method.header_rendering_intent">header_rendering_intent</a><a href="#method.set_header_rendering_intent">set_header_rendering_intent</a><a href="#method.pcs">pcs</a><a href="#method.set_pcs">set_pcs</a><a href="#method.info">info</a><a href="#method.version">version</a><a href="#method.set_version">set_version</a><a href="#method.tag_signatures">tag_signatures</a><a href="#method.detect_black_point">detect_black_point</a><a href="#method.detect_destination_black_point">detect_destination_black_point</a><a href="#method.detect_tac">detect_tac</a><a href="#method.color_space">color_space</a><a href="#method.set_color_space">set_color_space</a><a href="#method.is_clut">is_clut</a><a href="#method.is_intent_supported">is_intent_supported</a><a href="#method.is_matrix_shaper">is_matrix_shaper</a><a href="#method.has_tag">has_tag</a><a href="#method.read_tag">read_tag</a><a href="#method.write_tag">write_tag</a><a href="#method.profile_id">profile_id</a><a href="#method.set_default_profile_id">set_default_profile_id</a><a href="#method.set_profile_id">set_profile_id</a><a href="#method.new_icc_context">new_icc_context</a><a href="#method.new_file_context">new_file_context</a><a href="#method.new_srgb_context">new_srgb_context</a><a href="#method.new_rgb_context">new_rgb_context</a><a href="#method.new_gray_context">new_gray_context</a><a href="#method.new_linearization_device_link_context">new_linearization_device_link_context</a><a href="#method.new_bchsw_abstract_context">new_bchsw_abstract_context</a><a href="#method.ink_limiting_context">ink_limiting_context</a><a href="#method.new_xyz_context">new_xyz_context</a><a href="#method.new_null_context">new_null_context</a><a href="#method.new_lab2_context">new_lab2_context</a><a href="#method.new_lab4_context">new_lab4_context</a></div><a class="sidebar-title" href="#implementations">Trait Implementations</a><div class="sidebar-links"><a href="#impl-Send">Send</a><a href="#impl-Drop">Drop</a></div></div><p class='location'><a href='index.html'>lcms2</a></p><script>window.sidebarCurrent = {name: 'Profile', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script></div>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>lcms2</a>::<wbr><a class="struct" href=''>Profile</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/lcms2/profile.rs.html#13-16' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct Profile&lt;Context&nbsp;=&nbsp;GlobalContext&gt; { /* fields omitted */ }</pre><div class='docblock'><p>An ICC color profile</p>
+</div>
+                    <h2 id='methods' class='small-section-header'>
+                      Methods<a href='#methods' class='anchor'></a>
+                    </h2>
+                <h3 id='impl' class='impl'><span class='in-band'><code>impl <a class="struct" href="../lcms2/struct.Profile.html" title="struct lcms2::Profile">Profile</a>&lt;GlobalContext&gt;</code><a href='#impl' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#23-95' title='goto source code'>[src]</a></span></h3>
+<div class='docblock'><p>These are the basic functions on opening profiles.
+For simpler operation, you must open two profiles using <code>new_file</code>, and then create a transform with these open profiles with <code>Transform</code>.
+Using this transform you can color correct your bitmaps.</p>
+</div><div class='impl-items'><h4 id='method.new_icc' class="method"><span id='new_icc.v' class='invisible'><code>pub fn <a href='#method.new_icc' class='fnname'>new_icc</a>(data: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">&amp;[</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">]</a>) -&gt; <a class="type" href="../lcms2/type.LCMSResult.html" title="type lcms2::LCMSResult">LCMSResult</a>&lt;Self&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#25-27' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Parse ICC profile from the in-memory array</p>
+</div><h4 id='method.new_file' class="method"><span id='new_file.v' class='invisible'><code>pub fn <a href='#method.new_file' class='fnname'>new_file</a>&lt;P:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html" title="struct std::path::Path">Path</a>&gt;&gt;(path: P) -&gt; <a class="type" href="https://doc.rust-lang.org/nightly/std/io/error/type.Result.html" title="type std::io::error::Result">Result</a>&lt;Self&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#30-32' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Load ICC profile file from disk</p>
+</div><h4 id='method.new_srgb' class="method"><span id='new_srgb.v' class='invisible'><code>pub fn <a href='#method.new_srgb' class='fnname'>new_srgb</a>() -&gt; Self</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#35-37' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Create an ICC virtual profile for sRGB space. sRGB is a standard RGB color space created cooperatively by HP and Microsoft in 1996 for use on monitors, printers, and the Internet.</p>
+</div><h4 id='method.new_rgb' class="method"><span id='new_rgb.v' class='invisible'><code>pub fn <a href='#method.new_rgb' class='fnname'>new_rgb</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;white_point: &amp;CIExyY, <br>&nbsp;&nbsp;&nbsp;&nbsp;primaries: &amp;CIExyYTRIPLE, <br>&nbsp;&nbsp;&nbsp;&nbsp;transfer_function: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">&amp;[</a>&amp;<a class="struct" href="../lcms2/struct.ToneCurve.html" title="struct lcms2::ToneCurve">ToneCurve</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">]</a><br>) -&gt; <a class="type" href="../lcms2/type.LCMSResult.html" title="type lcms2::LCMSResult">LCMSResult</a>&lt;Self&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#51-56' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>This function creates a display RGB profile based on White point, primaries and transfer functions. It populates following tags; this conform a standard RGB Display Profile, and then I add (As per addendum II) chromaticity tag.</p>
+
+<ol>
+<li>ProfileDescriptionTag</li>
+<li>MediaWhitePointTag</li>
+<li>RedColorantTag</li>
+<li>GreenColorantTag</li>
+<li>BlueColorantTag</li>
+<li>RedTRCTag</li>
+<li>GreenTRCTag</li>
+<li>BlueTRCTag</li>
+<li>Chromatic adaptation Tag</li>
+<li>ChromaticityTag</li>
+</ol>
+</div><h4 id='method.new_gray' class="method"><span id='new_gray.v' class='invisible'><code>pub fn <a href='#method.new_gray' class='fnname'>new_gray</a>(white_point: &amp;CIExyY, curve: &amp;<a class="struct" href="../lcms2/struct.ToneCurve.html" title="struct lcms2::ToneCurve">ToneCurve</a>) -&gt; <a class="type" href="../lcms2/type.LCMSResult.html" title="type lcms2::LCMSResult">LCMSResult</a>&lt;Self&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#63-65' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>This function creates a gray profile based on White point and transfer function. It populates following tags; this conform a standard gray display profile.</p>
+
+<ol>
+<li>ProfileDescriptionTag</li>
+<li>MediaWhitePointTag</li>
+<li>GrayTRCTag</li>
+</ol>
+</div><h4 id='method.new_xyz' class="method"><span id='new_xyz.v' class='invisible'><code>pub fn <a href='#method.new_xyz' class='fnname'>new_xyz</a>() -&gt; Self</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#68-70' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Creates a XYZ  XYZ identity, marking it as v4 ICC profile.  WhitePoint used in Absolute colorimetric intent  is D50.</p>
+</div><h4 id='method.new_null' class="method"><span id='new_null.v' class='invisible'><code>pub fn <a href='#method.new_null' class='fnname'>new_null</a>() -&gt; Self</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#73-75' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Creates a fake NULL profile. This profile return 1 channel as always 0. Is useful only for gamut checking tricks.</p>
+</div><h4 id='method.new_placeholder' class="method"><span id='new_placeholder.v' class='invisible'><code>pub fn <a href='#method.new_placeholder' class='fnname'>new_placeholder</a>() -&gt; Self</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#80-82' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Creates an empty profile object, ready to be populated by the programmer.</p>
+
+<p>WARNING: The obtained profile without adding any information is not directly useable.</p>
+</div><h4 id='method.ink_limiting' class="method"><span id='ink_limiting.v' class='invisible'><code>pub fn <a href='#method.ink_limiting' class='fnname'>ink_limiting</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;color_space: <a class="enum" href="../lcms2/enum.ColorSpaceSignature.html" title="enum lcms2::ColorSpaceSignature">ColorSpaceSignature</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;limit: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a><br>) -&gt; <a class="type" href="../lcms2/type.LCMSResult.html" title="type lcms2::LCMSResult">LCMSResult</a>&lt;Self&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#86-88' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>This is a devicelink operating in CMYK for ink-limiting. Currently only cmsSigCmykData is supported.
+Limit: Amount of ink limiting in % (0..400%)</p>
+</div><h4 id='method.new_device_link' class="method"><span id='new_device_link.v' class='invisible'><code>pub fn <a href='#method.new_device_link' class='fnname'>new_device_link</a>&lt;F, T&gt;(<br>&nbsp;&nbsp;&nbsp;&nbsp;transform: &amp;<a class="struct" href="../lcms2/struct.Transform.html" title="struct lcms2::Transform">Transform</a>&lt;F, T&gt;, <br>&nbsp;&nbsp;&nbsp;&nbsp;version: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;flags: <a class="struct" href="../lcms2/struct.Flags.html" title="struct lcms2::Flags">Flags</a><br>) -&gt; <a class="type" href="../lcms2/type.LCMSResult.html" title="type lcms2::LCMSResult">LCMSResult</a>&lt;Self&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#92-94' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Generates a device-link profile from a given color transform. This profile can then be used by any other function accepting profile handle.
+Depending on the specified version number, the implementation of the devicelink may vary. Accepted versions are in range 1.0…4.3</p>
+</div></div><h3 id='impl-1' class='impl'><span class='in-band'><code>impl&lt;Ctx:&nbsp;Context&gt; <a class="struct" href="../lcms2/struct.Profile.html" title="struct lcms2::Profile">Profile</a>&lt;Ctx&gt;</code><a href='#impl-1' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#97-365' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.icc' class="method"><span id='icc.v' class='invisible'><code>pub fn <a href='#method.icc' class='fnname'>icc</a>(&amp;self) -&gt; <a class="type" href="../lcms2/type.LCMSResult.html" title="type lcms2::LCMSResult">LCMSResult</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#99-111' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Create ICC file in memory buffer</p>
+</div><h4 id='method.device_class' class="method"><span id='device_class.v' class='invisible'><code>pub fn <a href='#method.device_class' class='fnname'>device_class</a>(&amp;self) -&gt; <a class="enum" href="../lcms2/enum.ProfileClassSignature.html" title="enum lcms2::ProfileClassSignature">ProfileClassSignature</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#114-116' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Gets the device class signature from profile header.</p>
+</div><h4 id='method.set_device_class' class="method"><span id='set_device_class.v' class='invisible'><code>pub fn <a href='#method.set_device_class' class='fnname'>set_device_class</a>(&amp;mut self, cls: <a class="enum" href="../lcms2/enum.ProfileClassSignature.html" title="enum lcms2::ProfileClassSignature">ProfileClassSignature</a>)</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#119-121' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Sets the device class signature in profile header.</p>
+</div><h4 id='method.encoded_icc_version' class="method"><span id='encoded_icc_version.v' class='invisible'><code>pub fn <a href='#method.encoded_icc_version' class='fnname'>encoded_icc_version</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#124-126' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns the profile ICC version in the same format as it is stored in the header.</p>
+</div><h4 id='method.set_encoded_icc_version' class="method"><span id='set_encoded_icc_version.v' class='invisible'><code>pub fn <a href='#method.set_encoded_icc_version' class='fnname'>set_encoded_icc_version</a>(&amp;self, v: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>)</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#128-130' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.header_attributes' class="method"><span id='header_attributes.v' class='invisible'><code>pub fn <a href='#method.header_attributes' class='fnname'>header_attributes</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#139-145' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Gets the attribute flags. Currently defined values correspond to the low 4 bytes of the 8 byte attribute quantity.</p>
+
+<ul>
+<li><code>Reflective</code></li>
+<li><code>Transparency</code></li>
+<li><code>Glossy</code></li>
+<li><code>Matte</code></li>
+</ul>
+</div><h4 id='method.set_header_attributes' class="method"><span id='set_header_attributes.v' class='invisible'><code>pub fn <a href='#method.set_header_attributes' class='fnname'>set_header_attributes</a>(&amp;mut self, flags: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>)</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#148-152' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Sets the attribute flags in the profile header.</p>
+</div><h4 id='method.header_creator' class="method"><span id='header_creator.v' class='invisible'><code>pub fn <a href='#method.header_creator' class='fnname'>header_creator</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#154-156' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.header_flags' class="method"><span id='header_flags.v' class='invisible'><code>pub fn <a href='#method.header_flags' class='fnname'>header_flags</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#162-164' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Get header flags of given ICC profile object.</p>
+
+<p>The profile flags field does contain flags to indicate various hints for the CMM such as distributed processing and caching options.
+The least-significant 16 bits are reserved for the ICC. Flags in bit positions 0 and 1 shall be used as indicated in Table 7 of LCMS PDF.</p>
+</div><h4 id='method.set_header_flags' class="method"><span id='set_header_flags.v' class='invisible'><code>pub fn <a href='#method.set_header_flags' class='fnname'>set_header_flags</a>(&amp;mut self, flags: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>)</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#167-169' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Sets header flags of given ICC profile object. Valid flags are defined in Table 7 of LCMS PDF.</p>
+</div><h4 id='method.header_manufacturer' class="method"><span id='header_manufacturer.v' class='invisible'><code>pub fn <a href='#method.header_manufacturer' class='fnname'>header_manufacturer</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#174-176' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns the manufacturer signature as described in the header.</p>
+
+<p>This funcionality is widely superseded by the manufaturer tag. Of use only in elder profiles.</p>
+</div><h4 id='method.set_header_manufacturer' class="method"><span id='set_header_manufacturer.v' class='invisible'><code>pub fn <a href='#method.set_header_manufacturer' class='fnname'>set_header_manufacturer</a>(&amp;mut self, m: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>)</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#182-184' title='goto source code'>[src]</a></span></h4>
+<div class='stability'><div class='stab deprecated'>Deprecated<p>: This funcionality is widely superseded by the manufaturer tag</p>
+</div></div><div class='docblock'><p>Sets the manufacturer signature in the header.</p>
+
+<p>This funcionality is widely superseded by the manufaturer tag. Of use only in elder profiles.</p>
+</div><h4 id='method.header_model' class="method"><span id='header_model.v' class='invisible'><code>pub fn <a href='#method.header_model' class='fnname'>header_model</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#189-191' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns the model signature as described in the header.</p>
+
+<p>This funcionality is widely superseded by the model tag. Of use only in elder profiles.</p>
+</div><h4 id='method.set_header_model' class="method"><span id='set_header_model.v' class='invisible'><code>pub fn <a href='#method.set_header_model' class='fnname'>set_header_model</a>(&amp;mut self, model: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>)</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#197-201' title='goto source code'>[src]</a></span></h4>
+<div class='stability'><div class='stab deprecated'>Deprecated<p>: This funcionality is widely superseded by the model tag</p>
+</div></div><div class='docblock'><p>Sets the model signature in the profile header.</p>
+
+<p>This funcionality is widely superseded by the model tag. Of use only in elder profiles.</p>
+</div><h4 id='method.header_rendering_intent' class="method"><span id='header_rendering_intent.v' class='invisible'><code>pub fn <a href='#method.header_rendering_intent' class='fnname'>header_rendering_intent</a>(&amp;self) -&gt; <a class="enum" href="../lcms2/enum.Intent.html" title="enum lcms2::Intent">Intent</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#210-212' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Gets the profile header rendering intent.</p>
+
+<p>From the ICC spec: “The rendering intent field shall specify the rendering intent which should be used
+(or, in the case of a Devicelink profile, was used) when this profile is (was) combined with another profile.
+In a sequence of more than two profiles, it applies to the combination of this profile and the next profile in the sequence and not to the entire sequence.
+Typically, the user or application will set the rendering intent dynamically at runtime or embedding time.
+Therefore, this flag may not have any meaning until the profile is used in some context, e.g. in a Devicelink or an embedded source profile.”</p>
+</div><h4 id='method.set_header_rendering_intent' class="method"><span id='set_header_rendering_intent.v' class='invisible'><code>pub fn <a href='#method.set_header_rendering_intent' class='fnname'>set_header_rendering_intent</a>(&amp;mut self, intent: <a class="enum" href="../lcms2/enum.Intent.html" title="enum lcms2::Intent">Intent</a>)</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#214-216' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.pcs' class="method"><span id='pcs.v' class='invisible'><code>pub fn <a href='#method.pcs' class='fnname'>pcs</a>(&amp;self) -&gt; <a class="enum" href="../lcms2/enum.ColorSpaceSignature.html" title="enum lcms2::ColorSpaceSignature">ColorSpaceSignature</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#219-221' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Gets the profile connection space used by the given profile, using the ICC convention.</p>
+</div><h4 id='method.set_pcs' class="method"><span id='set_pcs.v' class='invisible'><code>pub fn <a href='#method.set_pcs' class='fnname'>set_pcs</a>(&amp;mut self, pcs: <a class="enum" href="../lcms2/enum.ColorSpaceSignature.html" title="enum lcms2::ColorSpaceSignature">ColorSpaceSignature</a>)</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#224-226' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Sets the profile connection space signature in profile header, using ICC convention.</p>
+</div><h4 id='method.info' class="method"><span id='info.v' class='invisible'><code>pub fn <a href='#method.info' class='fnname'>info</a>(&amp;self, info: <a class="enum" href="../lcms2/enum.InfoType.html" title="enum lcms2::InfoType">InfoType</a>, locale: <a class="struct" href="../lcms2/struct.Locale.html" title="struct lcms2::Locale">Locale</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html" title="struct alloc::string::String">String</a>&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#228-259' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.version' class="method"><span id='version.v' class='invisible'><code>pub fn <a href='#method.version' class='fnname'>version</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#262-264' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns the profile ICC version. The version is decoded to readable floating point format.</p>
+</div><h4 id='method.set_version' class="method"><span id='set_version.v' class='invisible'><code>pub fn <a href='#method.set_version' class='fnname'>set_version</a>(&amp;mut self, ver: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>)</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#267-271' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Sets the ICC version in profile header. The version is given to this function as a float n.m</p>
+</div><h4 id='method.tag_signatures' class="method"><span id='tag_signatures.v' class='invisible'><code>pub fn <a href='#method.tag_signatures' class='fnname'>tag_signatures</a>(&amp;self) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="enum" href="../lcms2/enum.TagSignature.html" title="enum lcms2::TagSignature">TagSignature</a>&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#273-277' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.detect_black_point' class="method"><span id='detect_black_point.v' class='invisible'><code>pub fn <a href='#method.detect_black_point' class='fnname'>detect_black_point</a>(&amp;self, intent: <a class="enum" href="../lcms2/enum.Intent.html" title="enum lcms2::Intent">Intent</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../lcms2/struct.CIEXYZ.html" title="struct lcms2::CIEXYZ">CIEXYZ</a>&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#279-288' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.detect_destination_black_point' class="method"><span id='detect_destination_black_point.v' class='invisible'><code>pub fn <a href='#method.detect_destination_black_point' class='fnname'>detect_destination_black_point</a>(&amp;self, intent: <a class="enum" href="../lcms2/enum.Intent.html" title="enum lcms2::Intent">Intent</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../lcms2/struct.CIEXYZ.html" title="struct lcms2::CIEXYZ">CIEXYZ</a>&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#290-299' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.detect_tac' class="method"><span id='detect_tac.v' class='invisible'><code>pub fn <a href='#method.detect_tac' class='fnname'>detect_tac</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#301-303' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.color_space' class="method"><span id='color_space.v' class='invisible'><code>pub fn <a href='#method.color_space' class='fnname'>color_space</a>(&amp;self) -&gt; <a class="enum" href="../lcms2/enum.ColorSpaceSignature.html" title="enum lcms2::ColorSpaceSignature">ColorSpaceSignature</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#306-311' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Gets the color space used by the given profile, using the ICC convention.</p>
+</div><h4 id='method.set_color_space' class="method"><span id='set_color_space.v' class='invisible'><code>pub fn <a href='#method.set_color_space' class='fnname'>set_color_space</a>(&amp;mut self, sig: <a class="enum" href="../lcms2/enum.ColorSpaceSignature.html" title="enum lcms2::ColorSpaceSignature">ColorSpaceSignature</a>)</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#314-316' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Sets the profile connection space signature in profile header, using ICC convention.</p>
+</div><h4 id='method.is_clut' class="method"><span id='is_clut.v' class='invisible'><code>pub fn <a href='#method.is_clut' class='fnname'>is_clut</a>(&amp;self, intent: <a class="enum" href="../lcms2/enum.Intent.html" title="enum lcms2::Intent">Intent</a>, used_direction: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#318-320' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.is_intent_supported' class="method"><span id='is_intent_supported.v' class='invisible'><code>pub fn <a href='#method.is_intent_supported' class='fnname'>is_intent_supported</a>(&amp;self, intent: <a class="enum" href="../lcms2/enum.Intent.html" title="enum lcms2::Intent">Intent</a>, used_direction: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#322-324' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.is_matrix_shaper' class="method"><span id='is_matrix_shaper.v' class='invisible'><code>pub fn <a href='#method.is_matrix_shaper' class='fnname'>is_matrix_shaper</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#326-328' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.has_tag' class="method"><span id='has_tag.v' class='invisible'><code>pub fn <a href='#method.has_tag' class='fnname'>has_tag</a>(&amp;self, sig: <a class="enum" href="../lcms2/enum.TagSignature.html" title="enum lcms2::TagSignature">TagSignature</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#330-332' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.read_tag' class="method"><span id='read_tag.v' class='invisible'><code>pub fn <a href='#method.read_tag' class='fnname'>read_tag</a>(&amp;self, sig: <a class="enum" href="../lcms2/enum.TagSignature.html" title="enum lcms2::TagSignature">TagSignature</a>) -&gt; <a class="enum" href="../lcms2/enum.Tag.html" title="enum lcms2::Tag">Tag</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#334-336' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.write_tag' class="method"><span id='write_tag.v' class='invisible'><code>pub fn <a href='#method.write_tag' class='fnname'>write_tag</a>(&amp;mut self, sig: <a class="enum" href="../lcms2/enum.TagSignature.html" title="enum lcms2::TagSignature">TagSignature</a>, tag: <a class="enum" href="../lcms2/enum.Tag.html" title="enum lcms2::Tag">Tag</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#338-342' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.profile_id' class="method"><span id='profile_id.v' class='invisible'><code>pub fn <a href='#method.profile_id' class='fnname'>profile_id</a>(&amp;self) -&gt; ProfileID</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#345-351' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Retrieves the Profile ID stored in the profile header.</p>
+</div><h4 id='method.set_default_profile_id' class="method"><span id='set_default_profile_id.v' class='invisible'><code>pub fn <a href='#method.set_default_profile_id' class='fnname'>set_default_profile_id</a>(&amp;mut self)</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#354-358' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Computes a MD5 checksum and stores it as Profile ID in the profile header.</p>
+</div><h4 id='method.set_profile_id' class="method"><span id='set_profile_id.v' class='invisible'><code>pub fn <a href='#method.set_profile_id' class='fnname'>set_profile_id</a>(&amp;mut self, id: ProfileID)</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#360-364' title='goto source code'>[src]</a></span></h4>
+</div><h3 id='impl-2' class='impl'><span class='in-band'><code>impl&lt;Ctx:&nbsp;Context&gt; <a class="struct" href="../lcms2/struct.Profile.html" title="struct lcms2::Profile">Profile</a>&lt;Ctx&gt;</code><a href='#impl-2' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#368-468' title='goto source code'>[src]</a></span></h3>
+<div class='docblock'><p>Per-context functions that can be used with a <code>ThreadContext</code></p>
+</div><div class='impl-items'><h4 id='method.new_icc_context' class="method"><span id='new_icc_context.v' class='invisible'><code>pub fn <a href='#method.new_icc_context' class='fnname'>new_icc_context</a>(context: Ctx, data: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">&amp;[</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">]</a>) -&gt; <a class="type" href="../lcms2/type.LCMSResult.html" title="type lcms2::LCMSResult">LCMSResult</a>&lt;Self&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#369-373' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.new_file_context' class="method"><span id='new_file_context.v' class='invisible'><code>pub fn <a href='#method.new_file_context' class='fnname'>new_file_context</a>&lt;P:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html" title="struct std::path::Path">Path</a>&gt;&gt;(context: Ctx, path: P) -&gt; <a class="type" href="https://doc.rust-lang.org/nightly/std/io/error/type.Result.html" title="type std::io::error::Result">Result</a>&lt;Self&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#375-379' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.new_srgb_context' class="method"><span id='new_srgb_context.v' class='invisible'><code>pub fn <a href='#method.new_srgb_context' class='fnname'>new_srgb_context</a>(context: Ctx) -&gt; Self</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#381-383' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.new_rgb_context' class="method"><span id='new_rgb_context.v' class='invisible'><code>pub fn <a href='#method.new_rgb_context' class='fnname'>new_rgb_context</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;context: Ctx, <br>&nbsp;&nbsp;&nbsp;&nbsp;white_point: &amp;CIExyY, <br>&nbsp;&nbsp;&nbsp;&nbsp;primaries: &amp;CIExyYTRIPLE, <br>&nbsp;&nbsp;&nbsp;&nbsp;transfer_function: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">&amp;[</a>&amp;<a class="struct" href="../lcms2/struct.ToneCurve.html" title="struct lcms2::ToneCurve">ToneCurve</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">]</a><br>) -&gt; <a class="type" href="../lcms2/type.LCMSResult.html" title="type lcms2::LCMSResult">LCMSResult</a>&lt;Self&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#385-399' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.new_gray_context' class="method"><span id='new_gray_context.v' class='invisible'><code>pub fn <a href='#method.new_gray_context' class='fnname'>new_gray_context</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;context: Ctx, <br>&nbsp;&nbsp;&nbsp;&nbsp;white_point: &amp;CIExyY, <br>&nbsp;&nbsp;&nbsp;&nbsp;curve: &amp;<a class="struct" href="../lcms2/struct.ToneCurve.html" title="struct lcms2::ToneCurve">ToneCurve</a><br>) -&gt; <a class="type" href="../lcms2/type.LCMSResult.html" title="type lcms2::LCMSResult">LCMSResult</a>&lt;Self&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#401-403' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.new_linearization_device_link_context' class="method"><span id='new_linearization_device_link_context.v' class='invisible'><code>pub unsafe fn <a href='#method.new_linearization_device_link_context' class='fnname'>new_linearization_device_link_context</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;context: Ctx, <br>&nbsp;&nbsp;&nbsp;&nbsp;color_space: <a class="enum" href="../lcms2/enum.ColorSpaceSignature.html" title="enum lcms2::ColorSpaceSignature">ColorSpaceSignature</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;curves: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">&amp;[</a><a class="struct" href="../lcms2/struct.ToneCurveRef.html" title="struct lcms2::ToneCurveRef">ToneCurveRef</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">]</a><br>) -&gt; <a class="type" href="../lcms2/type.LCMSResult.html" title="type lcms2::LCMSResult">LCMSResult</a>&lt;Self&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#407-410' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>This is a devicelink operating in the target colorspace with as many transfer functions as components.
+Number of tone curves must be sufficient for the color space.</p>
+</div><h4 id='method.new_bchsw_abstract_context' class="method"><span id='new_bchsw_abstract_context.v' class='invisible'><code>pub fn <a href='#method.new_bchsw_abstract_context' class='fnname'>new_bchsw_abstract_context</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;context: Ctx, <br>&nbsp;&nbsp;&nbsp;&nbsp;lut_points: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;bright: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;contrast: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;hue: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;saturation: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;temp_src_dst: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">(</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">)</a>&gt;<br>) -&gt; <a class="type" href="../lcms2/type.LCMSResult.html" title="type lcms2::LCMSResult">LCMSResult</a>&lt;Self&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#423-429' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Creates an abstract devicelink operating in Lab for Bright/Contrast/Hue/Saturation and white point translation.
+White points are specified as temperatures ºK</p>
+
+<p>nLUTPoints : Resulting color map resolution
+Bright: Bright increment. May be negative
+Contrast : Contrast increment. May be negative.
+Hue : Hue displacement in degree.
+Saturation: Saturation increment. May be negative
+TempSrc: Source white point temperature
+TempDest: Destination white point temperature.
+To prevent white point adjustment, set Temp to None</p>
+</div><h4 id='method.ink_limiting_context' class="method"><span id='ink_limiting_context.v' class='invisible'><code>pub fn <a href='#method.ink_limiting_context' class='fnname'>ink_limiting_context</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;context: Ctx, <br>&nbsp;&nbsp;&nbsp;&nbsp;color_space: <a class="enum" href="../lcms2/enum.ColorSpaceSignature.html" title="enum lcms2::ColorSpaceSignature">ColorSpaceSignature</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;limit: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a><br>) -&gt; <a class="type" href="../lcms2/type.LCMSResult.html" title="type lcms2::LCMSResult">LCMSResult</a>&lt;Self&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#443-445' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>This is a devicelink operating in CMYK for ink-limiting. Currently only cmsSigCmykData is supported.
+Limit: Amount of ink limiting in % (0..400%)</p>
+</div><h4 id='method.new_xyz_context' class="method"><span id='new_xyz_context.v' class='invisible'><code>pub fn <a href='#method.new_xyz_context' class='fnname'>new_xyz_context</a>(context: Ctx) -&gt; Self</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#448-450' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Creates a XYZ  XYZ identity, marking it as v4 ICC profile.  WhitePoint used in Absolute colorimetric intent  is D50.</p>
+</div><h4 id='method.new_null_context' class="method"><span id='new_null_context.v' class='invisible'><code>pub fn <a href='#method.new_null_context' class='fnname'>new_null_context</a>(context: Ctx) -&gt; Self</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#453-455' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Creates a fake NULL profile. This profile return 1 channel as always 0. Is useful only for gamut checking tricks.</p>
+</div><h4 id='method.new_lab2_context' class="method"><span id='new_lab2_context.v' class='invisible'><code>pub fn <a href='#method.new_lab2_context' class='fnname'>new_lab2_context</a>(context: Ctx, white_point: &amp;CIExyY) -&gt; <a class="type" href="../lcms2/type.LCMSResult.html" title="type lcms2::LCMSResult">LCMSResult</a>&lt;Self&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#460-462' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Creates a Lab  Lab identity, marking it as v2 ICC profile.</p>
+
+<p>Adjustments for accomodating PCS endoing shall be done by Little CMS when using this profile.</p>
+</div><h4 id='method.new_lab4_context' class="method"><span id='new_lab4_context.v' class='invisible'><code>pub fn <a href='#method.new_lab4_context' class='fnname'>new_lab4_context</a>(context: Ctx, white_point: &amp;CIExyY) -&gt; <a class="type" href="../lcms2/type.LCMSResult.html" title="type lcms2::LCMSResult">LCMSResult</a>&lt;Self&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#465-467' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Creates a Lab  Lab identity, marking it as v4 ICC profile.</p>
+</div></div>
+            <h2 id='implementations' class='small-section-header'>
+              Trait Implementations<a href='#implementations' class='anchor'></a>
+            </h2>
+        <h3 id='impl-Send' class='impl'><span class='in-band'><code>impl&lt;'a, C:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a>&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> for <a class="struct" href="../lcms2/struct.Profile.html" title="struct lcms2::Profile">Profile</a>&lt;C&gt;</code><a href='#impl-Send' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#18' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'></div><h3 id='impl-Drop' class='impl'><span class='in-band'><code>impl&lt;Context&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html" title="trait core::ops::drop::Drop">Drop</a> for <a class="struct" href="../lcms2/struct.Profile.html" title="struct lcms2::Profile">Profile</a>&lt;Context&gt;</code><a href='#impl-Drop' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#470-476' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.drop' class="method"><span id='drop.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html#tymethod.drop' class='fnname'>drop</a>(&amp;mut self)</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/profile.rs.html#471-475' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Executes the destructor for this type. <a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html#tymethod.drop">Read more</a></p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>↑</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>↓</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>↹</dt>
+                    <dd>Switch tab</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt style="width:31px;">+ / -</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "lcms2";
+    </script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `TagSignature` enum in crate `lcms2`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, TagSignature">
+
+    <title>lcms2::TagSignature - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc enum">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        <div class="sidebar-menu">&#9776;</div>
+        <a href='../lcms2/index.html'><img src='https://pornel.github.io/rust-lcms2/lcms_logo.png' alt='logo' width='100'></a>
+        <p class='location'>Enum TagSignature</p><div class="sidebar-elems"><div class="block items"><a class="sidebar-title" href="#variants">Variants</a><div class="sidebar-links"><a href="#variant.AToB0Tag">AToB0Tag</a><a href="#variant.AToB1Tag">AToB1Tag</a><a href="#variant.AToB2Tag">AToB2Tag</a><a href="#variant.BlueColorantTag">BlueColorantTag</a><a href="#variant.BlueTRCTag">BlueTRCTag</a><a href="#variant.BToA0Tag">BToA0Tag</a><a href="#variant.BToA1Tag">BToA1Tag</a><a href="#variant.BToA2Tag">BToA2Tag</a><a href="#variant.CalibrationDateTimeTag">CalibrationDateTimeTag</a><a href="#variant.CharTargetTag">CharTargetTag</a><a href="#variant.ChromaticAdaptationTag">ChromaticAdaptationTag</a><a href="#variant.ChromaticityTag">ChromaticityTag</a><a href="#variant.ColorantOrderTag">ColorantOrderTag</a><a href="#variant.ColorantTableTag">ColorantTableTag</a><a href="#variant.ColorantTableOutTag">ColorantTableOutTag</a><a href="#variant.ColorimetricIntentImageStateTag">ColorimetricIntentImageStateTag</a><a href="#variant.CopyrightTag">CopyrightTag</a><a href="#variant.CrdInfoTag">CrdInfoTag</a><a href="#variant.DataTag">DataTag</a><a href="#variant.DateTimeTag">DateTimeTag</a><a href="#variant.DeviceMfgDescTag">DeviceMfgDescTag</a><a href="#variant.DeviceModelDescTag">DeviceModelDescTag</a><a href="#variant.DeviceSettingsTag">DeviceSettingsTag</a><a href="#variant.DToB0Tag">DToB0Tag</a><a href="#variant.DToB1Tag">DToB1Tag</a><a href="#variant.DToB2Tag">DToB2Tag</a><a href="#variant.DToB3Tag">DToB3Tag</a><a href="#variant.BToD0Tag">BToD0Tag</a><a href="#variant.BToD1Tag">BToD1Tag</a><a href="#variant.BToD2Tag">BToD2Tag</a><a href="#variant.BToD3Tag">BToD3Tag</a><a href="#variant.GamutTag">GamutTag</a><a href="#variant.GrayTRCTag">GrayTRCTag</a><a href="#variant.GreenColorantTag">GreenColorantTag</a><a href="#variant.GreenTRCTag">GreenTRCTag</a><a href="#variant.LuminanceTag">LuminanceTag</a><a href="#variant.MeasurementTag">MeasurementTag</a><a href="#variant.MediaBlackPointTag">MediaBlackPointTag</a><a href="#variant.MediaWhitePointTag">MediaWhitePointTag</a><a href="#variant.NamedColorTag">NamedColorTag</a><a href="#variant.NamedColor2Tag">NamedColor2Tag</a><a href="#variant.OutputResponseTag">OutputResponseTag</a><a href="#variant.PerceptualRenderingIntentGamutTag">PerceptualRenderingIntentGamutTag</a><a href="#variant.Preview0Tag">Preview0Tag</a><a href="#variant.Preview1Tag">Preview1Tag</a><a href="#variant.Preview2Tag">Preview2Tag</a><a href="#variant.ProfileDescriptionTag">ProfileDescriptionTag</a><a href="#variant.ProfileDescriptionMLTag">ProfileDescriptionMLTag</a><a href="#variant.ProfileSequenceDescTag">ProfileSequenceDescTag</a><a href="#variant.ProfileSequenceIdTag">ProfileSequenceIdTag</a><a href="#variant.Ps2CRD0Tag">Ps2CRD0Tag</a><a href="#variant.Ps2CRD1Tag">Ps2CRD1Tag</a><a href="#variant.Ps2CRD2Tag">Ps2CRD2Tag</a><a href="#variant.Ps2CRD3Tag">Ps2CRD3Tag</a><a href="#variant.Ps2CSATag">Ps2CSATag</a><a href="#variant.Ps2RenderingIntentTag">Ps2RenderingIntentTag</a><a href="#variant.RedColorantTag">RedColorantTag</a><a href="#variant.RedTRCTag">RedTRCTag</a><a href="#variant.SaturationRenderingIntentGamutTag">SaturationRenderingIntentGamutTag</a><a href="#variant.ScreeningDescTag">ScreeningDescTag</a><a href="#variant.ScreeningTag">ScreeningTag</a><a href="#variant.TechnologyTag">TechnologyTag</a><a href="#variant.UcrBgTag">UcrBgTag</a><a href="#variant.ViewingCondDescTag">ViewingCondDescTag</a><a href="#variant.ViewingConditionsTag">ViewingConditionsTag</a><a href="#variant.VcgtTag">VcgtTag</a><a href="#variant.MetaTag">MetaTag</a><a href="#variant.ArgyllArtsTag">ArgyllArtsTag</a></div><a class="sidebar-title" href="#implementations">Trait Implementations</a><div class="sidebar-links"><a href="#impl-PartialEq%3CTagSignature%3E">PartialEq&lt;TagSignature&gt;</a><a href="#impl-Copy">Copy</a><a href="#impl-Debug">Debug</a><a href="#impl-Eq">Eq</a><a href="#impl-Hash">Hash</a><a href="#impl-Clone">Clone</a></div></div><p class='location'><a href='index.html'>lcms2</a></p><script>window.sidebarCurrent = {name: 'TagSignature', ty: 'enum', relpath: ''};</script><script defer src="sidebar-items.js"></script></div>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>lcms2</a>::<wbr><a class="enum" href=''>TagSignature</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span></span></h1>
+<pre class='rust enum'><div class="docblock attributes">#[repr(u32)]
+</div>pub enum TagSignature {
+    AToB0Tag,
+    AToB1Tag,
+    AToB2Tag,
+    BlueColorantTag,
+    BlueTRCTag,
+    BToA0Tag,
+    BToA1Tag,
+    BToA2Tag,
+    CalibrationDateTimeTag,
+    CharTargetTag,
+    ChromaticAdaptationTag,
+    ChromaticityTag,
+    ColorantOrderTag,
+    ColorantTableTag,
+    ColorantTableOutTag,
+    ColorimetricIntentImageStateTag,
+    CopyrightTag,
+    CrdInfoTag,
+    DataTag,
+    DateTimeTag,
+    DeviceMfgDescTag,
+    DeviceModelDescTag,
+    DeviceSettingsTag,
+    DToB0Tag,
+    DToB1Tag,
+    DToB2Tag,
+    DToB3Tag,
+    BToD0Tag,
+    BToD1Tag,
+    BToD2Tag,
+    BToD3Tag,
+    GamutTag,
+    GrayTRCTag,
+    GreenColorantTag,
+    GreenTRCTag,
+    LuminanceTag,
+    MeasurementTag,
+    MediaBlackPointTag,
+    MediaWhitePointTag,
+    NamedColorTag,
+    NamedColor2Tag,
+    OutputResponseTag,
+    PerceptualRenderingIntentGamutTag,
+    Preview0Tag,
+    Preview1Tag,
+    Preview2Tag,
+    ProfileDescriptionTag,
+    ProfileDescriptionMLTag,
+    ProfileSequenceDescTag,
+    ProfileSequenceIdTag,
+    Ps2CRD0Tag,
+    Ps2CRD1Tag,
+    Ps2CRD2Tag,
+    Ps2CRD3Tag,
+    Ps2CSATag,
+    Ps2RenderingIntentTag,
+    RedColorantTag,
+    RedTRCTag,
+    SaturationRenderingIntentGamutTag,
+    ScreeningDescTag,
+    ScreeningTag,
+    TechnologyTag,
+    UcrBgTag,
+    ViewingCondDescTag,
+    ViewingConditionsTag,
+    VcgtTag,
+    MetaTag,
+    ArgyllArtsTag,
+}</pre><h2 id='variants' class='variants small-section-header'>
+                   Variants<a href='#variants' class='anchor'></a></h2>
+<span id="variant.AToB0Tag" class="variant small-section-header"><a href="#variant.AToB0Tag" class="anchor field"></a><span id='AToB0Tag.v' class='invisible'><code>AToB0Tag</code></span></span><div class='docblock'><p>&#39;A2B0&#39;</p>
+</div><span id="variant.AToB1Tag" class="variant small-section-header"><a href="#variant.AToB1Tag" class="anchor field"></a><span id='AToB1Tag.v' class='invisible'><code>AToB1Tag</code></span></span><div class='docblock'><p>&#39;A2B1&#39;</p>
+</div><span id="variant.AToB2Tag" class="variant small-section-header"><a href="#variant.AToB2Tag" class="anchor field"></a><span id='AToB2Tag.v' class='invisible'><code>AToB2Tag</code></span></span><div class='docblock'><p>&#39;A2B2&#39;</p>
+</div><span id="variant.BlueColorantTag" class="variant small-section-header"><a href="#variant.BlueColorantTag" class="anchor field"></a><span id='BlueColorantTag.v' class='invisible'><code>BlueColorantTag</code></span></span><div class='docblock'><p>&#39;bXYZ&#39;</p>
+</div><span id="variant.BlueTRCTag" class="variant small-section-header"><a href="#variant.BlueTRCTag" class="anchor field"></a><span id='BlueTRCTag.v' class='invisible'><code>BlueTRCTag</code></span></span><div class='docblock'><p>&#39;bTRC&#39;</p>
+</div><span id="variant.BToA0Tag" class="variant small-section-header"><a href="#variant.BToA0Tag" class="anchor field"></a><span id='BToA0Tag.v' class='invisible'><code>BToA0Tag</code></span></span><div class='docblock'><p>&#39;B2A0&#39;</p>
+</div><span id="variant.BToA1Tag" class="variant small-section-header"><a href="#variant.BToA1Tag" class="anchor field"></a><span id='BToA1Tag.v' class='invisible'><code>BToA1Tag</code></span></span><div class='docblock'><p>&#39;B2A1&#39;</p>
+</div><span id="variant.BToA2Tag" class="variant small-section-header"><a href="#variant.BToA2Tag" class="anchor field"></a><span id='BToA2Tag.v' class='invisible'><code>BToA2Tag</code></span></span><div class='docblock'><p>&#39;B2A2&#39;</p>
+</div><span id="variant.CalibrationDateTimeTag" class="variant small-section-header"><a href="#variant.CalibrationDateTimeTag" class="anchor field"></a><span id='CalibrationDateTimeTag.v' class='invisible'><code>CalibrationDateTimeTag</code></span></span><div class='docblock'><p>&#39;calt&#39;</p>
+</div><span id="variant.CharTargetTag" class="variant small-section-header"><a href="#variant.CharTargetTag" class="anchor field"></a><span id='CharTargetTag.v' class='invisible'><code>CharTargetTag</code></span></span><div class='docblock'><p>&#39;targ&#39;</p>
+</div><span id="variant.ChromaticAdaptationTag" class="variant small-section-header"><a href="#variant.ChromaticAdaptationTag" class="anchor field"></a><span id='ChromaticAdaptationTag.v' class='invisible'><code>ChromaticAdaptationTag</code></span></span><div class='docblock'><p>&#39;chad&#39;</p>
+</div><span id="variant.ChromaticityTag" class="variant small-section-header"><a href="#variant.ChromaticityTag" class="anchor field"></a><span id='ChromaticityTag.v' class='invisible'><code>ChromaticityTag</code></span></span><div class='docblock'><p>&#39;chrm&#39;</p>
+</div><span id="variant.ColorantOrderTag" class="variant small-section-header"><a href="#variant.ColorantOrderTag" class="anchor field"></a><span id='ColorantOrderTag.v' class='invisible'><code>ColorantOrderTag</code></span></span><div class='docblock'><p>&#39;clro&#39;</p>
+</div><span id="variant.ColorantTableTag" class="variant small-section-header"><a href="#variant.ColorantTableTag" class="anchor field"></a><span id='ColorantTableTag.v' class='invisible'><code>ColorantTableTag</code></span></span><div class='docblock'><p>&#39;clrt&#39;</p>
+</div><span id="variant.ColorantTableOutTag" class="variant small-section-header"><a href="#variant.ColorantTableOutTag" class="anchor field"></a><span id='ColorantTableOutTag.v' class='invisible'><code>ColorantTableOutTag</code></span></span><div class='docblock'><p>&#39;clot&#39;</p>
+</div><span id="variant.ColorimetricIntentImageStateTag" class="variant small-section-header"><a href="#variant.ColorimetricIntentImageStateTag" class="anchor field"></a><span id='ColorimetricIntentImageStateTag.v' class='invisible'><code>ColorimetricIntentImageStateTag</code></span></span><div class='docblock'><p>&#39;ciis&#39;</p>
+</div><span id="variant.CopyrightTag" class="variant small-section-header"><a href="#variant.CopyrightTag" class="anchor field"></a><span id='CopyrightTag.v' class='invisible'><code>CopyrightTag</code></span></span><div class='docblock'><p>&#39;cprt&#39;</p>
+</div><span id="variant.CrdInfoTag" class="variant small-section-header"><a href="#variant.CrdInfoTag" class="anchor field"></a><span id='CrdInfoTag.v' class='invisible'><code>CrdInfoTag</code></span></span><div class='docblock'><p>&#39;crdi&#39;</p>
+</div><span id="variant.DataTag" class="variant small-section-header"><a href="#variant.DataTag" class="anchor field"></a><span id='DataTag.v' class='invisible'><code>DataTag</code></span></span><div class='docblock'><p>&#39;data&#39;</p>
+</div><span id="variant.DateTimeTag" class="variant small-section-header"><a href="#variant.DateTimeTag" class="anchor field"></a><span id='DateTimeTag.v' class='invisible'><code>DateTimeTag</code></span></span><div class='docblock'><p>&#39;dtim&#39;</p>
+</div><span id="variant.DeviceMfgDescTag" class="variant small-section-header"><a href="#variant.DeviceMfgDescTag" class="anchor field"></a><span id='DeviceMfgDescTag.v' class='invisible'><code>DeviceMfgDescTag</code></span></span><div class='docblock'><p>&#39;dmnd&#39;</p>
+</div><span id="variant.DeviceModelDescTag" class="variant small-section-header"><a href="#variant.DeviceModelDescTag" class="anchor field"></a><span id='DeviceModelDescTag.v' class='invisible'><code>DeviceModelDescTag</code></span></span><div class='docblock'><p>&#39;dmdd&#39;</p>
+</div><span id="variant.DeviceSettingsTag" class="variant small-section-header"><a href="#variant.DeviceSettingsTag" class="anchor field"></a><span id='DeviceSettingsTag.v' class='invisible'><code>DeviceSettingsTag</code></span></span><div class='docblock'><p>&#39;devs&#39;</p>
+</div><span id="variant.DToB0Tag" class="variant small-section-header"><a href="#variant.DToB0Tag" class="anchor field"></a><span id='DToB0Tag.v' class='invisible'><code>DToB0Tag</code></span></span><div class='docblock'><p>&#39;D2B0&#39;</p>
+</div><span id="variant.DToB1Tag" class="variant small-section-header"><a href="#variant.DToB1Tag" class="anchor field"></a><span id='DToB1Tag.v' class='invisible'><code>DToB1Tag</code></span></span><div class='docblock'><p>&#39;D2B1&#39;</p>
+</div><span id="variant.DToB2Tag" class="variant small-section-header"><a href="#variant.DToB2Tag" class="anchor field"></a><span id='DToB2Tag.v' class='invisible'><code>DToB2Tag</code></span></span><div class='docblock'><p>&#39;D2B2&#39;</p>
+</div><span id="variant.DToB3Tag" class="variant small-section-header"><a href="#variant.DToB3Tag" class="anchor field"></a><span id='DToB3Tag.v' class='invisible'><code>DToB3Tag</code></span></span><div class='docblock'><p>&#39;D2B3&#39;</p>
+</div><span id="variant.BToD0Tag" class="variant small-section-header"><a href="#variant.BToD0Tag" class="anchor field"></a><span id='BToD0Tag.v' class='invisible'><code>BToD0Tag</code></span></span><div class='docblock'><p>&#39;B2D0&#39;</p>
+</div><span id="variant.BToD1Tag" class="variant small-section-header"><a href="#variant.BToD1Tag" class="anchor field"></a><span id='BToD1Tag.v' class='invisible'><code>BToD1Tag</code></span></span><div class='docblock'><p>&#39;B2D1&#39;</p>
+</div><span id="variant.BToD2Tag" class="variant small-section-header"><a href="#variant.BToD2Tag" class="anchor field"></a><span id='BToD2Tag.v' class='invisible'><code>BToD2Tag</code></span></span><div class='docblock'><p>&#39;B2D2&#39;</p>
+</div><span id="variant.BToD3Tag" class="variant small-section-header"><a href="#variant.BToD3Tag" class="anchor field"></a><span id='BToD3Tag.v' class='invisible'><code>BToD3Tag</code></span></span><div class='docblock'><p>&#39;B2D3&#39;</p>
+</div><span id="variant.GamutTag" class="variant small-section-header"><a href="#variant.GamutTag" class="anchor field"></a><span id='GamutTag.v' class='invisible'><code>GamutTag</code></span></span><div class='docblock'><p>&#39;gamt&#39;</p>
+</div><span id="variant.GrayTRCTag" class="variant small-section-header"><a href="#variant.GrayTRCTag" class="anchor field"></a><span id='GrayTRCTag.v' class='invisible'><code>GrayTRCTag</code></span></span><div class='docblock'><p>&#39;kTRC&#39;</p>
+</div><span id="variant.GreenColorantTag" class="variant small-section-header"><a href="#variant.GreenColorantTag" class="anchor field"></a><span id='GreenColorantTag.v' class='invisible'><code>GreenColorantTag</code></span></span><div class='docblock'><p>&#39;gXYZ&#39;</p>
+</div><span id="variant.GreenTRCTag" class="variant small-section-header"><a href="#variant.GreenTRCTag" class="anchor field"></a><span id='GreenTRCTag.v' class='invisible'><code>GreenTRCTag</code></span></span><div class='docblock'><p>&#39;gTRC&#39;</p>
+</div><span id="variant.LuminanceTag" class="variant small-section-header"><a href="#variant.LuminanceTag" class="anchor field"></a><span id='LuminanceTag.v' class='invisible'><code>LuminanceTag</code></span></span><div class='docblock'><p>&#39;lumi&#39;</p>
+</div><span id="variant.MeasurementTag" class="variant small-section-header"><a href="#variant.MeasurementTag" class="anchor field"></a><span id='MeasurementTag.v' class='invisible'><code>MeasurementTag</code></span></span><div class='docblock'><p>&#39;meas&#39;</p>
+</div><span id="variant.MediaBlackPointTag" class="variant small-section-header"><a href="#variant.MediaBlackPointTag" class="anchor field"></a><span id='MediaBlackPointTag.v' class='invisible'><code>MediaBlackPointTag</code></span></span><div class='docblock'><p>&#39;bkpt&#39;</p>
+</div><span id="variant.MediaWhitePointTag" class="variant small-section-header"><a href="#variant.MediaWhitePointTag" class="anchor field"></a><span id='MediaWhitePointTag.v' class='invisible'><code>MediaWhitePointTag</code></span></span><div class='docblock'><p>&#39;wtpt&#39;</p>
+</div><span id="variant.NamedColorTag" class="variant small-section-header"><a href="#variant.NamedColorTag" class="anchor field"></a><span id='NamedColorTag.v' class='invisible'><code>NamedColorTag</code></span></span><div class='docblock'><p>&#39;ncol&#39; // Deprecated by the ICC</p>
+</div><span id="variant.NamedColor2Tag" class="variant small-section-header"><a href="#variant.NamedColor2Tag" class="anchor field"></a><span id='NamedColor2Tag.v' class='invisible'><code>NamedColor2Tag</code></span></span><div class='docblock'><p>&#39;ncl2&#39;</p>
+</div><span id="variant.OutputResponseTag" class="variant small-section-header"><a href="#variant.OutputResponseTag" class="anchor field"></a><span id='OutputResponseTag.v' class='invisible'><code>OutputResponseTag</code></span></span><div class='docblock'><p>&#39;resp&#39;</p>
+</div><span id="variant.PerceptualRenderingIntentGamutTag" class="variant small-section-header"><a href="#variant.PerceptualRenderingIntentGamutTag" class="anchor field"></a><span id='PerceptualRenderingIntentGamutTag.v' class='invisible'><code>PerceptualRenderingIntentGamutTag</code></span></span><div class='docblock'><p>&#39;rig0&#39;</p>
+</div><span id="variant.Preview0Tag" class="variant small-section-header"><a href="#variant.Preview0Tag" class="anchor field"></a><span id='Preview0Tag.v' class='invisible'><code>Preview0Tag</code></span></span><div class='docblock'><p>&#39;pre0&#39;</p>
+</div><span id="variant.Preview1Tag" class="variant small-section-header"><a href="#variant.Preview1Tag" class="anchor field"></a><span id='Preview1Tag.v' class='invisible'><code>Preview1Tag</code></span></span><div class='docblock'><p>&#39;pre1&#39;</p>
+</div><span id="variant.Preview2Tag" class="variant small-section-header"><a href="#variant.Preview2Tag" class="anchor field"></a><span id='Preview2Tag.v' class='invisible'><code>Preview2Tag</code></span></span><div class='docblock'><p>&#39;pre2&#39;</p>
+</div><span id="variant.ProfileDescriptionTag" class="variant small-section-header"><a href="#variant.ProfileDescriptionTag" class="anchor field"></a><span id='ProfileDescriptionTag.v' class='invisible'><code>ProfileDescriptionTag</code></span></span><div class='docblock'><p>&#39;desc&#39;</p>
+</div><span id="variant.ProfileDescriptionMLTag" class="variant small-section-header"><a href="#variant.ProfileDescriptionMLTag" class="anchor field"></a><span id='ProfileDescriptionMLTag.v' class='invisible'><code>ProfileDescriptionMLTag</code></span></span><div class='docblock'><p>&#39;dscm&#39;</p>
+</div><span id="variant.ProfileSequenceDescTag" class="variant small-section-header"><a href="#variant.ProfileSequenceDescTag" class="anchor field"></a><span id='ProfileSequenceDescTag.v' class='invisible'><code>ProfileSequenceDescTag</code></span></span><div class='docblock'><p>&#39;pseq&#39;</p>
+</div><span id="variant.ProfileSequenceIdTag" class="variant small-section-header"><a href="#variant.ProfileSequenceIdTag" class="anchor field"></a><span id='ProfileSequenceIdTag.v' class='invisible'><code>ProfileSequenceIdTag</code></span></span><div class='docblock'><p>&#39;psid&#39;</p>
+</div><span id="variant.Ps2CRD0Tag" class="variant small-section-header"><a href="#variant.Ps2CRD0Tag" class="anchor field"></a><span id='Ps2CRD0Tag.v' class='invisible'><code>Ps2CRD0Tag</code></span></span><div class='docblock'><p>&#39;psd0&#39;</p>
+</div><span id="variant.Ps2CRD1Tag" class="variant small-section-header"><a href="#variant.Ps2CRD1Tag" class="anchor field"></a><span id='Ps2CRD1Tag.v' class='invisible'><code>Ps2CRD1Tag</code></span></span><div class='docblock'><p>&#39;psd1&#39;</p>
+</div><span id="variant.Ps2CRD2Tag" class="variant small-section-header"><a href="#variant.Ps2CRD2Tag" class="anchor field"></a><span id='Ps2CRD2Tag.v' class='invisible'><code>Ps2CRD2Tag</code></span></span><div class='docblock'><p>&#39;psd2&#39;</p>
+</div><span id="variant.Ps2CRD3Tag" class="variant small-section-header"><a href="#variant.Ps2CRD3Tag" class="anchor field"></a><span id='Ps2CRD3Tag.v' class='invisible'><code>Ps2CRD3Tag</code></span></span><div class='docblock'><p>&#39;psd3&#39;</p>
+</div><span id="variant.Ps2CSATag" class="variant small-section-header"><a href="#variant.Ps2CSATag" class="anchor field"></a><span id='Ps2CSATag.v' class='invisible'><code>Ps2CSATag</code></span></span><div class='docblock'><p>&#39;ps2s&#39;</p>
+</div><span id="variant.Ps2RenderingIntentTag" class="variant small-section-header"><a href="#variant.Ps2RenderingIntentTag" class="anchor field"></a><span id='Ps2RenderingIntentTag.v' class='invisible'><code>Ps2RenderingIntentTag</code></span></span><div class='docblock'><p>&#39;ps2i&#39;</p>
+</div><span id="variant.RedColorantTag" class="variant small-section-header"><a href="#variant.RedColorantTag" class="anchor field"></a><span id='RedColorantTag.v' class='invisible'><code>RedColorantTag</code></span></span><div class='docblock'><p>&#39;rXYZ&#39;</p>
+</div><span id="variant.RedTRCTag" class="variant small-section-header"><a href="#variant.RedTRCTag" class="anchor field"></a><span id='RedTRCTag.v' class='invisible'><code>RedTRCTag</code></span></span><div class='docblock'><p>&#39;rTRC&#39;</p>
+</div><span id="variant.SaturationRenderingIntentGamutTag" class="variant small-section-header"><a href="#variant.SaturationRenderingIntentGamutTag" class="anchor field"></a><span id='SaturationRenderingIntentGamutTag.v' class='invisible'><code>SaturationRenderingIntentGamutTag</code></span></span><div class='docblock'><p>&#39;rig2&#39;</p>
+</div><span id="variant.ScreeningDescTag" class="variant small-section-header"><a href="#variant.ScreeningDescTag" class="anchor field"></a><span id='ScreeningDescTag.v' class='invisible'><code>ScreeningDescTag</code></span></span><div class='docblock'><p>&#39;scrd&#39;</p>
+</div><span id="variant.ScreeningTag" class="variant small-section-header"><a href="#variant.ScreeningTag" class="anchor field"></a><span id='ScreeningTag.v' class='invisible'><code>ScreeningTag</code></span></span><div class='docblock'><p>&#39;scrn&#39;</p>
+</div><span id="variant.TechnologyTag" class="variant small-section-header"><a href="#variant.TechnologyTag" class="anchor field"></a><span id='TechnologyTag.v' class='invisible'><code>TechnologyTag</code></span></span><div class='docblock'><p>&#39;tech&#39;</p>
+</div><span id="variant.UcrBgTag" class="variant small-section-header"><a href="#variant.UcrBgTag" class="anchor field"></a><span id='UcrBgTag.v' class='invisible'><code>UcrBgTag</code></span></span><div class='docblock'><p>&#39;bfd &#39;</p>
+</div><span id="variant.ViewingCondDescTag" class="variant small-section-header"><a href="#variant.ViewingCondDescTag" class="anchor field"></a><span id='ViewingCondDescTag.v' class='invisible'><code>ViewingCondDescTag</code></span></span><div class='docblock'><p>&#39;vued&#39;</p>
+</div><span id="variant.ViewingConditionsTag" class="variant small-section-header"><a href="#variant.ViewingConditionsTag" class="anchor field"></a><span id='ViewingConditionsTag.v' class='invisible'><code>ViewingConditionsTag</code></span></span><div class='docblock'><p>&#39;view&#39;</p>
+</div><span id="variant.VcgtTag" class="variant small-section-header"><a href="#variant.VcgtTag" class="anchor field"></a><span id='VcgtTag.v' class='invisible'><code>VcgtTag</code></span></span><div class='docblock'><p>&#39;vcgt&#39;</p>
+</div><span id="variant.MetaTag" class="variant small-section-header"><a href="#variant.MetaTag" class="anchor field"></a><span id='MetaTag.v' class='invisible'><code>MetaTag</code></span></span><div class='docblock'><p>&#39;meta&#39;</p>
+</div><span id="variant.ArgyllArtsTag" class="variant small-section-header"><a href="#variant.ArgyllArtsTag" class="anchor field"></a><span id='ArgyllArtsTag.v' class='invisible'><code>ArgyllArtsTag</code></span></span><div class='docblock'><p>&#39;arts&#39;</p>
+</div>
+            <h2 id='implementations' class='small-section-header'>
+              Trait Implementations<a href='#implementations' class='anchor'></a>
+            </h2>
+        <h3 id='impl-PartialEq%3CTagSignature%3E' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html" title="trait core::cmp::PartialEq">PartialEq</a>&lt;<a class="enum" href="../lcms2/enum.TagSignature.html" title="enum lcms2::TagSignature">TagSignature</a>&gt; for <a class="enum" href="../lcms2/enum.TagSignature.html" title="enum lcms2::TagSignature">TagSignature</a></code><a href='#impl-PartialEq%3CTagSignature%3E' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.eq' class="method"><span id='eq.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#tymethod.eq' class='fnname'>eq</a>(&amp;self, __arg_0: &amp;<a class="enum" href="../lcms2/enum.TagSignature.html" title="enum lcms2::TagSignature">TagSignature</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span></h4>
+<div class='docblock'><p>This method tests for <code>self</code> and <code>other</code> values to be equal, and is used by <code>==</code>. <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#tymethod.eq">Read more</a></p>
+</div><h4 id='method.ne' class="method"><span id='ne.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#method.ne' class='fnname'>ne</a>(&amp;self, other: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>Rhs) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span><span class='out-of-band'><div class='ghost'></div><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div><a class='srclink' href='https://doc.rust-lang.org/nightly/src/core/cmp.rs.html#121' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>This method tests for <code>!=</code>.</p>
+</div></div><h3 id='impl-Copy' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> for <a class="enum" href="../lcms2/enum.TagSignature.html" title="enum lcms2::TagSignature">TagSignature</a></code><a href='#impl-Copy' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'></div><h3 id='impl-Debug' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> for <a class="enum" href="../lcms2/enum.TagSignature.html" title="enum lcms2::TagSignature">TagSignature</a></code><a href='#impl-Debug' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class="method"><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html" title="struct core::fmt::Formatter">Formatter</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Error.html" title="struct core::fmt::Error">Error</a>&gt;</code></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter. <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt">Read more</a></p>
+</div></div><h3 id='impl-Eq' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html" title="trait core::cmp::Eq">Eq</a> for <a class="enum" href="../lcms2/enum.TagSignature.html" title="enum lcms2::TagSignature">TagSignature</a></code><a href='#impl-Eq' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'></div><h3 id='impl-Hash' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html" title="trait core::hash::Hash">Hash</a> for <a class="enum" href="../lcms2/enum.TagSignature.html" title="enum lcms2::TagSignature">TagSignature</a></code><a href='#impl-Hash' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.hash' class="method"><span id='hash.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html#tymethod.hash' class='fnname'>hash</a>&lt;__H&gt;(&amp;self, __arg_0: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;mut </a>__H) <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;__H: <a class="trait" href="https://doc.rust-lang.org/nightly/core/hash/trait.Hasher.html" title="trait core::hash::Hasher">Hasher</a>,&nbsp;</span></code></span></h4>
+</div><h3 id='impl-Clone' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> for <a class="enum" href="../lcms2/enum.TagSignature.html" title="enum lcms2::TagSignature">TagSignature</a></code><a href='#impl-Clone' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.clone' class="method"><span id='clone.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class="enum" href="../lcms2/enum.TagSignature.html" title="enum lcms2::TagSignature">TagSignature</a></code></span></h4>
+<div class='docblock'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
+</div><h4 id='method.clone_from' class="method"><span id='clone_from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>Self)</code></span><span class='out-of-band'><div class='ghost'></div><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div><a class='srclink' href='https://doc.rust-lang.org/nightly/src/core/clone.rs.html#112-114' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>↑</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>↓</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>↹</dt>
+                    <dd>Switch tab</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt style="width:31px;">+ / -</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "lcms2";
+    </script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

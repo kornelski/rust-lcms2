@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `CIEXYZExt` trait in crate `lcms2`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, CIEXYZExt">
+
+    <title>lcms2::CIEXYZExt - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc trait">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        <div class="sidebar-menu">&#9776;</div>
+        <a href='../lcms2/index.html'><img src='https://pornel.github.io/rust-lcms2/lcms_logo.png' alt='logo' width='100'></a>
+        <p class='location'>Trait CIEXYZExt</p><div class="sidebar-elems"><div class="block items"><a class="sidebar-title" href="#required-methods">Required Methods</a><div class="sidebar-links"><a href="#tymethod.adapt_to_illuminant">adapt_to_illuminant</a><a href="#tymethod.to_lab">to_lab</a><a href="#tymethod.from_encoded">from_encoded</a></div><a class="sidebar-title" href="#implementors">Implementors</a></div><p class='location'><a href='index.html'>lcms2</a></p><script>window.sidebarCurrent = {name: 'CIEXYZExt', ty: 'trait', relpath: ''};</script><script defer src="sidebar-items.js"></script></div>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Trait <a href='index.html'>lcms2</a>::<wbr><a class="trait" href=''>CIEXYZExt</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/lcms2/ext.rs.html#24-34' title='goto source code'>[src]</a></span></h1>
+<pre class='rust trait'>pub trait CIEXYZExt: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a> {
+    fn <a href='#tymethod.adapt_to_illuminant' class='fnname'>adapt_to_illuminant</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;self, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_white_point: &amp;<a class="struct" href="../lcms2/struct.CIEXYZ.html" title="struct lcms2::CIEXYZ">CIEXYZ</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;illuminant: &amp;<a class="struct" href="../lcms2/struct.CIEXYZ.html" title="struct lcms2::CIEXYZ">CIEXYZ</a><br>&nbsp;&nbsp;&nbsp;&nbsp;) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../lcms2/struct.CIEXYZ.html" title="struct lcms2::CIEXYZ">CIEXYZ</a>&gt;;
+<div class='item-spacer'></div>    fn <a href='#tymethod.to_lab' class='fnname'>to_lab</a>(&amp;self, white_point: &amp;<a class="struct" href="../lcms2/struct.CIEXYZ.html" title="struct lcms2::CIEXYZ">CIEXYZ</a>) -&gt; <a class="struct" href="../lcms2/struct.CIELab.html" title="struct lcms2::CIELab">CIELab</a>;
+<div class='item-spacer'></div>    fn <a href='#tymethod.from_encoded' class='fnname'>from_encoded</a>(icc: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 3]</a>) -&gt; Self;
+}</pre><div class='docblock'><p>Chromatic adaptation</p>
+</div>
+            <h2 id='required-methods' class='small-section-header'>
+              Required Methods<a href='#required-methods' class='anchor'></a>
+            </h2>
+            <div class='methods'>
+        <h3 id='tymethod.adapt_to_illuminant' class='method'><span id='adapt_to_illuminant.v' class='invisible'><code>fn <a href='#tymethod.adapt_to_illuminant' class='fnname'>adapt_to_illuminant</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;self, <br>&nbsp;&nbsp;&nbsp;&nbsp;source_white_point: &amp;<a class="struct" href="../lcms2/struct.CIEXYZ.html" title="struct lcms2::CIEXYZ">CIEXYZ</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;illuminant: &amp;<a class="struct" href="../lcms2/struct.CIEXYZ.html" title="struct lcms2::CIEXYZ">CIEXYZ</a><br>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../lcms2/struct.CIEXYZ.html" title="struct lcms2::CIEXYZ">CIEXYZ</a>&gt;</code></span></h3><div class='docblock'><p>Adapts a color to a given illuminant. Original color is expected to have
+a <code>source_white_point</code> white point.</p>
+</div><h3 id='tymethod.to_lab' class='method'><span id='to_lab.v' class='invisible'><code>fn <a href='#tymethod.to_lab' class='fnname'>to_lab</a>(&amp;self, white_point: &amp;<a class="struct" href="../lcms2/struct.CIEXYZ.html" title="struct lcms2::CIEXYZ">CIEXYZ</a>) -&gt; <a class="struct" href="../lcms2/struct.CIELab.html" title="struct lcms2::CIELab">CIELab</a></code></span></h3><div class='docblock'><p>Colorimetric space conversion.</p>
+</div><h3 id='tymethod.from_encoded' class='method'><span id='from_encoded.v' class='invisible'><code>fn <a href='#tymethod.from_encoded' class='fnname'>from_encoded</a>(icc: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 3]</a>) -&gt; Self</code></span></h3><div class='docblock'><p>Decodes a XYZ value, encoded on ICC convention</p>
+</div></div>
+        <h2 id='implementors' class='small-section-header'>
+          Implementors<a href='#implementors' class='anchor'></a>
+        </h2>
+        <ul class='item-list' id='implementors-list'>
+    <li><div class='out-of-band'><a class='srclink' href='../src/lcms2/ext.rs.html#36-62' title='goto source code'>[src]</a></div><code>impl CIEXYZExt for <a class="struct" href="../lcms2/struct.CIEXYZ.html" title="struct lcms2::CIEXYZ">CIEXYZ</a></code></li>
+</ul><script type="text/javascript" async
+                         src="../implementors/lcms2/trait.CIEXYZExt.js">
+                 </script></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>↑</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>↓</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>↹</dt>
+                    <dd>Switch tab</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt style="width:31px;">+ / -</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "lcms2";
+    </script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

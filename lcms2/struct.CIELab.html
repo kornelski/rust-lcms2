@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `CIELab` struct in crate `lcms2`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, CIELab">
+
+    <title>lcms2::CIELab - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc struct">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        <div class="sidebar-menu">&#9776;</div>
+        <a href='../lcms2/index.html'><img src='https://pornel.github.io/rust-lcms2/lcms_logo.png' alt='logo' width='100'></a>
+        <p class='location'>Struct CIELab</p><div class="sidebar-elems"><div class="block items"><a class="sidebar-title" href="#fields">Fields</a><div class="sidebar-links"><a href="#structfield.L">L</a><a href="#structfield.a">a</a><a href="#structfield.b">b</a></div><a class="sidebar-title" href="#implementations">Trait Implementations</a><div class="sidebar-links"><a href="#impl-Default">Default</a><a href="#impl-PartialEq%3CCIELab%3E">PartialEq&lt;CIELab&gt;</a><a href="#impl-Copy">Copy</a><a href="#impl-Debug">Debug</a><a href="#impl-From%3CCIELab%3E">From&lt;CIELab&gt;</a><a href="#impl-From%3CCIELCh%3E">From&lt;CIELCh&gt;</a><a href="#impl-Clone">Clone</a><a href="#impl-CIELabExt">CIELabExt</a></div></div><p class='location'><a href='index.html'>lcms2</a></p><script>window.sidebarCurrent = {name: 'CIELab', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script></div>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>lcms2</a>::<wbr><a class="struct" href=''>CIELab</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span></span></h1>
+<pre class='rust struct'><div class="docblock attributes">#[repr(C)]
+</div>pub struct CIELab {
+    pub L: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+    pub a: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+    pub b: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+}</pre><h2 id='fields' class='fields small-section-header'>
+                       Fields<a href='#fields' class='anchor'></a></h2><span id="structfield.L" class="structfield small-section-header">
+                           <a href="#structfield.L" class="anchor field"></a>
+                           <span id="L.v" class='invisible'>
+                           <code>L: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a></code>
+                           </span></span><span id="structfield.a" class="structfield small-section-header">
+                           <a href="#structfield.a" class="anchor field"></a>
+                           <span id="a.v" class='invisible'>
+                           <code>a: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a></code>
+                           </span></span><span id="structfield.b" class="structfield small-section-header">
+                           <a href="#structfield.b" class="anchor field"></a>
+                           <span id="b.v" class='invisible'>
+                           <code>b: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a></code>
+                           </span></span>
+            <h2 id='implementations' class='small-section-header'>
+              Trait Implementations<a href='#implementations' class='anchor'></a>
+            </h2>
+        <h3 id='impl-Default' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html" title="trait core::default::Default">Default</a> for <a class="struct" href="../lcms2/struct.CIELab.html" title="struct lcms2::CIELab">CIELab</a></code><a href='#impl-Default' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.default' class="method"><span id='default.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default' class='fnname'>default</a>() -&gt; <a class="struct" href="../lcms2/struct.CIELab.html" title="struct lcms2::CIELab">CIELab</a></code></span></h4>
+<div class='docblock'><p>Returns the &quot;default value&quot; for a type. <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">Read more</a></p>
+</div></div><h3 id='impl-PartialEq%3CCIELab%3E' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html" title="trait core::cmp::PartialEq">PartialEq</a>&lt;<a class="struct" href="../lcms2/struct.CIELab.html" title="struct lcms2::CIELab">CIELab</a>&gt; for <a class="struct" href="../lcms2/struct.CIELab.html" title="struct lcms2::CIELab">CIELab</a></code><a href='#impl-PartialEq%3CCIELab%3E' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.eq' class="method"><span id='eq.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#tymethod.eq' class='fnname'>eq</a>(&amp;self, __arg_0: &amp;<a class="struct" href="../lcms2/struct.CIELab.html" title="struct lcms2::CIELab">CIELab</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span></h4>
+<div class='docblock'><p>This method tests for <code>self</code> and <code>other</code> values to be equal, and is used by <code>==</code>. <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#tymethod.eq">Read more</a></p>
+</div><h4 id='method.ne' class="method"><span id='ne.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#method.ne' class='fnname'>ne</a>(&amp;self, __arg_0: &amp;<a class="struct" href="../lcms2/struct.CIELab.html" title="struct lcms2::CIELab">CIELab</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span></h4>
+<div class='docblock'><p>This method tests for <code>!=</code>.</p>
+</div></div><h3 id='impl-Copy' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> for <a class="struct" href="../lcms2/struct.CIELab.html" title="struct lcms2::CIELab">CIELab</a></code><a href='#impl-Copy' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'></div><h3 id='impl-Debug' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> for <a class="struct" href="../lcms2/struct.CIELab.html" title="struct lcms2::CIELab">CIELab</a></code><a href='#impl-Debug' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class="method"><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html" title="struct core::fmt::Formatter">Formatter</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Error.html" title="struct core::fmt::Error">Error</a>&gt;</code></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter. <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt">Read more</a></p>
+</div></div><h3 id='impl-From%3CCIELab%3E' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html" title="trait core::convert::From">From</a>&lt;<a class="struct" href="../lcms2/struct.CIELab.html" title="struct lcms2::CIELab">CIELab</a>&gt; for CIELCh</code><a href='#impl-From%3CCIELab%3E' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.from' class="method"><span id='from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from' class='fnname'>from</a>(f: <a class="struct" href="../lcms2/struct.CIELab.html" title="struct lcms2::CIELab">CIELab</a>) -&gt; CIELCh</code></span></h4>
+<div class='docblock'><p>Performs the conversion.</p>
+</div></div><h3 id='impl-From%3CCIELCh%3E' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html" title="trait core::convert::From">From</a>&lt;CIELCh&gt; for <a class="struct" href="../lcms2/struct.CIELab.html" title="struct lcms2::CIELab">CIELab</a></code><a href='#impl-From%3CCIELCh%3E' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.from-1' class="method"><span id='from.v-1' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from' class='fnname'>from</a>(f: CIELCh) -&gt; <a class="struct" href="../lcms2/struct.CIELab.html" title="struct lcms2::CIELab">CIELab</a></code></span></h4>
+<div class='docblock'><p>Performs the conversion.</p>
+</div></div><h3 id='impl-Clone' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> for <a class="struct" href="../lcms2/struct.CIELab.html" title="struct lcms2::CIELab">CIELab</a></code><a href='#impl-Clone' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.clone' class="method"><span id='clone.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class="struct" href="../lcms2/struct.CIELab.html" title="struct lcms2::CIELab">CIELab</a></code></span></h4>
+<div class='docblock'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
+</div><h4 id='method.clone_from' class="method"><span id='clone_from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>Self)</code></span><span class='out-of-band'><div class='ghost'></div><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div><a class='srclink' href='https://doc.rust-lang.org/nightly/src/core/clone.rs.html#112-114' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
+</div></div><h3 id='impl-CIELabExt' class='impl'><span class='in-band'><code>impl <a class="trait" href="../lcms2/trait.CIELabExt.html" title="trait lcms2::CIELabExt">CIELabExt</a> for <a class="struct" href="../lcms2/struct.CIELab.html" title="struct lcms2::CIELab">CIELab</a></code><a href='#impl-CIELabExt' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/ext.rs.html#139-197' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.cie2000_delta_e' class="method"><span id='cie2000_delta_e.v' class='invisible'><code>fn <a href='../lcms2/trait.CIELabExt.html#tymethod.cie2000_delta_e' class='fnname'>cie2000_delta_e</a>(&amp;self, other: &amp;<a class="struct" href="../lcms2/struct.CIELab.html" title="struct lcms2::CIELab">CIELab</a>, kl: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, kc: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, kh: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/ext.rs.html#140-142' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Delta-E 2000 is the first major revision of the dE94 equation. <a href="../lcms2/trait.CIELabExt.html#tymethod.cie2000_delta_e">Read more</a></p>
+</div><h4 id='method.cie94_delta_e' class="method"><span id='cie94_delta_e.v' class='invisible'><code>fn <a href='../lcms2/trait.CIELabExt.html#tymethod.cie94_delta_e' class='fnname'>cie94_delta_e</a>(&amp;self, other: &amp;<a class="struct" href="../lcms2/struct.CIELab.html" title="struct lcms2::CIELab">CIELab</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/ext.rs.html#144-146' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>A technical committee of the CIE (TC1-29) published an equation in 1995 called CIE94. The equation is similar to CMC but the weighting functions are largely based on RIT/DuPont tolerance data derived from automotive paint experiments where sample surfaces are smooth. It also has ratios, labeled kL (lightness) and Kc (chroma) and the commercial factor (cf) but these tend to be preset in software and are not often exposed for the user (as it is the case in Little CMS). Returns: The CIE94 dE metric value. <a href="../lcms2/trait.CIELabExt.html#tymethod.cie94_delta_e">Read more</a></p>
+</div><h4 id='method.bfd_delta_e' class="method"><span id='bfd_delta_e.v' class='invisible'><code>fn <a href='../lcms2/trait.CIELabExt.html#tymethod.bfd_delta_e' class='fnname'>bfd_delta_e</a>(&amp;self, other: &amp;<a class="struct" href="../lcms2/struct.CIELab.html" title="struct lcms2::CIELab">CIELab</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/ext.rs.html#148-150' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>BFD delta E metric.</p>
+</div><h4 id='method.delta_e' class="method"><span id='delta_e.v' class='invisible'><code>fn <a href='../lcms2/trait.CIELabExt.html#tymethod.delta_e' class='fnname'>delta_e</a>(&amp;self, other: &amp;<a class="struct" href="../lcms2/struct.CIELab.html" title="struct lcms2::CIELab">CIELab</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/ext.rs.html#152-154' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>The dE76 metric value. <a href="../lcms2/trait.CIELabExt.html#tymethod.delta_e">Read more</a></p>
+</div><h4 id='method.cmc_delta_e' class="method"><span id='cmc_delta_e.v' class='invisible'><code>fn <a href='../lcms2/trait.CIELabExt.html#tymethod.cmc_delta_e' class='fnname'>cmc_delta_e</a>(&amp;self, other: &amp;<a class="struct" href="../lcms2/struct.CIELab.html" title="struct lcms2::CIELab">CIELab</a>, k: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, c: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/ext.rs.html#156-158' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>In 1984 the CMC (Colour Measurement Committee of the Society of Dyes and Colourists of Great Britain) developed and adopted an equation based on LCH numbers. <a href="../lcms2/trait.CIELabExt.html#tymethod.cmc_delta_e">Read more</a></p>
+</div><h4 id='method.desaturate' class="method"><span id='desaturate.v' class='invisible'><code>fn <a href='../lcms2/trait.CIELabExt.html#tymethod.desaturate' class='fnname'>desaturate</a>(&amp;mut self, amin: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, amax: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, bmin: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, bmax: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/ext.rs.html#160-162' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>amin, amax, bmin, bmax: boundaries of gamut rectangle</p>
+</div><h4 id='method.encoded' class="method"><span id='encoded.v' class='invisible'><code>fn <a href='../lcms2/trait.CIELabExt.html#tymethod.encoded' class='fnname'>encoded</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 3]</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/ext.rs.html#164-168' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Encodes a Lab value, from a CIELab value to ICC v4 convention.</p>
+</div><h4 id='method.encoded_v2' class="method"><span id='encoded_v2.v' class='invisible'><code>fn <a href='../lcms2/trait.CIELabExt.html#tymethod.encoded_v2' class='fnname'>encoded_v2</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 3]</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/ext.rs.html#170-174' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Encodes a Lab value, from a CIELab value to ICC v2 convention.</p>
+</div><h4 id='method.from_encoded' class="method"><span id='from_encoded.v' class='invisible'><code>fn <a href='../lcms2/trait.CIELabExt.html#tymethod.from_encoded' class='fnname'>from_encoded</a>(icc: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 3]</a>) -&gt; Self</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/ext.rs.html#176-182' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Decodes a Lab value, encoded on ICC v4 convention</p>
+</div><h4 id='method.from_encoded_v2' class="method"><span id='from_encoded_v2.v' class='invisible'><code>fn <a href='../lcms2/trait.CIELabExt.html#tymethod.from_encoded_v2' class='fnname'>from_encoded_v2</a>(icc: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 3]</a>) -&gt; Self</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/ext.rs.html#184-190' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Decodes a Lab value, encoded on ICC v2 convention</p>
+</div><h4 id='method.to_xyz' class="method"><span id='to_xyz.v' class='invisible'><code>fn <a href='../lcms2/trait.CIELabExt.html#tymethod.to_xyz' class='fnname'>to_xyz</a>(&amp;self, white_point: &amp;<a class="struct" href="../lcms2/struct.CIEXYZ.html" title="struct lcms2::CIEXYZ">CIEXYZ</a>) -&gt; <a class="struct" href="../lcms2/struct.CIEXYZ.html" title="struct lcms2::CIEXYZ">CIEXYZ</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/lcms2/ext.rs.html#192-196' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Colorimetric space conversion.</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>↑</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>↓</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>↹</dt>
+                    <dd>Switch tab</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt style="width:31px;">+ / -</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "lcms2";
+    </script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

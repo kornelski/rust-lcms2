@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `PixelFormat` enum in crate `lcms2`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, PixelFormat">
+
+    <title>lcms2::PixelFormat - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc enum">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        <div class="sidebar-menu">&#9776;</div>
+        <a href='../lcms2/index.html'><img src='https://pornel.github.io/rust-lcms2/lcms_logo.png' alt='logo' width='100'></a>
+        <p class='location'>Enum PixelFormat</p><div class="sidebar-elems"><div class="block items"><a class="sidebar-title" href="#variants">Variants</a><div class="sidebar-links"><a href="#variant.GRAY_8">GRAY_8</a><a href="#variant.GRAY_8_REV">GRAY_8_REV</a><a href="#variant.GRAY_16">GRAY_16</a><a href="#variant.GRAY_16_REV">GRAY_16_REV</a><a href="#variant.GRAY_16_SE">GRAY_16_SE</a><a href="#variant.GRAYA_8">GRAYA_8</a><a href="#variant.GRAYA_16">GRAYA_16</a><a href="#variant.GRAYA_16_SE">GRAYA_16_SE</a><a href="#variant.GRAYA_8_PLANAR">GRAYA_8_PLANAR</a><a href="#variant.GRAYA_16_PLANAR">GRAYA_16_PLANAR</a><a href="#variant.RGB_8">RGB_8</a><a href="#variant.RGB_8_PLANAR">RGB_8_PLANAR</a><a href="#variant.BGR_8">BGR_8</a><a href="#variant.BGR_8_PLANAR">BGR_8_PLANAR</a><a href="#variant.RGB_16">RGB_16</a><a href="#variant.RGB_16_PLANAR">RGB_16_PLANAR</a><a href="#variant.RGB_16_SE">RGB_16_SE</a><a href="#variant.BGR_16">BGR_16</a><a href="#variant.BGR_16_PLANAR">BGR_16_PLANAR</a><a href="#variant.BGR_16_SE">BGR_16_SE</a><a href="#variant.RGBA_8">RGBA_8</a><a href="#variant.RGBA_8_PLANAR">RGBA_8_PLANAR</a><a href="#variant.RGBA_16">RGBA_16</a><a href="#variant.RGBA_16_PLANAR">RGBA_16_PLANAR</a><a href="#variant.RGBA_16_SE">RGBA_16_SE</a><a href="#variant.ARGB_8">ARGB_8</a><a href="#variant.ARGB_8_PLANAR">ARGB_8_PLANAR</a><a href="#variant.ARGB_16">ARGB_16</a><a href="#variant.ABGR_8">ABGR_8</a><a href="#variant.ABGR_8_PLANAR">ABGR_8_PLANAR</a><a href="#variant.ABGR_16">ABGR_16</a><a href="#variant.ABGR_16_PLANAR">ABGR_16_PLANAR</a><a href="#variant.ABGR_16_SE">ABGR_16_SE</a><a href="#variant.BGRA_8">BGRA_8</a><a href="#variant.BGRA_8_PLANAR">BGRA_8_PLANAR</a><a href="#variant.BGRA_16">BGRA_16</a><a href="#variant.BGRA_16_SE">BGRA_16_SE</a><a href="#variant.CMY_8">CMY_8</a><a href="#variant.CMY_8_PLANAR">CMY_8_PLANAR</a><a href="#variant.CMY_16">CMY_16</a><a href="#variant.CMY_16_PLANAR">CMY_16_PLANAR</a><a href="#variant.CMY_16_SE">CMY_16_SE</a><a href="#variant.CMYK_8">CMYK_8</a><a href="#variant.CMYKA_8">CMYKA_8</a><a href="#variant.CMYK_8_REV">CMYK_8_REV</a><a href="#variant.CMYK_8_PLANAR">CMYK_8_PLANAR</a><a href="#variant.CMYK_16">CMYK_16</a><a href="#variant.CMYK_16_REV">CMYK_16_REV</a><a href="#variant.CMYK_16_PLANAR">CMYK_16_PLANAR</a><a href="#variant.CMYK_16_SE">CMYK_16_SE</a><a href="#variant.KYMC_8">KYMC_8</a><a href="#variant.KYMC_16">KYMC_16</a><a href="#variant.KYMC_16_SE">KYMC_16_SE</a><a href="#variant.KCMY_8">KCMY_8</a><a href="#variant.KCMY_8_REV">KCMY_8_REV</a><a href="#variant.KCMY_16">KCMY_16</a><a href="#variant.KCMY_16_REV">KCMY_16_REV</a><a href="#variant.KCMY_16_SE">KCMY_16_SE</a><a href="#variant.CMYK5_8">CMYK5_8</a><a href="#variant.CMYK5_16">CMYK5_16</a><a href="#variant.CMYK5_16_SE">CMYK5_16_SE</a><a href="#variant.KYMC5_8">KYMC5_8</a><a href="#variant.KYMC5_16">KYMC5_16</a><a href="#variant.KYMC5_16_SE">KYMC5_16_SE</a><a href="#variant.CMYK6_8">CMYK6_8</a><a href="#variant.CMYK6_8_PLANAR">CMYK6_8_PLANAR</a><a href="#variant.CMYK6_16">CMYK6_16</a><a href="#variant.CMYK6_16_PLANAR">CMYK6_16_PLANAR</a><a href="#variant.CMYK6_16_SE">CMYK6_16_SE</a><a href="#variant.CMYK7_8">CMYK7_8</a><a href="#variant.CMYK7_16">CMYK7_16</a><a href="#variant.CMYK7_16_SE">CMYK7_16_SE</a><a href="#variant.KYMC7_8">KYMC7_8</a><a href="#variant.KYMC7_16">KYMC7_16</a><a href="#variant.KYMC7_16_SE">KYMC7_16_SE</a><a href="#variant.CMYK8_8">CMYK8_8</a><a href="#variant.CMYK8_16">CMYK8_16</a><a href="#variant.CMYK8_16_SE">CMYK8_16_SE</a><a href="#variant.KYMC8_8">KYMC8_8</a><a href="#variant.KYMC8_16">KYMC8_16</a><a href="#variant.KYMC8_16_SE">KYMC8_16_SE</a><a href="#variant.CMYK9_8">CMYK9_8</a><a href="#variant.CMYK9_16">CMYK9_16</a><a href="#variant.CMYK9_16_SE">CMYK9_16_SE</a><a href="#variant.KYMC9_8">KYMC9_8</a><a href="#variant.KYMC9_16">KYMC9_16</a><a href="#variant.KYMC9_16_SE">KYMC9_16_SE</a><a href="#variant.CMYK10_8">CMYK10_8</a><a href="#variant.CMYK10_16">CMYK10_16</a><a href="#variant.CMYK10_16_SE">CMYK10_16_SE</a><a href="#variant.KYMC10_8">KYMC10_8</a><a href="#variant.KYMC10_16">KYMC10_16</a><a href="#variant.KYMC10_16_SE">KYMC10_16_SE</a><a href="#variant.CMYK11_8">CMYK11_8</a><a href="#variant.CMYK11_16">CMYK11_16</a><a href="#variant.CMYK11_16_SE">CMYK11_16_SE</a><a href="#variant.KYMC11_8">KYMC11_8</a><a href="#variant.KYMC11_16">KYMC11_16</a><a href="#variant.KYMC11_16_SE">KYMC11_16_SE</a><a href="#variant.CMYK12_8">CMYK12_8</a><a href="#variant.CMYK12_16">CMYK12_16</a><a href="#variant.CMYK12_16_SE">CMYK12_16_SE</a><a href="#variant.KYMC12_8">KYMC12_8</a><a href="#variant.KYMC12_16">KYMC12_16</a><a href="#variant.KYMC12_16_SE">KYMC12_16_SE</a><a href="#variant.XYZ_16">XYZ_16</a><a href="#variant.Lab_8">Lab_8</a><a href="#variant.LabV2_8">LabV2_8</a><a href="#variant.ALab_8">ALab_8</a><a href="#variant.ALabV2_8">ALabV2_8</a><a href="#variant.Lab_16">Lab_16</a><a href="#variant.LabV2_16">LabV2_16</a><a href="#variant.Yxy_16">Yxy_16</a><a href="#variant.YCbCr_8">YCbCr_8</a><a href="#variant.YCbCr_8_PLANAR">YCbCr_8_PLANAR</a><a href="#variant.YCbCr_16">YCbCr_16</a><a href="#variant.YCbCr_16_PLANAR">YCbCr_16_PLANAR</a><a href="#variant.YCbCr_16_SE">YCbCr_16_SE</a><a href="#variant.YUV_8">YUV_8</a><a href="#variant.YUV_8_PLANAR">YUV_8_PLANAR</a><a href="#variant.YUV_16">YUV_16</a><a href="#variant.YUV_16_PLANAR">YUV_16_PLANAR</a><a href="#variant.YUV_16_SE">YUV_16_SE</a><a href="#variant.HLS_8">HLS_8</a><a href="#variant.HLS_8_PLANAR">HLS_8_PLANAR</a><a href="#variant.HLS_16">HLS_16</a><a href="#variant.HLS_16_PLANAR">HLS_16_PLANAR</a><a href="#variant.HLS_16_SE">HLS_16_SE</a><a href="#variant.HSV_8">HSV_8</a><a href="#variant.HSV_8_PLANAR">HSV_8_PLANAR</a><a href="#variant.HSV_16">HSV_16</a><a href="#variant.HSV_16_PLANAR">HSV_16_PLANAR</a><a href="#variant.HSV_16_SE">HSV_16_SE</a><a href="#variant.NAMED_COLOR_INDEX">NAMED_COLOR_INDEX</a><a href="#variant.XYZ_FLT">XYZ_FLT</a><a href="#variant.Lab_FLT">Lab_FLT</a><a href="#variant.LabA_FLT">LabA_FLT</a><a href="#variant.GRAY_FLT">GRAY_FLT</a><a href="#variant.RGB_FLT">RGB_FLT</a><a href="#variant.RGBA_FLT">RGBA_FLT</a><a href="#variant.ARGB_FLT">ARGB_FLT</a><a href="#variant.BGR_FLT">BGR_FLT</a><a href="#variant.BGRA_FLT">BGRA_FLT</a><a href="#variant.CMYK_FLT">CMYK_FLT</a><a href="#variant.XYZ_DBL">XYZ_DBL</a><a href="#variant.Lab_DBL">Lab_DBL</a><a href="#variant.GRAY_DBL">GRAY_DBL</a><a href="#variant.RGB_DBL">RGB_DBL</a><a href="#variant.BGR_DBL">BGR_DBL</a><a href="#variant.CMYK_DBL">CMYK_DBL</a><a href="#variant.GRAY_HALF_FLT">GRAY_HALF_FLT</a><a href="#variant.RGB_HALF_FLT">RGB_HALF_FLT</a><a href="#variant.RGBA_HALF_FLT">RGBA_HALF_FLT</a><a href="#variant.CMYK_HALF_FLT">CMYK_HALF_FLT</a><a href="#variant.ARGB_HALF_FLT">ARGB_HALF_FLT</a><a href="#variant.BGR_HALF_FLT">BGR_HALF_FLT</a><a href="#variant.BGRA_HALF_FLT">BGRA_HALF_FLT</a></div><a class="sidebar-title" href="#methods">Methods</a><div class="sidebar-links"><a href="#method.float">float</a><a href="#method.optimized">optimized</a><a href="#method.colorspace">colorspace</a><a href="#method.swapfirst">swapfirst</a><a href="#method.flavor">flavor</a><a href="#method.planar">planar</a><a href="#method.endian16">endian16</a><a href="#method.doswap">doswap</a><a href="#method.extra">extra</a><a href="#method.channels">channels</a><a href="#method.bytes_per_channel">bytes_per_channel</a><a href="#method.bytes_per_pixel">bytes_per_pixel</a></div><a class="sidebar-title" href="#implementations">Trait Implementations</a><div class="sidebar-links"><a href="#impl-PartialEq%3CPixelFormat%3E">PartialEq&lt;PixelFormat&gt;</a><a href="#impl-Copy">Copy</a><a href="#impl-Debug">Debug</a><a href="#impl-Eq">Eq</a><a href="#impl-Clone">Clone</a></div></div><p class='location'><a href='index.html'>lcms2</a></p><script>window.sidebarCurrent = {name: 'PixelFormat', ty: 'enum', relpath: ''};</script><script defer src="sidebar-items.js"></script></div>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>lcms2</a>::<wbr><a class="enum" href=''>PixelFormat</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span></span></h1>
+<pre class='rust enum'><div class="docblock attributes">#[repr(u32)]
+</div>pub enum PixelFormat {
+    GRAY_8,
+    GRAY_8_REV,
+    GRAY_16,
+    GRAY_16_REV,
+    GRAY_16_SE,
+    GRAYA_8,
+    GRAYA_16,
+    GRAYA_16_SE,
+    GRAYA_8_PLANAR,
+    GRAYA_16_PLANAR,
+    RGB_8,
+    RGB_8_PLANAR,
+    BGR_8,
+    BGR_8_PLANAR,
+    RGB_16,
+    RGB_16_PLANAR,
+    RGB_16_SE,
+    BGR_16,
+    BGR_16_PLANAR,
+    BGR_16_SE,
+    RGBA_8,
+    RGBA_8_PLANAR,
+    RGBA_16,
+    RGBA_16_PLANAR,
+    RGBA_16_SE,
+    ARGB_8,
+    ARGB_8_PLANAR,
+    ARGB_16,
+    ABGR_8,
+    ABGR_8_PLANAR,
+    ABGR_16,
+    ABGR_16_PLANAR,
+    ABGR_16_SE,
+    BGRA_8,
+    BGRA_8_PLANAR,
+    BGRA_16,
+    BGRA_16_SE,
+    CMY_8,
+    CMY_8_PLANAR,
+    CMY_16,
+    CMY_16_PLANAR,
+    CMY_16_SE,
+    CMYK_8,
+    CMYKA_8,
+    CMYK_8_REV,
+    CMYK_8_PLANAR,
+    CMYK_16,
+    CMYK_16_REV,
+    CMYK_16_PLANAR,
+    CMYK_16_SE,
+    KYMC_8,
+    KYMC_16,
+    KYMC_16_SE,
+    KCMY_8,
+    KCMY_8_REV,
+    KCMY_16,
+    KCMY_16_REV,
+    KCMY_16_SE,
+    CMYK5_8,
+    CMYK5_16,
+    CMYK5_16_SE,
+    KYMC5_8,
+    KYMC5_16,
+    KYMC5_16_SE,
+    CMYK6_8,
+    CMYK6_8_PLANAR,
+    CMYK6_16,
+    CMYK6_16_PLANAR,
+    CMYK6_16_SE,
+    CMYK7_8,
+    CMYK7_16,
+    CMYK7_16_SE,
+    KYMC7_8,
+    KYMC7_16,
+    KYMC7_16_SE,
+    CMYK8_8,
+    CMYK8_16,
+    CMYK8_16_SE,
+    KYMC8_8,
+    KYMC8_16,
+    KYMC8_16_SE,
+    CMYK9_8,
+    CMYK9_16,
+    CMYK9_16_SE,
+    KYMC9_8,
+    KYMC9_16,
+    KYMC9_16_SE,
+    CMYK10_8,
+    CMYK10_16,
+    CMYK10_16_SE,
+    KYMC10_8,
+    KYMC10_16,
+    KYMC10_16_SE,
+    CMYK11_8,
+    CMYK11_16,
+    CMYK11_16_SE,
+    KYMC11_8,
+    KYMC11_16,
+    KYMC11_16_SE,
+    CMYK12_8,
+    CMYK12_16,
+    CMYK12_16_SE,
+    KYMC12_8,
+    KYMC12_16,
+    KYMC12_16_SE,
+    XYZ_16,
+    Lab_8,
+    LabV2_8,
+    ALab_8,
+    ALabV2_8,
+    Lab_16,
+    LabV2_16,
+    Yxy_16,
+    YCbCr_8,
+    YCbCr_8_PLANAR,
+    YCbCr_16,
+    YCbCr_16_PLANAR,
+    YCbCr_16_SE,
+    YUV_8,
+    YUV_8_PLANAR,
+    YUV_16,
+    YUV_16_PLANAR,
+    YUV_16_SE,
+    HLS_8,
+    HLS_8_PLANAR,
+    HLS_16,
+    HLS_16_PLANAR,
+    HLS_16_SE,
+    HSV_8,
+    HSV_8_PLANAR,
+    HSV_16,
+    HSV_16_PLANAR,
+    HSV_16_SE,
+    NAMED_COLOR_INDEX,
+    XYZ_FLT,
+    Lab_FLT,
+    LabA_FLT,
+    GRAY_FLT,
+    RGB_FLT,
+    RGBA_FLT,
+    ARGB_FLT,
+    BGR_FLT,
+    BGRA_FLT,
+    CMYK_FLT,
+    XYZ_DBL,
+    Lab_DBL,
+    GRAY_DBL,
+    RGB_DBL,
+    BGR_DBL,
+    CMYK_DBL,
+    GRAY_HALF_FLT,
+    RGB_HALF_FLT,
+    RGBA_HALF_FLT,
+    CMYK_HALF_FLT,
+    ARGB_HALF_FLT,
+    BGR_HALF_FLT,
+    BGRA_HALF_FLT,
+}</pre><div class='docblock'><p>Format of pixel is defined by one cmsUInt32Number, using bit fields as follows</p>
+
+<pre class="rust rust-example-rendered">
+<span class="number">2</span>                <span class="number">1</span>          <span class="number">0</span>
+                     <span class="number">3</span> <span class="number">2</span> <span class="number">10987</span> <span class="number">6</span> <span class="number">5</span> <span class="number">4</span> <span class="number">3</span> <span class="number">2</span> <span class="number">1</span> <span class="number">098</span> <span class="number">7654</span> <span class="number">321</span>
+                     <span class="ident">A</span> <span class="ident">O</span> <span class="ident">TTTTT</span> <span class="ident">U</span> <span class="ident">Y</span> <span class="ident">F</span> <span class="ident">P</span> <span class="ident">X</span> <span class="ident">S</span> <span class="ident">EEE</span> <span class="ident">CCCC</span> <span class="ident">BBB</span>
+
+       <span class="ident">A</span>: <span class="ident">Floating</span> <span class="ident">point</span> <span class="op">-</span><span class="op">-</span> <span class="ident">With</span> <span class="ident">this</span> <span class="ident">flag</span> <span class="ident">we</span> <span class="ident">can</span> <span class="ident">differentiate</span> <span class="number">16</span> <span class="ident">bits</span> <span class="kw">as</span> <span class="ident">float</span> <span class="ident">and</span> <span class="kw">as</span> <span class="ident">int</span>
+       <span class="ident">O</span>: <span class="ident">Optimized</span> <span class="op">-</span><span class="op">-</span> <span class="ident">previous</span> <span class="ident">optimization</span> <span class="ident">already</span> <span class="ident">returns</span> <span class="ident">the</span> <span class="kw">final</span> <span class="number">8</span><span class="op">-</span><span class="ident">bit</span> <span class="ident">value</span>
+       <span class="ident">T</span>: <span class="ident">Pixeltype</span>
+       <span class="ident">F</span>: <span class="ident">Flavor</span>  <span class="number">0</span><span class="op">=</span><span class="ident">MinIsBlack</span>(<span class="ident">Chocolate</span>) <span class="number">1</span><span class="op">=</span><span class="ident">MinIsWhite</span>(<span class="ident">Vanilla</span>)
+       <span class="ident">P</span>: <span class="ident">Planar</span><span class="question-mark">?</span> <span class="number">0</span><span class="op">=</span><span class="ident">Chunky</span>, <span class="number">1</span><span class="op">=</span><span class="ident">Planar</span>
+       <span class="ident">X</span>: <span class="ident">swap</span> <span class="number">16</span> <span class="ident">bps</span> <span class="ident">endianness</span><span class="question-mark">?</span>
+       <span class="ident">S</span>: <span class="ident">Do</span> <span class="ident">swap</span><span class="question-mark">?</span> <span class="ident">ie</span>, <span class="ident">BGR</span>, <span class="ident">KYMC</span>
+       <span class="ident">E</span>: <span class="ident">Extra</span> <span class="ident">samples</span>
+       <span class="ident">C</span>: <span class="ident">Channels</span> (<span class="ident">Samples</span> <span class="ident">per</span> <span class="ident">pixel</span>)
+       <span class="ident">B</span>: <span class="ident">bytes</span> <span class="ident">per</span> <span class="ident">sample</span>
+       <span class="ident">Y</span>: <span class="ident">Swap</span> <span class="ident">first</span> <span class="op">-</span> <span class="ident">changes</span> <span class="ident">ABGR</span> <span class="ident">to</span> <span class="ident">BGRA</span> <span class="ident">and</span> <span class="ident">KCMY</span> <span class="ident">to</span> <span class="ident">CMYK</span></pre>
+</div><h2 id='variants' class='variants small-section-header'>
+                   Variants<a href='#variants' class='anchor'></a></h2>
+<span id="variant.GRAY_8" class="variant small-section-header"><a href="#variant.GRAY_8" class="anchor field"></a><span id='GRAY_8.v' class='invisible'><code>GRAY_8</code></span></span><span id="variant.GRAY_8_REV" class="variant small-section-header"><a href="#variant.GRAY_8_REV" class="anchor field"></a><span id='GRAY_8_REV.v' class='invisible'><code>GRAY_8_REV</code></span></span><span id="variant.GRAY_16" class="variant small-section-header"><a href="#variant.GRAY_16" class="anchor field"></a><span id='GRAY_16.v' class='invisible'><code>GRAY_16</code></span></span><span id="variant.GRAY_16_REV" class="variant small-section-header"><a href="#variant.GRAY_16_REV" class="anchor field"></a><span id='GRAY_16_REV.v' class='invisible'><code>GRAY_16_REV</code></span></span><span id="variant.GRAY_16_SE" class="variant small-section-header"><a href="#variant.GRAY_16_SE" class="anchor field"></a><span id='GRAY_16_SE.v' class='invisible'><code>GRAY_16_SE</code></span></span><span id="variant.GRAYA_8" class="variant small-section-header"><a href="#variant.GRAYA_8" class="anchor field"></a><span id='GRAYA_8.v' class='invisible'><code>GRAYA_8</code></span></span><span id="variant.GRAYA_16" class="variant small-section-header"><a href="#variant.GRAYA_16" class="anchor field"></a><span id='GRAYA_16.v' class='invisible'><code>GRAYA_16</code></span></span><span id="variant.GRAYA_16_SE" class="variant small-section-header"><a href="#variant.GRAYA_16_SE" class="anchor field"></a><span id='GRAYA_16_SE.v' class='invisible'><code>GRAYA_16_SE</code></span></span><span id="variant.GRAYA_8_PLANAR" class="variant small-section-header"><a href="#variant.GRAYA_8_PLANAR" class="anchor field"></a><span id='GRAYA_8_PLANAR.v' class='invisible'><code>GRAYA_8_PLANAR</code></span></span><span id="variant.GRAYA_16_PLANAR" class="variant small-section-header"><a href="#variant.GRAYA_16_PLANAR" class="anchor field"></a><span id='GRAYA_16_PLANAR.v' class='invisible'><code>GRAYA_16_PLANAR</code></span></span><span id="variant.RGB_8" class="variant small-section-header"><a href="#variant.RGB_8" class="anchor field"></a><span id='RGB_8.v' class='invisible'><code>RGB_8</code></span></span><span id="variant.RGB_8_PLANAR" class="variant small-section-header"><a href="#variant.RGB_8_PLANAR" class="anchor field"></a><span id='RGB_8_PLANAR.v' class='invisible'><code>RGB_8_PLANAR</code></span></span><span id="variant.BGR_8" class="variant small-section-header"><a href="#variant.BGR_8" class="anchor field"></a><span id='BGR_8.v' class='invisible'><code>BGR_8</code></span></span><span id="variant.BGR_8_PLANAR" class="variant small-section-header"><a href="#variant.BGR_8_PLANAR" class="anchor field"></a><span id='BGR_8_PLANAR.v' class='invisible'><code>BGR_8_PLANAR</code></span></span><span id="variant.RGB_16" class="variant small-section-header"><a href="#variant.RGB_16" class="anchor field"></a><span id='RGB_16.v' class='invisible'><code>RGB_16</code></span></span><span id="variant.RGB_16_PLANAR" class="variant small-section-header"><a href="#variant.RGB_16_PLANAR" class="anchor field"></a><span id='RGB_16_PLANAR.v' class='invisible'><code>RGB_16_PLANAR</code></span></span><span id="variant.RGB_16_SE" class="variant small-section-header"><a href="#variant.RGB_16_SE" class="anchor field"></a><span id='RGB_16_SE.v' class='invisible'><code>RGB_16_SE</code></span></span><span id="variant.BGR_16" class="variant small-section-header"><a href="#variant.BGR_16" class="anchor field"></a><span id='BGR_16.v' class='invisible'><code>BGR_16</code></span></span><span id="variant.BGR_16_PLANAR" class="variant small-section-header"><a href="#variant.BGR_16_PLANAR" class="anchor field"></a><span id='BGR_16_PLANAR.v' class='invisible'><code>BGR_16_PLANAR</code></span></span><span id="variant.BGR_16_SE" class="variant small-section-header"><a href="#variant.BGR_16_SE" class="anchor field"></a><span id='BGR_16_SE.v' class='invisible'><code>BGR_16_SE</code></span></span><span id="variant.RGBA_8" class="variant small-section-header"><a href="#variant.RGBA_8" class="anchor field"></a><span id='RGBA_8.v' class='invisible'><code>RGBA_8</code></span></span><span id="variant.RGBA_8_PLANAR" class="variant small-section-header"><a href="#variant.RGBA_8_PLANAR" class="anchor field"></a><span id='RGBA_8_PLANAR.v' class='invisible'><code>RGBA_8_PLANAR</code></span></span><span id="variant.RGBA_16" class="variant small-section-header"><a href="#variant.RGBA_16" class="anchor field"></a><span id='RGBA_16.v' class='invisible'><code>RGBA_16</code></span></span><span id="variant.RGBA_16_PLANAR" class="variant small-section-header"><a href="#variant.RGBA_16_PLANAR" class="anchor field"></a><span id='RGBA_16_PLANAR.v' class='invisible'><code>RGBA_16_PLANAR</code></span></span><span id="variant.RGBA_16_SE" class="variant small-section-header"><a href="#variant.RGBA_16_SE" class="anchor field"></a><span id='RGBA_16_SE.v' class='invisible'><code>RGBA_16_SE</code></span></span><span id="variant.ARGB_8" class="variant small-section-header"><a href="#variant.ARGB_8" class="anchor field"></a><span id='ARGB_8.v' class='invisible'><code>ARGB_8</code></span></span><span id="variant.ARGB_8_PLANAR" class="variant small-section-header"><a href="#variant.ARGB_8_PLANAR" class="anchor field"></a><span id='ARGB_8_PLANAR.v' class='invisible'><code>ARGB_8_PLANAR</code></span></span><span id="variant.ARGB_16" class="variant small-section-header"><a href="#variant.ARGB_16" class="anchor field"></a><span id='ARGB_16.v' class='invisible'><code>ARGB_16</code></span></span><span id="variant.ABGR_8" class="variant small-section-header"><a href="#variant.ABGR_8" class="anchor field"></a><span id='ABGR_8.v' class='invisible'><code>ABGR_8</code></span></span><span id="variant.ABGR_8_PLANAR" class="variant small-section-header"><a href="#variant.ABGR_8_PLANAR" class="anchor field"></a><span id='ABGR_8_PLANAR.v' class='invisible'><code>ABGR_8_PLANAR</code></span></span><span id="variant.ABGR_16" class="variant small-section-header"><a href="#variant.ABGR_16" class="anchor field"></a><span id='ABGR_16.v' class='invisible'><code>ABGR_16</code></span></span><span id="variant.ABGR_16_PLANAR" class="variant small-section-header"><a href="#variant.ABGR_16_PLANAR" class="anchor field"></a><span id='ABGR_16_PLANAR.v' class='invisible'><code>ABGR_16_PLANAR</code></span></span><span id="variant.ABGR_16_SE" class="variant small-section-header"><a href="#variant.ABGR_16_SE" class="anchor field"></a><span id='ABGR_16_SE.v' class='invisible'><code>ABGR_16_SE</code></span></span><span id="variant.BGRA_8" class="variant small-section-header"><a href="#variant.BGRA_8" class="anchor field"></a><span id='BGRA_8.v' class='invisible'><code>BGRA_8</code></span></span><span id="variant.BGRA_8_PLANAR" class="variant small-section-header"><a href="#variant.BGRA_8_PLANAR" class="anchor field"></a><span id='BGRA_8_PLANAR.v' class='invisible'><code>BGRA_8_PLANAR</code></span></span><span id="variant.BGRA_16" class="variant small-section-header"><a href="#variant.BGRA_16" class="anchor field"></a><span id='BGRA_16.v' class='invisible'><code>BGRA_16</code></span></span><span id="variant.BGRA_16_SE" class="variant small-section-header"><a href="#variant.BGRA_16_SE" class="anchor field"></a><span id='BGRA_16_SE.v' class='invisible'><code>BGRA_16_SE</code></span></span><span id="variant.CMY_8" class="variant small-section-header"><a href="#variant.CMY_8" class="anchor field"></a><span id='CMY_8.v' class='invisible'><code>CMY_8</code></span></span><span id="variant.CMY_8_PLANAR" class="variant small-section-header"><a href="#variant.CMY_8_PLANAR" class="anchor field"></a><span id='CMY_8_PLANAR.v' class='invisible'><code>CMY_8_PLANAR</code></span></span><span id="variant.CMY_16" class="variant small-section-header"><a href="#variant.CMY_16" class="anchor field"></a><span id='CMY_16.v' class='invisible'><code>CMY_16</code></span></span><span id="variant.CMY_16_PLANAR" class="variant small-section-header"><a href="#variant.CMY_16_PLANAR" class="anchor field"></a><span id='CMY_16_PLANAR.v' class='invisible'><code>CMY_16_PLANAR</code></span></span><span id="variant.CMY_16_SE" class="variant small-section-header"><a href="#variant.CMY_16_SE" class="anchor field"></a><span id='CMY_16_SE.v' class='invisible'><code>CMY_16_SE</code></span></span><span id="variant.CMYK_8" class="variant small-section-header"><a href="#variant.CMYK_8" class="anchor field"></a><span id='CMYK_8.v' class='invisible'><code>CMYK_8</code></span></span><span id="variant.CMYKA_8" class="variant small-section-header"><a href="#variant.CMYKA_8" class="anchor field"></a><span id='CMYKA_8.v' class='invisible'><code>CMYKA_8</code></span></span><span id="variant.CMYK_8_REV" class="variant small-section-header"><a href="#variant.CMYK_8_REV" class="anchor field"></a><span id='CMYK_8_REV.v' class='invisible'><code>CMYK_8_REV</code></span></span><span id="variant.CMYK_8_PLANAR" class="variant small-section-header"><a href="#variant.CMYK_8_PLANAR" class="anchor field"></a><span id='CMYK_8_PLANAR.v' class='invisible'><code>CMYK_8_PLANAR</code></span></span><span id="variant.CMYK_16" class="variant small-section-header"><a href="#variant.CMYK_16" class="anchor field"></a><span id='CMYK_16.v' class='invisible'><code>CMYK_16</code></span></span><span id="variant.CMYK_16_REV" class="variant small-section-header"><a href="#variant.CMYK_16_REV" class="anchor field"></a><span id='CMYK_16_REV.v' class='invisible'><code>CMYK_16_REV</code></span></span><span id="variant.CMYK_16_PLANAR" class="variant small-section-header"><a href="#variant.CMYK_16_PLANAR" class="anchor field"></a><span id='CMYK_16_PLANAR.v' class='invisible'><code>CMYK_16_PLANAR</code></span></span><span id="variant.CMYK_16_SE" class="variant small-section-header"><a href="#variant.CMYK_16_SE" class="anchor field"></a><span id='CMYK_16_SE.v' class='invisible'><code>CMYK_16_SE</code></span></span><span id="variant.KYMC_8" class="variant small-section-header"><a href="#variant.KYMC_8" class="anchor field"></a><span id='KYMC_8.v' class='invisible'><code>KYMC_8</code></span></span><span id="variant.KYMC_16" class="variant small-section-header"><a href="#variant.KYMC_16" class="anchor field"></a><span id='KYMC_16.v' class='invisible'><code>KYMC_16</code></span></span><span id="variant.KYMC_16_SE" class="variant small-section-header"><a href="#variant.KYMC_16_SE" class="anchor field"></a><span id='KYMC_16_SE.v' class='invisible'><code>KYMC_16_SE</code></span></span><span id="variant.KCMY_8" class="variant small-section-header"><a href="#variant.KCMY_8" class="anchor field"></a><span id='KCMY_8.v' class='invisible'><code>KCMY_8</code></span></span><span id="variant.KCMY_8_REV" class="variant small-section-header"><a href="#variant.KCMY_8_REV" class="anchor field"></a><span id='KCMY_8_REV.v' class='invisible'><code>KCMY_8_REV</code></span></span><span id="variant.KCMY_16" class="variant small-section-header"><a href="#variant.KCMY_16" class="anchor field"></a><span id='KCMY_16.v' class='invisible'><code>KCMY_16</code></span></span><span id="variant.KCMY_16_REV" class="variant small-section-header"><a href="#variant.KCMY_16_REV" class="anchor field"></a><span id='KCMY_16_REV.v' class='invisible'><code>KCMY_16_REV</code></span></span><span id="variant.KCMY_16_SE" class="variant small-section-header"><a href="#variant.KCMY_16_SE" class="anchor field"></a><span id='KCMY_16_SE.v' class='invisible'><code>KCMY_16_SE</code></span></span><span id="variant.CMYK5_8" class="variant small-section-header"><a href="#variant.CMYK5_8" class="anchor field"></a><span id='CMYK5_8.v' class='invisible'><code>CMYK5_8</code></span></span><span id="variant.CMYK5_16" class="variant small-section-header"><a href="#variant.CMYK5_16" class="anchor field"></a><span id='CMYK5_16.v' class='invisible'><code>CMYK5_16</code></span></span><span id="variant.CMYK5_16_SE" class="variant small-section-header"><a href="#variant.CMYK5_16_SE" class="anchor field"></a><span id='CMYK5_16_SE.v' class='invisible'><code>CMYK5_16_SE</code></span></span><span id="variant.KYMC5_8" class="variant small-section-header"><a href="#variant.KYMC5_8" class="anchor field"></a><span id='KYMC5_8.v' class='invisible'><code>KYMC5_8</code></span></span><span id="variant.KYMC5_16" class="variant small-section-header"><a href="#variant.KYMC5_16" class="anchor field"></a><span id='KYMC5_16.v' class='invisible'><code>KYMC5_16</code></span></span><span id="variant.KYMC5_16_SE" class="variant small-section-header"><a href="#variant.KYMC5_16_SE" class="anchor field"></a><span id='KYMC5_16_SE.v' class='invisible'><code>KYMC5_16_SE</code></span></span><span id="variant.CMYK6_8" class="variant small-section-header"><a href="#variant.CMYK6_8" class="anchor field"></a><span id='CMYK6_8.v' class='invisible'><code>CMYK6_8</code></span></span><span id="variant.CMYK6_8_PLANAR" class="variant small-section-header"><a href="#variant.CMYK6_8_PLANAR" class="anchor field"></a><span id='CMYK6_8_PLANAR.v' class='invisible'><code>CMYK6_8_PLANAR</code></span></span><span id="variant.CMYK6_16" class="variant small-section-header"><a href="#variant.CMYK6_16" class="anchor field"></a><span id='CMYK6_16.v' class='invisible'><code>CMYK6_16</code></span></span><span id="variant.CMYK6_16_PLANAR" class="variant small-section-header"><a href="#variant.CMYK6_16_PLANAR" class="anchor field"></a><span id='CMYK6_16_PLANAR.v' class='invisible'><code>CMYK6_16_PLANAR</code></span></span><span id="variant.CMYK6_16_SE" class="variant small-section-header"><a href="#variant.CMYK6_16_SE" class="anchor field"></a><span id='CMYK6_16_SE.v' class='invisible'><code>CMYK6_16_SE</code></span></span><span id="variant.CMYK7_8" class="variant small-section-header"><a href="#variant.CMYK7_8" class="anchor field"></a><span id='CMYK7_8.v' class='invisible'><code>CMYK7_8</code></span></span><span id="variant.CMYK7_16" class="variant small-section-header"><a href="#variant.CMYK7_16" class="anchor field"></a><span id='CMYK7_16.v' class='invisible'><code>CMYK7_16</code></span></span><span id="variant.CMYK7_16_SE" class="variant small-section-header"><a href="#variant.CMYK7_16_SE" class="anchor field"></a><span id='CMYK7_16_SE.v' class='invisible'><code>CMYK7_16_SE</code></span></span><span id="variant.KYMC7_8" class="variant small-section-header"><a href="#variant.KYMC7_8" class="anchor field"></a><span id='KYMC7_8.v' class='invisible'><code>KYMC7_8</code></span></span><span id="variant.KYMC7_16" class="variant small-section-header"><a href="#variant.KYMC7_16" class="anchor field"></a><span id='KYMC7_16.v' class='invisible'><code>KYMC7_16</code></span></span><span id="variant.KYMC7_16_SE" class="variant small-section-header"><a href="#variant.KYMC7_16_SE" class="anchor field"></a><span id='KYMC7_16_SE.v' class='invisible'><code>KYMC7_16_SE</code></span></span><span id="variant.CMYK8_8" class="variant small-section-header"><a href="#variant.CMYK8_8" class="anchor field"></a><span id='CMYK8_8.v' class='invisible'><code>CMYK8_8</code></span></span><span id="variant.CMYK8_16" class="variant small-section-header"><a href="#variant.CMYK8_16" class="anchor field"></a><span id='CMYK8_16.v' class='invisible'><code>CMYK8_16</code></span></span><span id="variant.CMYK8_16_SE" class="variant small-section-header"><a href="#variant.CMYK8_16_SE" class="anchor field"></a><span id='CMYK8_16_SE.v' class='invisible'><code>CMYK8_16_SE</code></span></span><span id="variant.KYMC8_8" class="variant small-section-header"><a href="#variant.KYMC8_8" class="anchor field"></a><span id='KYMC8_8.v' class='invisible'><code>KYMC8_8</code></span></span><span id="variant.KYMC8_16" class="variant small-section-header"><a href="#variant.KYMC8_16" class="anchor field"></a><span id='KYMC8_16.v' class='invisible'><code>KYMC8_16</code></span></span><span id="variant.KYMC8_16_SE" class="variant small-section-header"><a href="#variant.KYMC8_16_SE" class="anchor field"></a><span id='KYMC8_16_SE.v' class='invisible'><code>KYMC8_16_SE</code></span></span><span id="variant.CMYK9_8" class="variant small-section-header"><a href="#variant.CMYK9_8" class="anchor field"></a><span id='CMYK9_8.v' class='invisible'><code>CMYK9_8</code></span></span><span id="variant.CMYK9_16" class="variant small-section-header"><a href="#variant.CMYK9_16" class="anchor field"></a><span id='CMYK9_16.v' class='invisible'><code>CMYK9_16</code></span></span><span id="variant.CMYK9_16_SE" class="variant small-section-header"><a href="#variant.CMYK9_16_SE" class="anchor field"></a><span id='CMYK9_16_SE.v' class='invisible'><code>CMYK9_16_SE</code></span></span><span id="variant.KYMC9_8" class="variant small-section-header"><a href="#variant.KYMC9_8" class="anchor field"></a><span id='KYMC9_8.v' class='invisible'><code>KYMC9_8</code></span></span><span id="variant.KYMC9_16" class="variant small-section-header"><a href="#variant.KYMC9_16" class="anchor field"></a><span id='KYMC9_16.v' class='invisible'><code>KYMC9_16</code></span></span><span id="variant.KYMC9_16_SE" class="variant small-section-header"><a href="#variant.KYMC9_16_SE" class="anchor field"></a><span id='KYMC9_16_SE.v' class='invisible'><code>KYMC9_16_SE</code></span></span><span id="variant.CMYK10_8" class="variant small-section-header"><a href="#variant.CMYK10_8" class="anchor field"></a><span id='CMYK10_8.v' class='invisible'><code>CMYK10_8</code></span></span><span id="variant.CMYK10_16" class="variant small-section-header"><a href="#variant.CMYK10_16" class="anchor field"></a><span id='CMYK10_16.v' class='invisible'><code>CMYK10_16</code></span></span><span id="variant.CMYK10_16_SE" class="variant small-section-header"><a href="#variant.CMYK10_16_SE" class="anchor field"></a><span id='CMYK10_16_SE.v' class='invisible'><code>CMYK10_16_SE</code></span></span><span id="variant.KYMC10_8" class="variant small-section-header"><a href="#variant.KYMC10_8" class="anchor field"></a><span id='KYMC10_8.v' class='invisible'><code>KYMC10_8</code></span></span><span id="variant.KYMC10_16" class="variant small-section-header"><a href="#variant.KYMC10_16" class="anchor field"></a><span id='KYMC10_16.v' class='invisible'><code>KYMC10_16</code></span></span><span id="variant.KYMC10_16_SE" class="variant small-section-header"><a href="#variant.KYMC10_16_SE" class="anchor field"></a><span id='KYMC10_16_SE.v' class='invisible'><code>KYMC10_16_SE</code></span></span><span id="variant.CMYK11_8" class="variant small-section-header"><a href="#variant.CMYK11_8" class="anchor field"></a><span id='CMYK11_8.v' class='invisible'><code>CMYK11_8</code></span></span><span id="variant.CMYK11_16" class="variant small-section-header"><a href="#variant.CMYK11_16" class="anchor field"></a><span id='CMYK11_16.v' class='invisible'><code>CMYK11_16</code></span></span><span id="variant.CMYK11_16_SE" class="variant small-section-header"><a href="#variant.CMYK11_16_SE" class="anchor field"></a><span id='CMYK11_16_SE.v' class='invisible'><code>CMYK11_16_SE</code></span></span><span id="variant.KYMC11_8" class="variant small-section-header"><a href="#variant.KYMC11_8" class="anchor field"></a><span id='KYMC11_8.v' class='invisible'><code>KYMC11_8</code></span></span><span id="variant.KYMC11_16" class="variant small-section-header"><a href="#variant.KYMC11_16" class="anchor field"></a><span id='KYMC11_16.v' class='invisible'><code>KYMC11_16</code></span></span><span id="variant.KYMC11_16_SE" class="variant small-section-header"><a href="#variant.KYMC11_16_SE" class="anchor field"></a><span id='KYMC11_16_SE.v' class='invisible'><code>KYMC11_16_SE</code></span></span><span id="variant.CMYK12_8" class="variant small-section-header"><a href="#variant.CMYK12_8" class="anchor field"></a><span id='CMYK12_8.v' class='invisible'><code>CMYK12_8</code></span></span><span id="variant.CMYK12_16" class="variant small-section-header"><a href="#variant.CMYK12_16" class="anchor field"></a><span id='CMYK12_16.v' class='invisible'><code>CMYK12_16</code></span></span><span id="variant.CMYK12_16_SE" class="variant small-section-header"><a href="#variant.CMYK12_16_SE" class="anchor field"></a><span id='CMYK12_16_SE.v' class='invisible'><code>CMYK12_16_SE</code></span></span><span id="variant.KYMC12_8" class="variant small-section-header"><a href="#variant.KYMC12_8" class="anchor field"></a><span id='KYMC12_8.v' class='invisible'><code>KYMC12_8</code></span></span><span id="variant.KYMC12_16" class="variant small-section-header"><a href="#variant.KYMC12_16" class="anchor field"></a><span id='KYMC12_16.v' class='invisible'><code>KYMC12_16</code></span></span><span id="variant.KYMC12_16_SE" class="variant small-section-header"><a href="#variant.KYMC12_16_SE" class="anchor field"></a><span id='KYMC12_16_SE.v' class='invisible'><code>KYMC12_16_SE</code></span></span><span id="variant.XYZ_16" class="variant small-section-header"><a href="#variant.XYZ_16" class="anchor field"></a><span id='XYZ_16.v' class='invisible'><code>XYZ_16</code></span></span><span id="variant.Lab_8" class="variant small-section-header"><a href="#variant.Lab_8" class="anchor field"></a><span id='Lab_8.v' class='invisible'><code>Lab_8</code></span></span><span id="variant.LabV2_8" class="variant small-section-header"><a href="#variant.LabV2_8" class="anchor field"></a><span id='LabV2_8.v' class='invisible'><code>LabV2_8</code></span></span><span id="variant.ALab_8" class="variant small-section-header"><a href="#variant.ALab_8" class="anchor field"></a><span id='ALab_8.v' class='invisible'><code>ALab_8</code></span></span><span id="variant.ALabV2_8" class="variant small-section-header"><a href="#variant.ALabV2_8" class="anchor field"></a><span id='ALabV2_8.v' class='invisible'><code>ALabV2_8</code></span></span><span id="variant.Lab_16" class="variant small-section-header"><a href="#variant.Lab_16" class="anchor field"></a><span id='Lab_16.v' class='invisible'><code>Lab_16</code></span></span><span id="variant.LabV2_16" class="variant small-section-header"><a href="#variant.LabV2_16" class="anchor field"></a><span id='LabV2_16.v' class='invisible'><code>LabV2_16</code></span></span><span id="variant.Yxy_16" class="variant small-section-header"><a href="#variant.Yxy_16" class="anchor field"></a><span id='Yxy_16.v' class='invisible'><code>Yxy_16</code></span></span><span id="variant.YCbCr_8" class="variant small-section-header"><a href="#variant.YCbCr_8" class="anchor field"></a><span id='YCbCr_8.v' class='invisible'><code>YCbCr_8</code></span></span><span id="variant.YCbCr_8_PLANAR" class="variant small-section-header"><a href="#variant.YCbCr_8_PLANAR" class="anchor field"></a><span id='YCbCr_8_PLANAR.v' class='invisible'><code>YCbCr_8_PLANAR</code></span></span><span id="variant.YCbCr_16" class="variant small-section-header"><a href="#variant.YCbCr_16" class="anchor field"></a><span id='YCbCr_16.v' class='invisible'><code>YCbCr_16</code></span></span><span id="variant.YCbCr_16_PLANAR" class="variant small-section-header"><a href="#variant.YCbCr_16_PLANAR" class="anchor field"></a><span id='YCbCr_16_PLANAR.v' class='invisible'><code>YCbCr_16_PLANAR</code></span></span><span id="variant.YCbCr_16_SE" class="variant small-section-header"><a href="#variant.YCbCr_16_SE" class="anchor field"></a><span id='YCbCr_16_SE.v' class='invisible'><code>YCbCr_16_SE</code></span></span><span id="variant.YUV_8" class="variant small-section-header"><a href="#variant.YUV_8" class="anchor field"></a><span id='YUV_8.v' class='invisible'><code>YUV_8</code></span></span><span id="variant.YUV_8_PLANAR" class="variant small-section-header"><a href="#variant.YUV_8_PLANAR" class="anchor field"></a><span id='YUV_8_PLANAR.v' class='invisible'><code>YUV_8_PLANAR</code></span></span><span id="variant.YUV_16" class="variant small-section-header"><a href="#variant.YUV_16" class="anchor field"></a><span id='YUV_16.v' class='invisible'><code>YUV_16</code></span></span><span id="variant.YUV_16_PLANAR" class="variant small-section-header"><a href="#variant.YUV_16_PLANAR" class="anchor field"></a><span id='YUV_16_PLANAR.v' class='invisible'><code>YUV_16_PLANAR</code></span></span><span id="variant.YUV_16_SE" class="variant small-section-header"><a href="#variant.YUV_16_SE" class="anchor field"></a><span id='YUV_16_SE.v' class='invisible'><code>YUV_16_SE</code></span></span><span id="variant.HLS_8" class="variant small-section-header"><a href="#variant.HLS_8" class="anchor field"></a><span id='HLS_8.v' class='invisible'><code>HLS_8</code></span></span><span id="variant.HLS_8_PLANAR" class="variant small-section-header"><a href="#variant.HLS_8_PLANAR" class="anchor field"></a><span id='HLS_8_PLANAR.v' class='invisible'><code>HLS_8_PLANAR</code></span></span><span id="variant.HLS_16" class="variant small-section-header"><a href="#variant.HLS_16" class="anchor field"></a><span id='HLS_16.v' class='invisible'><code>HLS_16</code></span></span><span id="variant.HLS_16_PLANAR" class="variant small-section-header"><a href="#variant.HLS_16_PLANAR" class="anchor field"></a><span id='HLS_16_PLANAR.v' class='invisible'><code>HLS_16_PLANAR</code></span></span><span id="variant.HLS_16_SE" class="variant small-section-header"><a href="#variant.HLS_16_SE" class="anchor field"></a><span id='HLS_16_SE.v' class='invisible'><code>HLS_16_SE</code></span></span><span id="variant.HSV_8" class="variant small-section-header"><a href="#variant.HSV_8" class="anchor field"></a><span id='HSV_8.v' class='invisible'><code>HSV_8</code></span></span><span id="variant.HSV_8_PLANAR" class="variant small-section-header"><a href="#variant.HSV_8_PLANAR" class="anchor field"></a><span id='HSV_8_PLANAR.v' class='invisible'><code>HSV_8_PLANAR</code></span></span><span id="variant.HSV_16" class="variant small-section-header"><a href="#variant.HSV_16" class="anchor field"></a><span id='HSV_16.v' class='invisible'><code>HSV_16</code></span></span><span id="variant.HSV_16_PLANAR" class="variant small-section-header"><a href="#variant.HSV_16_PLANAR" class="anchor field"></a><span id='HSV_16_PLANAR.v' class='invisible'><code>HSV_16_PLANAR</code></span></span><span id="variant.HSV_16_SE" class="variant small-section-header"><a href="#variant.HSV_16_SE" class="anchor field"></a><span id='HSV_16_SE.v' class='invisible'><code>HSV_16_SE</code></span></span><span id="variant.NAMED_COLOR_INDEX" class="variant small-section-header"><a href="#variant.NAMED_COLOR_INDEX" class="anchor field"></a><span id='NAMED_COLOR_INDEX.v' class='invisible'><code>NAMED_COLOR_INDEX</code></span></span><span id="variant.XYZ_FLT" class="variant small-section-header"><a href="#variant.XYZ_FLT" class="anchor field"></a><span id='XYZ_FLT.v' class='invisible'><code>XYZ_FLT</code></span></span><span id="variant.Lab_FLT" class="variant small-section-header"><a href="#variant.Lab_FLT" class="anchor field"></a><span id='Lab_FLT.v' class='invisible'><code>Lab_FLT</code></span></span><span id="variant.LabA_FLT" class="variant small-section-header"><a href="#variant.LabA_FLT" class="anchor field"></a><span id='LabA_FLT.v' class='invisible'><code>LabA_FLT</code></span></span><span id="variant.GRAY_FLT" class="variant small-section-header"><a href="#variant.GRAY_FLT" class="anchor field"></a><span id='GRAY_FLT.v' class='invisible'><code>GRAY_FLT</code></span></span><span id="variant.RGB_FLT" class="variant small-section-header"><a href="#variant.RGB_FLT" class="anchor field"></a><span id='RGB_FLT.v' class='invisible'><code>RGB_FLT</code></span></span><span id="variant.RGBA_FLT" class="variant small-section-header"><a href="#variant.RGBA_FLT" class="anchor field"></a><span id='RGBA_FLT.v' class='invisible'><code>RGBA_FLT</code></span></span><span id="variant.ARGB_FLT" class="variant small-section-header"><a href="#variant.ARGB_FLT" class="anchor field"></a><span id='ARGB_FLT.v' class='invisible'><code>ARGB_FLT</code></span></span><span id="variant.BGR_FLT" class="variant small-section-header"><a href="#variant.BGR_FLT" class="anchor field"></a><span id='BGR_FLT.v' class='invisible'><code>BGR_FLT</code></span></span><span id="variant.BGRA_FLT" class="variant small-section-header"><a href="#variant.BGRA_FLT" class="anchor field"></a><span id='BGRA_FLT.v' class='invisible'><code>BGRA_FLT</code></span></span><span id="variant.CMYK_FLT" class="variant small-section-header"><a href="#variant.CMYK_FLT" class="anchor field"></a><span id='CMYK_FLT.v' class='invisible'><code>CMYK_FLT</code></span></span><span id="variant.XYZ_DBL" class="variant small-section-header"><a href="#variant.XYZ_DBL" class="anchor field"></a><span id='XYZ_DBL.v' class='invisible'><code>XYZ_DBL</code></span></span><span id="variant.Lab_DBL" class="variant small-section-header"><a href="#variant.Lab_DBL" class="anchor field"></a><span id='Lab_DBL.v' class='invisible'><code>Lab_DBL</code></span></span><span id="variant.GRAY_DBL" class="variant small-section-header"><a href="#variant.GRAY_DBL" class="anchor field"></a><span id='GRAY_DBL.v' class='invisible'><code>GRAY_DBL</code></span></span><span id="variant.RGB_DBL" class="variant small-section-header"><a href="#variant.RGB_DBL" class="anchor field"></a><span id='RGB_DBL.v' class='invisible'><code>RGB_DBL</code></span></span><span id="variant.BGR_DBL" class="variant small-section-header"><a href="#variant.BGR_DBL" class="anchor field"></a><span id='BGR_DBL.v' class='invisible'><code>BGR_DBL</code></span></span><span id="variant.CMYK_DBL" class="variant small-section-header"><a href="#variant.CMYK_DBL" class="anchor field"></a><span id='CMYK_DBL.v' class='invisible'><code>CMYK_DBL</code></span></span><span id="variant.GRAY_HALF_FLT" class="variant small-section-header"><a href="#variant.GRAY_HALF_FLT" class="anchor field"></a><span id='GRAY_HALF_FLT.v' class='invisible'><code>GRAY_HALF_FLT</code></span></span><span id="variant.RGB_HALF_FLT" class="variant small-section-header"><a href="#variant.RGB_HALF_FLT" class="anchor field"></a><span id='RGB_HALF_FLT.v' class='invisible'><code>RGB_HALF_FLT</code></span></span><span id="variant.RGBA_HALF_FLT" class="variant small-section-header"><a href="#variant.RGBA_HALF_FLT" class="anchor field"></a><span id='RGBA_HALF_FLT.v' class='invisible'><code>RGBA_HALF_FLT</code></span></span><span id="variant.CMYK_HALF_FLT" class="variant small-section-header"><a href="#variant.CMYK_HALF_FLT" class="anchor field"></a><span id='CMYK_HALF_FLT.v' class='invisible'><code>CMYK_HALF_FLT</code></span></span><span id="variant.ARGB_HALF_FLT" class="variant small-section-header"><a href="#variant.ARGB_HALF_FLT" class="anchor field"></a><span id='ARGB_HALF_FLT.v' class='invisible'><code>ARGB_HALF_FLT</code></span></span><span id="variant.BGR_HALF_FLT" class="variant small-section-header"><a href="#variant.BGR_HALF_FLT" class="anchor field"></a><span id='BGR_HALF_FLT.v' class='invisible'><code>BGR_HALF_FLT</code></span></span><span id="variant.BGRA_HALF_FLT" class="variant small-section-header"><a href="#variant.BGRA_HALF_FLT" class="anchor field"></a><span id='BGRA_HALF_FLT.v' class='invisible'><code>BGRA_HALF_FLT</code></span></span>
+                    <h2 id='methods' class='small-section-header'>
+                      Methods<a href='#methods' class='anchor'></a>
+                    </h2>
+                <h3 id='impl' class='impl'><span class='in-band'><code>impl <a class="enum" href="../lcms2/enum.PixelFormat.html" title="enum lcms2::PixelFormat">PixelFormat</a></code><a href='#impl' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.float' class="method"><span id='float.v' class='invisible'><code>pub fn <a href='#method.float' class='fnname'>float</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a></code></span></h4>
+<h4 id='method.optimized' class="method"><span id='optimized.v' class='invisible'><code>pub fn <a href='#method.optimized' class='fnname'>optimized</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a></code></span></h4>
+<h4 id='method.colorspace' class="method"><span id='colorspace.v' class='invisible'><code>pub fn <a href='#method.colorspace' class='fnname'>colorspace</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a></code></span></h4>
+<h4 id='method.swapfirst' class="method"><span id='swapfirst.v' class='invisible'><code>pub fn <a href='#method.swapfirst' class='fnname'>swapfirst</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a></code></span></h4>
+<h4 id='method.flavor' class="method"><span id='flavor.v' class='invisible'><code>pub fn <a href='#method.flavor' class='fnname'>flavor</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a></code></span></h4>
+<h4 id='method.planar' class="method"><span id='planar.v' class='invisible'><code>pub fn <a href='#method.planar' class='fnname'>planar</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span></h4>
+<h4 id='method.endian16' class="method"><span id='endian16.v' class='invisible'><code>pub fn <a href='#method.endian16' class='fnname'>endian16</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a></code></span></h4>
+<h4 id='method.doswap' class="method"><span id='doswap.v' class='invisible'><code>pub fn <a href='#method.doswap' class='fnname'>doswap</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a></code></span></h4>
+<h4 id='method.extra' class="method"><span id='extra.v' class='invisible'><code>pub fn <a href='#method.extra' class='fnname'>extra</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a></code></span></h4>
+<h4 id='method.channels' class="method"><span id='channels.v' class='invisible'><code>pub fn <a href='#method.channels' class='fnname'>channels</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a></code></span></h4>
+<h4 id='method.bytes_per_channel' class="method"><span id='bytes_per_channel.v' class='invisible'><code>pub fn <a href='#method.bytes_per_channel' class='fnname'>bytes_per_channel</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a></code></span></h4>
+<h4 id='method.bytes_per_pixel' class="method"><span id='bytes_per_pixel.v' class='invisible'><code>pub fn <a href='#method.bytes_per_pixel' class='fnname'>bytes_per_pixel</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a></code></span></h4>
+</div>
+            <h2 id='implementations' class='small-section-header'>
+              Trait Implementations<a href='#implementations' class='anchor'></a>
+            </h2>
+        <h3 id='impl-PartialEq%3CPixelFormat%3E' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html" title="trait core::cmp::PartialEq">PartialEq</a>&lt;<a class="enum" href="../lcms2/enum.PixelFormat.html" title="enum lcms2::PixelFormat">PixelFormat</a>&gt; for <a class="enum" href="../lcms2/enum.PixelFormat.html" title="enum lcms2::PixelFormat">PixelFormat</a></code><a href='#impl-PartialEq%3CPixelFormat%3E' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.eq' class="method"><span id='eq.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#tymethod.eq' class='fnname'>eq</a>(&amp;self, __arg_0: &amp;<a class="enum" href="../lcms2/enum.PixelFormat.html" title="enum lcms2::PixelFormat">PixelFormat</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span></h4>
+<div class='docblock'><p>This method tests for <code>self</code> and <code>other</code> values to be equal, and is used by <code>==</code>. <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#tymethod.eq">Read more</a></p>
+</div><h4 id='method.ne' class="method"><span id='ne.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#method.ne' class='fnname'>ne</a>(&amp;self, other: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>Rhs) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span><span class='out-of-band'><div class='ghost'></div><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div><a class='srclink' href='https://doc.rust-lang.org/nightly/src/core/cmp.rs.html#121' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>This method tests for <code>!=</code>.</p>
+</div></div><h3 id='impl-Copy' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> for <a class="enum" href="../lcms2/enum.PixelFormat.html" title="enum lcms2::PixelFormat">PixelFormat</a></code><a href='#impl-Copy' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'></div><h3 id='impl-Debug' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> for <a class="enum" href="../lcms2/enum.PixelFormat.html" title="enum lcms2::PixelFormat">PixelFormat</a></code><a href='#impl-Debug' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class="method"><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html" title="struct core::fmt::Formatter">Formatter</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Error.html" title="struct core::fmt::Error">Error</a>&gt;</code></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter. <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt">Read more</a></p>
+</div></div><h3 id='impl-Eq' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html" title="trait core::cmp::Eq">Eq</a> for <a class="enum" href="../lcms2/enum.PixelFormat.html" title="enum lcms2::PixelFormat">PixelFormat</a></code><a href='#impl-Eq' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'></div><h3 id='impl-Clone' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> for <a class="enum" href="../lcms2/enum.PixelFormat.html" title="enum lcms2::PixelFormat">PixelFormat</a></code><a href='#impl-Clone' class='anchor'></a></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.clone' class="method"><span id='clone.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class="enum" href="../lcms2/enum.PixelFormat.html" title="enum lcms2::PixelFormat">PixelFormat</a></code></span></h4>
+<div class='docblock'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
+</div><h4 id='method.clone_from' class="method"><span id='clone_from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>Self)</code></span><span class='out-of-band'><div class='ghost'></div><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div><a class='srclink' href='https://doc.rust-lang.org/nightly/src/core/clone.rs.html#112-114' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>↑</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>↓</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>↹</dt>
+                    <dd>Switch tab</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt style="width:31px;">+ / -</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "lcms2";
+    </script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>
