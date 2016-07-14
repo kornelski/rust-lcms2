@@ -6,9 +6,13 @@ mod transform;
 mod tonecurve;
 use std::marker::PhantomData;
 
+#[doc(hidden)]
 pub use ffi::CIEXYZ;
+#[doc(hidden)]
 pub use ffi::CIExyYTRIPLE;
+#[doc(hidden)]
 pub use ffi::CIExyY;
+
 pub use ffi::PixelFormat;
 pub use ffi::InfoType;
 pub use ffi::TagSignature;
