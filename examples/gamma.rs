@@ -23,7 +23,7 @@ fn main() {
     };
 
     let custom_gamma = &ToneCurve::new(1./0.4545455);
-    let custom_profile = Profile::new_rgb(CIExyY::d50(), &custom_primaries, &[custom_gamma, custom_gamma, custom_gamma]);
+    let custom_profile = Profile::new_rgb(CIExyY::d50(), &custom_primaries, &[custom_gamma, custom_gamma, custom_gamma]).unwrap();
 
     // Applies the profiles
     let t = Transform::new(&custom_profile, PixelFormat::RGB_8, &srgb_profile, PixelFormat::RGBA_16, Intent::Perceptual);

@@ -8,20 +8,20 @@ use std::ffi::CString;
 use std::default::Default;
 
 impl Profile {
-    pub fn new_icc(data: &[u8]) -> Profile {
+    pub fn new_icc(data: &[u8]) -> Option<Profile> {
         Self::new_handle(unsafe {
             ffi::cmsOpenProfileFromMem(data.as_ptr() as *const c_void, data.len() as u32)
         })
     }
 
     pub fn new_srgb() -> Profile {
-        Self::new_handle(unsafe { ffi::cmsCreate_sRGBProfile() })
+        Self::new_handle(unsafe { ffi::cmsCreate_sRGBProfile() }).unwrap()
     }
 
     pub fn new_rgb(white_point: &CIExyY,
                    primaries: &CIExyYTRIPLE,
                    transfer_function: &[&ToneCurve])
-                   -> Profile {
+                   -> Option<Profile> {
         assert_eq!(3, transfer_function.len());
         Self::new_handle(unsafe {
             ffi::cmsCreateRGBProfile(white_point,
@@ -33,33 +33,35 @@ impl Profile {
         })
     }
 
-    pub fn new_gray(white_point: &CIExyY, curve: &ToneCurve) -> Profile {
+    pub fn new_gray(white_point: &CIExyY, curve: &ToneCurve) -> Option<Profile> {
         Self::new_handle(unsafe { ffi::cmsCreateGrayProfile(white_point, curve.handle) })
     }
 
     pub fn new_xyz() -> Profile {
-        Self::new_handle(unsafe { ffi::cmsCreateXYZProfile() })
+        Self::new_handle(unsafe { ffi::cmsCreateXYZProfile() }).unwrap()
     }
 
     pub fn new_null() -> Profile {
-        Self::new_handle(unsafe { ffi::cmsCreateNULLProfile() })
+        Self::new_handle(unsafe { ffi::cmsCreateNULLProfile() }).unwrap()
     }
 
-    pub fn new_lab2(white_point: &CIExyY) -> Profile {
+    pub fn new_lab2(white_point: &CIExyY) -> Option<Profile> {
         Self::new_handle(unsafe { ffi::cmsCreateLab2Profile(white_point) })
     }
 
-    pub fn new_lab4(white_point: &CIExyY) -> Profile {
+    pub fn new_lab4(white_point: &CIExyY) -> Option<Profile> {
         Self::new_handle(unsafe { ffi::cmsCreateLab4Profile(white_point) })
     }
 
-    pub fn new_device_link<F, T>(transform: &Transform<F, T>, version: f64, flags: u32) -> Profile {
+    pub fn new_device_link<F, T>(transform: &Transform<F, T>, version: f64, flags: u32) -> Option<Profile> {
         Self::new_handle(unsafe { ffi::cmsTransform2DeviceLink(transform.handle, version, flags) })
     }
 
-    fn new_handle(handle: ffi::HPROFILE) -> Profile {
-        assert!(!handle.is_null());
-        Profile { handle: handle }
+    fn new_handle(handle: ffi::HPROFILE) -> Option<Profile> {
+        if handle.is_null() {
+            return None;
+        }
+        Some(Profile { handle: handle })
     }
 
     pub fn icc(&self) -> Option<Vec<u8>> {
@@ -222,4 +224,10 @@ impl Drop for Profile {
 fn icc() {
     let prof = Profile::new_xyz();
     assert!(prof.icc().unwrap().len() > 300);
+}
+
+#[test]
+fn bad_icc() {
+    let err = Profile::new_icc(&[1,2,3]);
+    assert!(err.is_none());
 }

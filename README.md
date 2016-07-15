@@ -9,7 +9,7 @@ Convert and apply color profiles with a safe abstraction layer for the LCMS libr
 
     fn main() {
         let icc_file = include_bytes!("custom_profile.icc");
-        let custom_profile = Profile::new_icc(icc_file);
+        let custom_profile = Profile::new_icc(icc_file).unwrap();
 
         let srgb_profile = Profile::new_srgb();
 
@@ -25,3 +25,15 @@ Convert and apply color profiles with a safe abstraction layer for the LCMS libr
 ```
 
 See `examples` dir and [LCMS2 documentation PDF](http://www.littlecms.com/LittleCMS2.7%20API.pdf) for more info.
+
+To apply ICC profile in JPEG:
+
+```rust
+if "ICC_PROFILE\0".as_bytes() == &app2_marker_data[0..12] {
+   let icc = &app2_marker_data[14..]; // Lazy assumption that the profile is smaller than 64KB
+   let profile = Profile::new_icc(icc).unwrap();
+   let t = Transform::new(&profile, PixelFormat::RGB_8,
+       &Profile::new_srgb(), PixelFormat::RGB_8, Intent::Perceptual);
+   t.transform_in_place(&mut rgb);
+}
+```

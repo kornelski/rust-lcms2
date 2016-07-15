@@ -12,7 +12,7 @@ struct RGB16 {
 #[test]
 fn transform() {
     const PROFILE: &'static [u8] = include_bytes!("tinysrgb.icc");
-    let tiny = Profile::new_icc(PROFILE);
+    let tiny = Profile::new_icc(PROFILE).unwrap();
     assert_eq!(ColorSpaceSignature::SigRgbData, tiny.color_space());
     assert_eq!("c2", tiny.info(InfoType::Description, "en", "us").unwrap());
     assert_eq!(2.1, tiny.version());
@@ -23,7 +23,7 @@ fn transform() {
     assert_eq!(ColorSpaceSignature::SigRgbData, srgb.color_space());
 
     let tiny2 = tiny.icc().unwrap();
-    let tiny2 = Profile::new_icc(&tiny2);
+    let tiny2 = Profile::new_icc(&tiny2).unwrap();
 
     let tr = Transform::new_flags(&tiny, PixelFormat::RGBA_8, &tiny2, PixelFormat::RGB_16, Intent::Perceptual, 0);
     let src = vec![0xFFFFFFFFu32,0,0x7F7F7F7F,0x10101010];
