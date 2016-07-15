@@ -9,60 +9,57 @@ use std::default::Default;
 
 impl Profile {
     pub fn new_icc(data: &[u8]) -> Profile {
-        Profile {
-            handle: unsafe {
-                ffi::cmsOpenProfileFromMem(data.as_ptr() as *const c_void, data.len() as u32)
-            },
-        }
+        Self::new_handle(unsafe {
+            ffi::cmsOpenProfileFromMem(data.as_ptr() as *const c_void, data.len() as u32)
+        })
     }
 
     pub fn new_srgb() -> Profile {
-        Profile { handle: unsafe { ffi::cmsCreate_sRGBProfile() } }
+        Self::new_handle(unsafe { ffi::cmsCreate_sRGBProfile() })
     }
 
-    pub fn new_rgb(white_point: &CIExyY, primaries: &CIExyYTRIPLE, transfer_function: &[&ToneCurve]) -> Profile {
+    pub fn new_rgb(white_point: &CIExyY,
+                   primaries: &CIExyYTRIPLE,
+                   transfer_function: &[&ToneCurve])
+                   -> Profile {
         assert_eq!(3, transfer_function.len());
-        Profile {
-            handle: unsafe {
-                ffi::cmsCreateRGBProfile(white_point, primaries, [
-                    transfer_function[0].handle as *const _,
-                    transfer_function[1].handle as *const _,
-                    transfer_function[2].handle as *const _,
-                ].as_ptr())
-            }
-        }
+        Self::new_handle(unsafe {
+            ffi::cmsCreateRGBProfile(white_point,
+                                     primaries,
+                                     [transfer_function[0].handle as *const _,
+                                      transfer_function[1].handle as *const _,
+                                      transfer_function[2].handle as *const _]
+                                         .as_ptr())
+        })
     }
 
     pub fn new_gray(white_point: &CIExyY, curve: &ToneCurve) -> Profile {
-        Profile {
-            handle: unsafe {
-                ffi::cmsCreateGrayProfile(white_point, curve.handle)
-            }
-        }
+        Self::new_handle(unsafe { ffi::cmsCreateGrayProfile(white_point, curve.handle) })
     }
 
     pub fn new_xyz() -> Profile {
-        Profile { handle: unsafe { ffi::cmsCreateXYZProfile() } }
+        Self::new_handle(unsafe { ffi::cmsCreateXYZProfile() })
     }
 
     pub fn new_null() -> Profile {
-        Profile { handle: unsafe { ffi::cmsCreateNULLProfile() } }
+        Self::new_handle(unsafe { ffi::cmsCreateNULLProfile() })
     }
 
     pub fn new_lab2(white_point: &CIExyY) -> Profile {
-        Profile { handle: unsafe { ffi::cmsCreateLab2Profile(white_point) } }
+        Self::new_handle(unsafe { ffi::cmsCreateLab2Profile(white_point) })
     }
 
     pub fn new_lab4(white_point: &CIExyY) -> Profile {
-        Profile { handle: unsafe { ffi::cmsCreateLab4Profile(white_point) } }
+        Self::new_handle(unsafe { ffi::cmsCreateLab4Profile(white_point) })
     }
 
-    pub fn new_device_link<F,T>(transform: &Transform<F,T>, version: f64, flags: u32) -> Profile {
-        Profile {
-            handle: unsafe {
-                ffi::cmsTransform2DeviceLink(transform.handle, version, flags)
-            },
-        }
+    pub fn new_device_link<F, T>(transform: &Transform<F, T>, version: f64, flags: u32) -> Profile {
+        Self::new_handle(unsafe { ffi::cmsTransform2DeviceLink(transform.handle, version, flags) })
+    }
+
+    fn new_handle(handle: ffi::HPROFILE) -> Profile {
+        assert!(!handle.is_null());
+        Profile { handle: handle }
     }
 
     pub fn icc(&self) -> Option<Vec<u8>> {
