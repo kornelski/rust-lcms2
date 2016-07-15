@@ -7,6 +7,7 @@ description = "ICC color profile handling. Rusty wrapper Little CMS"
 readme = "README.md"
 license = "MIT"
 documentation = "https://pornel.github.io/rust-lcms2/lcms2/"
+repository = "https://github.com/pornel/rust-lcms2.git"
 version = "0.2.0"
 
 [dependencies]
