@@ -45,7 +45,7 @@ impl<F: Copy + Clone, T: Copy + Clone> Transform<F, T> {
         PhantomData
     }
 
-    pub fn transform_pixels(&self, src: &[F], dst: &[T]) {
+    pub fn transform_pixels(&self, src: &[F], dst: &mut [T]) {
         let size = src.len();
         assert_eq!(size, dst.len());
         assert!(size < std::u32::MAX as usize);

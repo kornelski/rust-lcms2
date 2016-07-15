@@ -207,7 +207,7 @@ impl Profile {
         unsafe { ffi::cmsIsMatrixShaper(self.handle) != 0 }
     }
 
-    pub fn is_tag(&self, sig: TagSignature) -> bool {
+    pub fn has_tag(&self, sig: TagSignature) -> bool {
         unsafe { ffi::cmsIsTag(self.handle, sig) != 0 }
     }
 }
