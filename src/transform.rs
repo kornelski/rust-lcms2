@@ -58,20 +58,16 @@ impl<F: Copy + Clone, T: Copy + Clone> Transform<F, T> {
     }
 
     pub fn input_format(&self) -> PixelFormat {
-        unsafe {
-            ffi::cmsGetTransformInputFormat(self.handle) as PixelFormat
-        }
+        unsafe { ffi::cmsGetTransformInputFormat(self.handle) as PixelFormat }
     }
 
     pub fn output_format(&self) -> PixelFormat {
-        unsafe {
-            ffi::cmsGetTransformOutputFormat(self.handle) as PixelFormat
-        }
+        unsafe { ffi::cmsGetTransformOutputFormat(self.handle) as PixelFormat }
     }
 }
 
 impl<T: Copy + Clone> Transform<T, T> {
-      pub fn transform_in_place(&self, srcdst: &mut [T]) {
+    pub fn transform_in_place(&self, srcdst: &mut [T]) {
         let size = srcdst.len();
         assert!(size < std::u32::MAX as usize);
         unsafe {

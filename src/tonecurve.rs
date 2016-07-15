@@ -6,9 +6,7 @@ use std;
 
 impl ToneCurve {
     pub fn new(gamma: f64) -> ToneCurve {
-        Self::new_handle(unsafe {
-            ffi::cmsBuildGamma(std::ptr::null_mut(), gamma)
-        })
+        Self::new_handle(unsafe { ffi::cmsBuildGamma(std::ptr::null_mut(), gamma) })
     }
 
     pub fn new_tabulated(values: &[u16]) -> ToneCurve {
@@ -27,57 +25,39 @@ impl ToneCurve {
 
     fn new_handle(handle: *mut ffi::ToneCurve) -> ToneCurve {
         assert!(!handle.is_null());
-        ToneCurve {
-            handle: handle
-        }
+        ToneCurve { handle: handle }
     }
 
     pub fn reversed(&self) -> ToneCurve {
-        Self::new_handle(unsafe {
-            ffi::cmsReverseToneCurve(self.handle)
-        })
+        Self::new_handle(unsafe { ffi::cmsReverseToneCurve(self.handle) })
     }
 
     pub fn is_multisegment(&self) -> bool {
-        unsafe {
-            ffi::cmsIsToneCurveMultisegment(self.handle) != 0
-        }
+        unsafe { ffi::cmsIsToneCurveMultisegment(self.handle) != 0 }
     }
 
     pub fn is_linear(&self) -> bool {
-        unsafe {
-            ffi::cmsIsToneCurveLinear(self.handle) != 0
-        }
+        unsafe { ffi::cmsIsToneCurveLinear(self.handle) != 0 }
     }
 
     pub fn is_monotonic(&self) -> bool {
-        unsafe {
-            ffi::cmsIsToneCurveMonotonic(self.handle) != 0
-        }
+        unsafe { ffi::cmsIsToneCurveMonotonic(self.handle) != 0 }
     }
 
     pub fn is_descending(&self) -> bool {
-        unsafe {
-            ffi::cmsIsToneCurveDescending(self.handle) != 0
-        }
+        unsafe { ffi::cmsIsToneCurveDescending(self.handle) != 0 }
     }
 
     pub fn parametric_type(&self) -> i32 {
-        unsafe {
-            ffi::cmsGetToneCurveParametricType(self.handle)
-        }
+        unsafe { ffi::cmsGetToneCurveParametricType(self.handle) }
     }
 
     pub fn estimated_gamma(&self, precision: f64) -> f64 {
-        unsafe {
-            ffi::cmsEstimateGamma(self.handle, precision)
-        }
+        unsafe { ffi::cmsEstimateGamma(self.handle, precision) }
     }
 
     pub fn smooth(&mut self, lambda: f64) -> bool {
-        unsafe {
-            ffi::cmsSmoothToneCurve(self.handle, lambda) != 0
-        }
+        unsafe { ffi::cmsSmoothToneCurve(self.handle, lambda) != 0 }
     }
 
     pub fn estimated_entries(&self) -> &[u16] {
@@ -91,9 +71,7 @@ impl ToneCurve {
 
 impl Clone for ToneCurve {
     fn clone(&self) -> ToneCurve {
-        Self::new_handle(unsafe {
-            ffi::cmsDupToneCurve(self.handle)
-        })
+        Self::new_handle(unsafe { ffi::cmsDupToneCurve(self.handle) })
     }
 }
 
