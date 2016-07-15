@@ -35,4 +35,13 @@ fn transform() {
         RGB16{r:0x7F7F,g:0x7F7F,b:0x7F7F},
         RGB16{r:0x1010,g:0x1010,b:0x1010},
     ], dst);
+
+    let tr = Transform::new(&tiny2, PixelFormat::RGB_16, &tiny, PixelFormat::RGB_16, Intent::Perceptual);
+    tr.transform_in_place(&mut dst);
+    assert_eq!(vec![
+        RGB16{r:0xFFFF,g:0xFFFF,b:0xFFFF},
+        RGB16{r:0,g:0,b:0},
+        RGB16{r:0x7F7F,g:0x7F7F,b:0x7F7F},
+        RGB16{r:0x1010,g:0x1010,b:0x1010},
+    ], dst);
 }

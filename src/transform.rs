@@ -70,6 +70,19 @@ impl<F: Copy + Clone, T: Copy + Clone> Transform<F, T> {
     }
 }
 
+impl<T: Copy + Clone> Transform<T, T> {
+      pub fn transform_in_place(&self, srcdst: &mut [T]) {
+        let size = srcdst.len();
+        assert!(size < std::u32::MAX as usize);
+        unsafe {
+            ffi::cmsDoTransform(self.handle,
+                                srcdst.as_ptr() as *const c_void,
+                                srcdst.as_ptr() as *mut c_void,
+                                size as u32);
+        }
+    }
+}
+
 impl<F, T> Drop for Transform<F, T> {
     fn drop(&mut self) {
         unsafe {
