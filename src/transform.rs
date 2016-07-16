@@ -16,21 +16,51 @@ impl<F: Copy + Clone, T: Copy + Clone> Transform<F, T> {
     }
 
     pub fn new_flags(input: &Profile,
-               in_format: PixelFormat,
-               output: &Profile,
-               out_format: PixelFormat,
-               intent: Intent,
-               flags: u32)
-               -> Transform<F, T> {
+                     in_format: PixelFormat,
+                     output: &Profile,
+                     out_format: PixelFormat,
+                     intent: Intent,
+                     flags: u32)
+                     -> Transform<F, T> {
+        Self::new_handle(unsafe {
+                             ffi::cmsCreateTransform(input.handle,
+                                                     in_format,
+                                                     output.handle,
+                                                     out_format,
+                                                     intent,
+                                                     flags)
+                         },
+                         in_format,
+                         out_format)
+    }
+
+    pub fn new_proofing(input: &Profile,
+                        in_format: PixelFormat,
+                        output: &Profile,
+                        out_format: PixelFormat,
+                        proofing: &Profile,
+                        intent: Intent,
+                        proofng_intent: Intent,
+                        flags: u32)
+                        -> Transform<F, T> {
+        Self::new_handle(unsafe {
+                             ffi::cmsCreateProofingTransform(input.handle,
+                                                             in_format,
+                                                             output.handle,
+                                                             out_format,
+                                                             proofing.handle,
+                                                             intent,
+                                                             proofng_intent,
+                                                             flags)
+                         },
+                         in_format,
+                         out_format)
+    }
+
+    fn new_handle(handle: ffi::HTRANSFORM, in_format: PixelFormat, out_format: PixelFormat) -> Transform<F, T> {
+        assert!(!handle.is_null());
         Transform {
-            handle: unsafe {
-                ffi::cmsCreateTransform(input.handle,
-                                        in_format,
-                                        output.handle,
-                                        out_format,
-                                        intent,
-                                        flags)
-            },
+            handle: handle,
             _from: Self::check_format::<F>(in_format),
             _to: Self::check_format::<T>(out_format),
         }
