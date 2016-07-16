@@ -2,6 +2,7 @@
 
 extern crate lcms2_sys as ffi;
 mod profile;
+mod tag;
 mod transform;
 mod tonecurve;
 use std::marker::PhantomData;
@@ -33,4 +34,21 @@ pub struct Transform<F, T> {
 
 pub struct ToneCurve {
     handle: *mut ffi::ToneCurve,
+}
+
+pub enum Tag<'a> {
+    CIExyYTRIPLE(&'a ffi::CIExyYTRIPLE),
+    CIEXYZ(&'a ffi::CIEXYZ),
+    ICCData(&'a ffi::ICCData),
+    ICCMeasurementConditions(&'a ffi::ICCMeasurementConditions),
+    ICCViewingConditions(&'a ffi::ICCViewingConditions),
+    MLU(&'a ffi::MLU),
+    NAMEDCOLORLIST(&'a ffi::NAMEDCOLORLIST),
+    Pipeline(&'a ffi::Pipeline),
+    Screening(&'a ffi::Screening),
+    SEQ(&'a ffi::SEQ),
+    Signature(&'a ffi::Signature),
+    ToneCurve(&'a ffi::ToneCurve),
+    UcrBg(&'a ffi::UcrBg),
+    None,
 }

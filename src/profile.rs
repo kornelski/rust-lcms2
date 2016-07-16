@@ -185,9 +185,7 @@ impl Profile {
     }
 
     pub fn detect_tac(&self) -> f64 {
-        unsafe {
-            ffi::cmsDetectTAC(self.handle)
-        }
+        unsafe { ffi::cmsDetectTAC(self.handle) }
     }
 
     pub fn color_space(&self) -> ColorSpaceSignature {
@@ -209,6 +207,10 @@ impl Profile {
     pub fn has_tag(&self, sig: TagSignature) -> bool {
         unsafe { ffi::cmsIsTag(self.handle, sig) != 0 }
     }
+
+    pub fn read_tag<'a>(&'a self, sig: TagSignature) -> Tag<'a> {
+        unsafe { Tag::new(sig, ffi::cmsReadTag(self.handle, sig) as *const u8) }
+    }
 }
 
 impl Drop for Profile {
@@ -219,6 +221,16 @@ impl Drop for Profile {
     }
 }
 
+
+#[test]
+fn tags() {
+    let prof = Profile::new_srgb();
+    assert!(prof.read_tag(TagSignature::SigBToD0Tag).is_none());
+    assert_eq!(CIEXYZ::d50().X, match prof.read_tag(TagSignature::SigMediaWhitePointTag) {
+        Tag::CIEXYZ(xyz) => xyz.X,
+        _ => panic!(),
+    });
+}
 
 #[test]
 fn icc() {
