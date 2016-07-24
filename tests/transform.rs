@@ -18,6 +18,22 @@ fn no_transform() {
 }
 
 #[test]
+#[should_panic]
+fn cmyk_rgb() {
+    let srgb = Profile::new_srgb();
+    let tr = Transform::new(&srgb, PixelFormat::CMYK_8, &srgb, PixelFormat::CMYK_8, Intent::Perceptual);
+    tr.transform_in_place(&mut [0u32; 1]);
+}
+
+#[test]
+#[should_panic]
+fn gray() {
+    let srgb = Profile::new_srgb();
+    let tr = Transform::new(&srgb, PixelFormat::GRAY_8, &srgb, PixelFormat::GRAY_8, Intent::Perceptual);
+    tr.transform_in_place(&mut [0u32; 1]);
+}
+
+#[test]
 fn transform() {
     const PROFILE: &'static [u8] = include_bytes!("tinysrgb.icc");
     let tiny = Profile::new_icc(PROFILE).unwrap();
