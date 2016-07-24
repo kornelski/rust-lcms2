@@ -10,6 +10,14 @@ struct RGB16 {
 }
 
 #[test]
+#[should_panic]
+fn no_transform() {
+    let srgb = Profile::new_srgb();
+    let tr = Transform::new(&srgb, PixelFormat::RGB_16, &srgb, PixelFormat::RGB_16, Intent::Perceptual);
+    tr.transform_in_place(&mut [0u8; 6]);
+}
+
+#[test]
 fn transform() {
     const PROFILE: &'static [u8] = include_bytes!("tinysrgb.icc");
     let tiny = Profile::new_icc(PROFILE).unwrap();
