@@ -33,6 +33,45 @@ fn gray() {
     tr.transform_in_place(&mut [0u32; 1]);
 }
 
+const GRAY_PROFILE: &'static [u8] = include_bytes!("gray18.icc");
+const SGRAY_PROFILE: &'static [u8] = include_bytes!("sGray.icc");
+
+#[test]
+fn transform_gray_to_rgb() {
+    let gray = Profile::new_icc(GRAY_PROFILE).unwrap();
+    assert_eq!(ColorSpaceSignature::SigGrayData, gray.color_space());
+    assert_eq!("Gray Gamma 1.8", gray.info(InfoType::Description, "en", "us").unwrap());
+
+    let srgb = Profile::new_srgb();
+
+    let tr = Transform::new(&gray, PixelFormat::GRAY_8, &srgb, PixelFormat::RGB_8, Intent::Perceptual);
+    let mut dest = vec![(0u8,0u8,0u8); 3];
+    tr.transform_pixels(&[0u8,100u8,255u8], &mut dest);
+    assert_eq!(&dest, &[
+        (0,0,0),
+        (119,119,119),
+        (255,255,255),
+    ]);
+}
+
+#[test]
+fn transform_gray_to_gray() {
+    let gray = Profile::new_icc(GRAY_PROFILE).unwrap();
+    assert_eq!(ColorSpaceSignature::SigGrayData, gray.color_space());
+    assert_eq!("Gray Gamma 1.8", gray.info(InfoType::Description, "en", "us").unwrap());
+
+    let sg = Profile::new_icc(SGRAY_PROFILE).unwrap();
+
+    let tr = Transform::new(&gray, PixelFormat::GRAY_8, &sg, PixelFormat::GRAY_8, Intent::Perceptual);
+    let mut dest = vec![0u8; 3];
+    tr.transform_pixels(&[0u8,100u8,255u8], &mut dest);
+    assert_eq!(&dest, &[
+        0,
+        119,
+        255,
+    ]);
+}
+
 #[test]
 fn transform() {
     const PROFILE: &'static [u8] = include_bytes!("tinysrgb.icc");
