@@ -52,3 +52,9 @@ pub enum Tag<'a> {
     UcrBg(&'a ffi::UcrBg),
     None,
 }
+
+pub fn version() -> u32 {
+    unsafe {
+        ffi::cmsGetEncodedCMMversion() as u32
+    }
+}
