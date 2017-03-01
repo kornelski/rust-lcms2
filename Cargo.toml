@@ -8,7 +8,8 @@ readme = "README.md"
 license = "MIT"
 documentation = "https://pornel.github.io/rust-lcms2/lcms2/"
 repository = "https://github.com/pornel/rust-lcms2.git"
-version = "1.1.1"
+version = "1.1.2"
+categories = ["multimedia::images", "api-bindings"]
 
 [dependencies]
 lcms2-sys = "1.0.0"
