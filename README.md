@@ -29,7 +29,7 @@ See `examples` dir and [LCMS2 documentation PDF](http://www.littlecms.com/Little
 To apply ICC profile in JPEG:
 
 ```rust
-if "ICC_PROFILE\0".as_bytes() == &app2_marker_data[0..12] {
+if b"ICC_PROFILE\0" == &app2_marker_data[0..12] {
    let icc = &app2_marker_data[14..]; // Lazy assumption that the profile is smaller than 64KB
    let profile = Profile::new_icc(icc).unwrap();
    let t = Transform::new(&profile, PixelFormat::RGB_8,

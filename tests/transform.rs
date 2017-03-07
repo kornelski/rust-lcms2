@@ -78,7 +78,7 @@ fn transform() {
     let tiny = Profile::new_icc(PROFILE).unwrap();
     assert_eq!(ColorSpaceSignature::SigRgbData, tiny.color_space());
     assert_eq!("c2", tiny.info(InfoType::Description, "en", "us").unwrap());
-    assert_eq!(2.1, tiny.version());
+    assert!((2.1 - tiny.version()).abs() < std::f64::EPSILON);
 
     assert!(tiny.tag_signatures().contains(&TagSignature::SigGreenColorantTag));
 
