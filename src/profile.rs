@@ -8,15 +8,15 @@ use std::ffi::CString;
 use std::default::Default;
 
 impl Profile {
-	pub fn new_from_file(path: &str) -> Option<Profile> {
-		if let Ok(path) = CString::new(path){
-			return Self::new_handle(unsafe {
-				ffi::cmsOpenProfileFromFile(path.as_ptr(), CString::new("r").unwrap().as_ptr())
-			});
-		}
+    pub fn new_from_file(path: &str) -> Option<Profile> {
+        if let Ok(path) = CString::new(path){
+            return Self::new_handle(unsafe {
+                ffi::cmsOpenProfileFromFile(path.as_ptr(), CString::new("r").unwrap().as_ptr())
+            });
+        }
 
-		None
-	}
+        None
+    }
 
     pub fn new_icc(data: &[u8]) -> Option<Profile> {
         Self::new_handle(unsafe {
@@ -256,5 +256,7 @@ fn bad_icc() {
 
 #[test]
 fn load_icc_runtime() {
-	assert!(Profile::new_from_file("tests/gray18.icc").is_some());
+    assert!(Profile::new_from_file("tests/gray18.icc").is_some());
+    assert!(Profile::new_from_file("löasdkfj.icc").is_none());
+    assert!(Profile::new_from_file("").is_none());
 }
