@@ -8,6 +8,16 @@ use std::ffi::CString;
 use std::default::Default;
 
 impl Profile {
+	pub fn new_from_file(path: &str) -> Option<Profile> {
+		if let Ok(path) = CString::new(path){
+			return Self::new_handle(unsafe {
+				ffi::cmsOpenProfileFromFile(path.as_ptr(), CString::new("r").unwrap().as_ptr())
+			});
+		}
+
+		None
+	}
+
     pub fn new_icc(data: &[u8]) -> Option<Profile> {
         Self::new_handle(unsafe {
             ffi::cmsOpenProfileFromMem(data.as_ptr() as *const c_void, data.len() as u32)
@@ -242,4 +252,9 @@ fn icc() {
 fn bad_icc() {
     let err = Profile::new_icc(&[1,2,3]);
     assert!(err.is_none());
+}
+
+#[test]
+fn load_icc_runtime() {
+	assert!(Profile::new_from_file("tests/gray18.icc").is_some());
 }
