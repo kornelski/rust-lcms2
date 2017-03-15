@@ -26,7 +26,7 @@ fn main() {
     let custom_profile = Profile::new_rgb(CIExyY::d50(), &custom_primaries, &[custom_gamma, custom_gamma, custom_gamma]).unwrap();
 
     // Applies the profiles
-    let t = Transform::new(&custom_profile, PixelFormat::RGB_8, &srgb_profile, PixelFormat::RGBA_16, Intent::Perceptual);
+    let t = Transform::new(&custom_profile, PixelFormat::RGB_8, &srgb_profile, PixelFormat::RGBA_16, Intent::Perceptual).unwrap();
 
     // Slices must contain pixels (not bytes), i.e. struct RGB, not Vec<u8>
     // and the pixels must have repr(C) layout compatible with the PixelFormat in Transform::new()

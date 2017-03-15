@@ -8,20 +8,20 @@ use std::ffi::CString;
 use std::default::Default;
 
 impl Profile {
-    pub fn new_icc(data: &[u8]) -> Option<Profile> {
+    pub fn new_icc(data: &[u8]) -> Result<Self, ()> {
         Self::new_handle(unsafe {
             ffi::cmsOpenProfileFromMem(data.as_ptr() as *const c_void, data.len() as u32)
         })
     }
 
-    pub fn new_srgb() -> Profile {
+    pub fn new_srgb() -> Self {
         Self::new_handle(unsafe { ffi::cmsCreate_sRGBProfile() }).unwrap()
     }
 
     pub fn new_rgb(white_point: &CIExyY,
                    primaries: &CIExyYTRIPLE,
                    transfer_function: &[&ToneCurve])
-                   -> Option<Profile> {
+                   -> Result<Self, ()> {
         assert_eq!(3, transfer_function.len());
         Self::new_handle(unsafe {
             ffi::cmsCreateRGBProfile(white_point,
@@ -33,7 +33,7 @@ impl Profile {
         })
     }
 
-    pub fn new_gray(white_point: &CIExyY, curve: &ToneCurve) -> Option<Profile> {
+    pub fn new_gray(white_point: &CIExyY, curve: &ToneCurve) -> Result<Self, ()> {
         Self::new_handle(unsafe { ffi::cmsCreateGrayProfile(white_point, curve.handle) })
     }
 
@@ -45,36 +45,36 @@ impl Profile {
         Self::new_handle(unsafe { ffi::cmsCreateNULLProfile() }).unwrap()
     }
 
-    pub fn new_lab2(white_point: &CIExyY) -> Option<Profile> {
+    pub fn new_lab2(white_point: &CIExyY) -> Result<Self, ()> {
         Self::new_handle(unsafe { ffi::cmsCreateLab2Profile(white_point) })
     }
 
-    pub fn new_lab4(white_point: &CIExyY) -> Option<Profile> {
+    pub fn new_lab4(white_point: &CIExyY) -> Result<Self, ()> {
         Self::new_handle(unsafe { ffi::cmsCreateLab4Profile(white_point) })
     }
 
-    pub fn new_device_link<F, T>(transform: &Transform<F, T>, version: f64, flags: u32) -> Option<Profile> {
+    pub fn new_device_link<F, T>(transform: &Transform<F, T>, version: f64, flags: u32) -> Result<Self, ()> {
         Self::new_handle(unsafe { ffi::cmsTransform2DeviceLink(transform.handle, version, flags) })
     }
 
-    fn new_handle(handle: ffi::HPROFILE) -> Option<Profile> {
+    fn new_handle(handle: ffi::HPROFILE) -> Result<Self, ()> {
         if handle.is_null() {
-            return None;
+            return Err(());
         }
-        Some(Profile { handle: handle })
+        Ok(Profile { handle: handle })
     }
 
-    pub fn icc(&self) -> Option<Vec<u8>> {
+    pub fn icc(&self) -> Result<Vec<u8>, ()> {
         unsafe {
             let mut len = 0;
             if ffi::cmsSaveProfileToMem(self.handle, std::ptr::null_mut(), &mut len) == 0 {
-                return None;
+                return Err(());
             }
             let mut data = vec![0u8; len as usize];
             if len == 0 || ffi::cmsSaveProfileToMem(self.handle, data.as_mut_ptr() as *mut c_void, &mut len) == 0 {
-                return None;
+                return Err(());
             }
-            Some(data)
+            Ok(data)
         }
     }
 
@@ -241,5 +241,5 @@ fn icc() {
 #[test]
 fn bad_icc() {
     let err = Profile::new_icc(&[1,2,3]);
-    assert!(err.is_none());
+    assert!(err.is_err());
 }
