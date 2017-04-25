@@ -1,4 +1,4 @@
-#[Little CMS](http://www.littlecms.com) wrapper for [Rust](http://www.rust-lang.org/)
+# [Little CMS](http://www.littlecms.com) wrapper for [Rust](http://www.rust-lang.org/)
 
 Convert and apply color profiles with a safe abstraction layer for the LCMS library.
 
@@ -8,7 +8,7 @@ Convert and apply color profiles with a safe abstraction layer for the LCMS libr
     use lcms2::*;
 
     fn main() {
-        let icc_file = include_bytes!("custom_profile.icc");
+        let icc_file = include_bytes!("custom_profile.icc"); // You can use File::open()….read_to_end(…), too
         let custom_profile = Profile::new_icc(icc_file).unwrap();
 
         let srgb_profile = Profile::new_srgb();
