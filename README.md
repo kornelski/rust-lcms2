@@ -2,6 +2,8 @@
 
 Convert and apply color profiles with a safe abstraction layer for the LCMS library.
 
+See [API reference](https://docs.rs/lcms2/) for Rust functions and the [LCMS2 documentation HTML](https://pornel.github.io/rust-lcms2-sys/)/[PDF](http://www.littlecms.com/LittleCMS2.7%20API.pdf) for more background information about the functions.
+
 ```rust
     extern crate rgb;
     extern crate lcms2;
@@ -24,9 +26,7 @@ Convert and apply color profiles with a safe abstraction layer for the LCMS libr
     }
 ```
 
-See `examples` dir and [LCMS2 documentation PDF](http://www.littlecms.com/LittleCMS2.7%20API.pdf) for more info.
-
-To apply ICC profile in JPEG:
+To apply an ICC profile from a JPEG:
 
 ```rust
 if b"ICC_PROFILE\0" == &app2_marker_data[0..12] {
@@ -37,3 +37,5 @@ if b"ICC_PROFILE\0" == &app2_marker_data[0..12] {
    t.transform_in_place(&mut rgb);
 }
 ```
+
+There's more in the `examples` directory.
