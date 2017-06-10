@@ -227,8 +227,8 @@ impl Drop for Profile {
 #[test]
 fn tags() {
     let prof = Profile::new_srgb();
-    assert!(prof.read_tag(TagSignature::SigBToD0Tag).is_none());
-    assert_eq!(CIEXYZ::d50().X, match prof.read_tag(TagSignature::SigMediaWhitePointTag) {
+    assert!(prof.read_tag(TagSignature::BToD0Tag).is_none());
+    assert_eq!(CIEXYZ::d50().X, match prof.read_tag(TagSignature::MediaWhitePointTag) {
         Tag::CIEXYZ(xyz) => xyz.X,
         _ => panic!(),
     });

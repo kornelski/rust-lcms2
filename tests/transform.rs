@@ -39,7 +39,7 @@ const SGRAY_PROFILE: &'static [u8] = include_bytes!("sGray.icc");
 #[test]
 fn transform_gray_to_rgb() {
     let gray = Profile::new_icc(GRAY_PROFILE).unwrap();
-    assert_eq!(ColorSpaceSignature::SigGrayData, gray.color_space());
+    assert_eq!(ColorSpaceSignature::GrayData, gray.color_space());
     assert_eq!("Gray Gamma 1.8", gray.info(InfoType::Description, Locale::new("en_US")).unwrap());
 
     let srgb = Profile::new_srgb();
@@ -57,7 +57,7 @@ fn transform_gray_to_rgb() {
 #[test]
 fn transform_gray_to_gray() {
     let gray = Profile::new_icc(GRAY_PROFILE).unwrap();
-    assert_eq!(ColorSpaceSignature::SigGrayData, gray.color_space());
+    assert_eq!(ColorSpaceSignature::GrayData, gray.color_space());
     assert_eq!("Gray Gamma 1.8", gray.info(InfoType::Description, Locale::new("en_US")).unwrap());
 
     let sg = Profile::new_icc(SGRAY_PROFILE).unwrap();
@@ -76,14 +76,14 @@ fn transform_gray_to_gray() {
 fn transform() {
     const PROFILE: &'static [u8] = include_bytes!("tinysrgb.icc");
     let tiny = Profile::new_icc(PROFILE).unwrap();
-    assert_eq!(ColorSpaceSignature::SigRgbData, tiny.color_space());
+    assert_eq!(ColorSpaceSignature::RgbData, tiny.color_space());
     assert_eq!("c2", tiny.info(InfoType::Description, Locale::new("en_US")).unwrap());
     assert!((2.1 - tiny.version()).abs() < std::f64::EPSILON);
 
-    assert!(tiny.tag_signatures().contains(&TagSignature::SigGreenColorantTag));
+    assert!(tiny.tag_signatures().contains(&TagSignature::GreenColorantTag));
 
     let srgb = Profile::new_srgb();
-    assert_eq!(ColorSpaceSignature::SigRgbData, srgb.color_space());
+    assert_eq!(ColorSpaceSignature::RgbData, srgb.color_space());
 
     let tiny2 = tiny.icc().unwrap();
     let tiny2 = Profile::new_icc(&tiny2).unwrap();
