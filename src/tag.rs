@@ -1,7 +1,5 @@
 use super::*;
 
-extern crate lcms2_sys as ffi;
-
 use std::mem;
 
 impl<'a> Tag<'a> {

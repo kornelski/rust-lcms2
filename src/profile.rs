@@ -1,7 +1,5 @@
 use super::*;
 
-extern crate lcms2_sys as ffi;
-
 use std;
 use std::os::raw::c_void;
 use std::ffi::CString;
