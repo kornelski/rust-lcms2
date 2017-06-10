@@ -4,9 +4,12 @@
 extern crate lcms2_sys as ffi;
 mod profile;
 mod tag;
+mod locale;
 mod transform;
 mod tonecurve;
 use std::marker::PhantomData;
+
+pub use locale::*;
 
 #[doc(hidden)]
 pub use ffi::CIEXYZ;

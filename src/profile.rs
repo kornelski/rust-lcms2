@@ -4,7 +4,6 @@ use std::io;
 use std::io::Read;
 use std::fs::File;
 use std::os::raw::c_void;
-use std::ffi::CString;
 use std::default::Default;
 
 impl Profile {
@@ -122,15 +121,12 @@ impl Profile {
         unsafe { ffi::cmsGetProfileContextID(self.handle) }
     }
 
-    pub fn info(&self, info: InfoType, languagecode: &str, countrycode: &str) -> Option<String> {
-        let languagecode = CString::new(languagecode).unwrap();
-        let countrycode = CString::new(countrycode).unwrap();
-
+    pub fn info(&self, info: InfoType, locale: Locale) -> Option<String> {
         let size = unsafe {
             ffi::cmsGetProfileInfo(self.handle,
                                    info,
-                                   languagecode.as_ptr(),
-                                   countrycode.as_ptr(),
+                                   locale.language_ptr(),
+                                   locale.country_ptr(),
                                    std::ptr::null_mut(),
                                    0)
         };
@@ -144,8 +140,8 @@ impl Profile {
             let len = data.len() * wchar_bytes;
             let res = ffi::cmsGetProfileInfo(self.handle,
                                              info,
-                                             languagecode.as_ptr(),
-                                             countrycode.as_ptr(),
+                                             locale.language_ptr(),
+                                             locale.country_ptr(),
                                              (&mut data).as_mut_ptr(),
                                              len as u32);
             if 0 == res {
