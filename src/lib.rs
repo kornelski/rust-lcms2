@@ -1,3 +1,4 @@
+//! See [Little CMS full documentation](https://pornel.github.io/rust-lcms2-sys/) for more in-depth information about LCMS functions.
 #![allow(dead_code)]
 
 extern crate lcms2_sys as ffi;
