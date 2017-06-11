@@ -2,14 +2,24 @@
 #![allow(dead_code)]
 
 extern crate lcms2_sys as ffi;
+#[macro_use]
+extern crate foreign_types;
+
 mod profile;
 mod tag;
+mod mlu;
+mod namedcolorlist;
+mod pipeline;
 mod locale;
 mod transform;
 mod tonecurve;
 use std::marker::PhantomData;
 
+pub use mlu::*;
 pub use locale::*;
+pub use pipeline::*;
+pub use tonecurve::*;
+pub use namedcolorlist::*;
 
 #[doc(hidden)]
 pub use ffi::CIEXYZ;
@@ -36,23 +46,21 @@ pub struct Transform<F, T> {
     _to: PhantomData<T>,
 }
 
-pub struct ToneCurve {
-    handle: *mut ffi::ToneCurve,
-}
-
+#[derive(Debug)]
 pub enum Tag<'a> {
     CIExyYTRIPLE(&'a ffi::CIExyYTRIPLE),
     CIEXYZ(&'a ffi::CIEXYZ),
     ICCData(&'a ffi::ICCData),
     ICCMeasurementConditions(&'a ffi::ICCMeasurementConditions),
     ICCViewingConditions(&'a ffi::ICCViewingConditions),
-    MLU(&'a ffi::MLU),
-    NAMEDCOLORLIST(&'a ffi::NAMEDCOLORLIST),
-    Pipeline(&'a ffi::Pipeline),
+    MLU(&'a mlu::MLURef),
+    NAMEDCOLORLIST(&'a NamedColorListRef),
+    Pipeline(&'a PipelineRef),
     Screening(&'a ffi::Screening),
     SEQ(&'a ffi::SEQ),
     Signature(&'a ffi::Signature),
-    ToneCurve(&'a ffi::ToneCurve),
+    Technology(ffi::TechnologySignature),
+    ToneCurve(&'a ToneCurveRef),
     UcrBg(&'a ffi::UcrBg),
     None,
 }

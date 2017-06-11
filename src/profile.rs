@@ -5,6 +5,7 @@ use std::io::Read;
 use std::fs::File;
 use std::os::raw::c_void;
 use std::default::Default;
+use foreign_types::ForeignTypeRef;
 
 impl Profile {
     pub fn new_icc(data: &[u8]) -> Result<Self, ()> {
@@ -31,15 +32,15 @@ impl Profile {
         Self::new_handle(unsafe {
             ffi::cmsCreateRGBProfile(white_point,
                                      primaries,
-                                     [transfer_function[0].handle as *const _,
-                                      transfer_function[1].handle as *const _,
-                                      transfer_function[2].handle as *const _]
+                                     [transfer_function[0].as_ptr() as *const _,
+                                      transfer_function[1].as_ptr() as *const _,
+                                      transfer_function[2].as_ptr() as *const _]
                                          .as_ptr())
         })
     }
 
     pub fn new_gray(white_point: &CIExyY, curve: &ToneCurve) -> Result<Self, ()> {
-        Self::new_handle(unsafe { ffi::cmsCreateGrayProfile(white_point, curve.handle) })
+        Self::new_handle(unsafe { ffi::cmsCreateGrayProfile(white_point, curve.as_ptr()) })
     }
 
     pub fn new_xyz() -> Profile {
