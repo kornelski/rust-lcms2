@@ -1,6 +1,8 @@
 use super::*;
-
-use std;
+use std::path::Path;
+use std::io;
+use std::io::Read;
+use std::fs::File;
 use std::os::raw::c_void;
 use std::ffi::CString;
 use std::default::Default;
@@ -10,6 +12,12 @@ impl Profile {
         Self::new_handle(unsafe {
             ffi::cmsOpenProfileFromMem(data.as_ptr() as *const c_void, data.len() as u32)
         })
+    }
+
+    pub fn new_file<P: AsRef<Path>>(path: P) -> io::Result<Self> {
+        let mut buf = Vec::new();
+        File::open(path)?.read_to_end(&mut buf)?;
+        Self::new_icc(&buf).map_err(|_| io::ErrorKind::Other.into())
     }
 
     pub fn new_srgb() -> Self {
