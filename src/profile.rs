@@ -1,5 +1,6 @@
 use super::*;
 use std::path::Path;
+use std::ptr;
 use std::io;
 use std::io::Read;
 use std::fs::File;
@@ -20,6 +21,7 @@ impl Profile {
         Self::new_icc(&buf).map_err(|_| io::ErrorKind::Other.into())
     }
 
+    /// Create an ICC virtual profile for sRGB space. sRGB is a standard RGB color space created cooperatively by HP and Microsoft in 1996 for use on monitors, printers, and the Internet.
     pub fn new_srgb() -> Self {
         Self::new_handle(unsafe { ffi::cmsCreate_sRGBProfile() }).unwrap()
     }
@@ -43,12 +45,28 @@ impl Profile {
         Self::new_handle(unsafe { ffi::cmsCreateGrayProfile(white_point, curve.as_ptr()) })
     }
 
+    /// Number of tone curves must be sufficient for the color space
+    pub unsafe fn new_linearization_device_link(color_space: ColorSpaceSignature, curves: &[ToneCurveRef]) -> LCMSResult<Self> {
+        let v: Vec<_> = curves.iter().map(|c| c.as_ptr() as *const _).collect();
+        Self::new_handle(ffi::cmsCreateLinearizationDeviceLink(color_space, v.as_ptr()))
+    }
+
+    /// This is a devicelink operating in CMYK for ink-limiting. Currently only cmsSigCmykData is supported.
+    /// Limit: Amount of ink limiting in % (0..400%)
+    pub fn ink_limiting(color_space: ColorSpaceSignature, limit: f64) -> LCMSResult<Self> {
+        Self::new_handle(unsafe {ffi::cmsCreateInkLimitingDeviceLink(color_space, limit)})
+    }
+
     pub fn new_xyz() -> Profile {
         Self::new_handle(unsafe { ffi::cmsCreateXYZProfile() }).unwrap()
     }
 
     pub fn new_null() -> Profile {
         Self::new_handle(unsafe { ffi::cmsCreateNULLProfile() }).unwrap()
+    }
+
+    pub fn new_placeholder() -> Self {
+        Self::new_handle(unsafe { ffi::cmsCreateProfilePlaceholder(ptr::null_mut()) }).unwrap()
     }
 
     pub fn new_lab2(white_point: &CIExyY) -> Result<Self, Error> {
