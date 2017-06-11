@@ -18,5 +18,13 @@ fn main() {
     for sig in profile.tag_signatures() {
         let tag = profile.read_tag(sig);
         println!("{:?} = {:?}", sig, tag);
+        match tag {
+            Tag::Pipeline(pipeline) => {
+                for stage in pipeline.stages() {
+                    println!(" └─ {:?}", stage);
+                }
+            }
+            _ => {}
+        }
     }
 }

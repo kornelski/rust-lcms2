@@ -1,5 +1,6 @@
 use super::*;
 use std::fmt;
+use stage::*;
 use std::ptr;
 use eval::FloatOrU16;
 use foreign_types::ForeignTypeRef;
@@ -40,6 +41,24 @@ impl PipelineRef {
         unsafe {
             ffi::cmsPipelineStageCount(self.as_ptr()) as usize
         }
+    }
+
+    pub fn first_stage(&self) -> Option<&StageRef> {
+        unsafe {
+            let f = ffi::cmsPipelineGetPtrToFirstStage(self.as_ptr());
+            if !f.is_null() {Some(ForeignTypeRef::from_ptr(f))} else {None}
+        }
+    }
+
+    pub fn last_stage(&self) -> Option<&StageRef> {
+        unsafe {
+            let f = ffi::cmsPipelineGetPtrToLastStage(self.as_ptr());
+            if !f.is_null() {Some(ForeignTypeRef::from_ptr(f))} else {None}
+        }
+    }
+
+    pub fn stages(&self) -> StagesIter {
+        StagesIter(self.first_stage())
     }
 
     pub fn set_8bit(&mut self, on: bool) -> bool {

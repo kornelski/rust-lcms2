@@ -9,8 +9,8 @@ license = "MIT"
 documentation = "https://pornel.github.io/rust-lcms2/lcms2/"
 repository = "https://github.com/pornel/rust-lcms2.git"
 categories = ["multimedia::images", "api-bindings"]
-version = "4.0.0"
+version = "4.1.0"
 
 [dependencies]
 foreign-types = "0.2.0"
-lcms2-sys = "2.3.0"
+lcms2-sys = "2.3.1"
