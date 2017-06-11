@@ -13,8 +13,10 @@ mod pipeline;
 mod locale;
 mod transform;
 mod tonecurve;
+mod error;
 use std::marker::PhantomData;
 
+pub use error::*;
 pub use mlu::*;
 pub use locale::*;
 pub use pipeline::*;

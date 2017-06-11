@@ -8,7 +8,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<
                in_format: PixelFormat,
                output: &Profile,
                out_format: PixelFormat,
-               intent: Intent) -> Result<Self, ()> {
+               intent: Intent) -> Result<Self, Error> {
         Self::new_flags(input, in_format, output, out_format, intent, 0)
     }
 
@@ -18,7 +18,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<
                      out_format: PixelFormat,
                      intent: Intent,
                      flags: u32)
-                     -> Result<Self, ()> {
+                     -> Result<Self, Error> {
         Self::new_handle(unsafe {
                              ffi::cmsCreateTransform(input.handle,
                                                      in_format,
@@ -39,7 +39,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<
                         intent: Intent,
                         proofng_intent: Intent,
                         flags: u32)
-                        -> Result<Self, ()> {
+                        -> Result<Self, Error> {
         Self::new_handle(unsafe {
                              ffi::cmsCreateProofingTransform(input.handle,
                                                              in_format,
@@ -54,9 +54,9 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<
                          out_format)
     }
 
-    fn new_handle(handle: ffi::HTRANSFORM, in_format: PixelFormat, out_format: PixelFormat) -> Result<Self, ()> {
+    fn new_handle(handle: ffi::HTRANSFORM, in_format: PixelFormat, out_format: PixelFormat) -> Result<Self, Error> {
         if handle.is_null() {
-            Err(())
+            Err(Error::ObjectCreationError)
         } else {
             Ok(Transform {
                 handle: handle,

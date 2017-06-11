@@ -6,8 +6,7 @@ use std::iter::repeat;
 use std::ptr;
 use std::mem;
 use std::char::{decode_utf16, REPLACEMENT_CHARACTER};
-use foreign_types::ForeignTypeRef;
-use foreign_types::ForeignType;
+use foreign_types::{ForeignType, ForeignTypeRef};
 
 foreign_type! {
     type CType = ffi::MLU;
@@ -19,7 +18,9 @@ foreign_type! {
 impl MLU {
     pub fn new(items: usize) -> Self {
         unsafe {
-            MLU::from_ptr(ffi::cmsMLUalloc(ptr::null_mut(), items as u32))
+            let handle = ffi::cmsMLUalloc(ptr::null_mut(), items as u32);
+            assert!(!handle.is_null());
+            MLU::from_ptr(handle)
         }
     }
 }
@@ -45,7 +46,7 @@ impl MLURef {
         }
     }
 
-    pub fn text_ascii(&self, locale: Locale) -> Option<CString> {
+    pub fn text_ascii(&self, locale: Locale) -> LCMSResult<CString> {
         let len = unsafe {
             ffi::cmsMLUgetASCII(self.as_ptr(),
                 locale.language_ptr(),
@@ -53,7 +54,7 @@ impl MLURef {
                 ptr::null_mut(), 0)
         };
         if len == 0 {
-            return None;
+            return Err(Error::MissingData);
         }
         let mut buf = vec![0u8; len as usize];
         unsafe {
@@ -65,14 +66,14 @@ impl MLURef {
                 for c in &mut buf {
                     if *c > 127 {*c = '?' as u8}
                 }
-                CString::new(buf).ok()
+                CString::new(buf).map_err(|_| Error::InvalidString)
             } else {
-                None
+                Err(Error::InvalidString)
             }
         }
     }
 
-    pub fn text(&self, locale: Locale) -> Option<String> {
+    pub fn text(&self, locale: Locale) -> LCMSResult<String> {
         let len_bytes = unsafe {
             ffi::cmsMLUgetWide(self.as_ptr(),
                 locale.language_ptr(),
@@ -81,7 +82,7 @@ impl MLURef {
         };
         let len_wchars = len_bytes as usize / mem::size_of::<wchar_t>();
         if len_wchars == 0 || (len_bytes&1) != 0 {
-            return None;
+            return Err(Error::MissingData);
         }
         let mut buf = vec![0 as wchar_t; len_wchars];
         unsafe {
@@ -90,11 +91,11 @@ impl MLURef {
                 locale.country_ptr(),
                 buf[..].as_ptr() as *mut wchar_t, len_bytes);
             if let Some(0) = buf.pop() { // terminating zero
-                Some(decode_utf16(buf.into_iter().map(|c| c as u16))
+                Ok(decode_utf16(buf.into_iter().map(|c| c as u16))
                    .map(|r| r.unwrap_or(REPLACEMENT_CHARACTER))
                    .collect())
             } else {
-                None
+                Err(Error::InvalidString)
             }
         }
     }
@@ -116,7 +117,7 @@ impl MLURef {
     }
 
     /// Obtains the translation rule for given multilocalized unicode object.
-    pub fn tanslation(&self, locale: Locale) -> Option<Locale> {
+    pub fn tanslation(&self, locale: Locale) -> LCMSResult<Locale> {
         let mut out = Locale::none();
         if unsafe {
             ffi::cmsMLUgetTranslation(self.as_ptr(),
@@ -125,9 +126,9 @@ impl MLURef {
                 out.language_ptr_mut(),
                 out.country_ptr_mut()) != 0
         } {
-            Some(out)
+            Ok(out)
         } else {
-            None
+            Err(Error::MissingData)
         }
     }
 }
@@ -135,18 +136,19 @@ impl MLURef {
 impl fmt::Debug for MLURef {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let t = self.text(Locale::none());
-        write!(f, "MLU({:?} {:?})", if let Some(ref t) = t {&t} else {"None"}, self.tanslations())
+        write!(f, "MLU({:?} {:?})", if let Ok(ref t) = t {&t} else {"None"}, self.tanslations())
     }
 }
 
 #[test]
 fn mlu() {
+    let _ = MLU::new(0);
     let mut m = MLU::new(1);
     assert!(m.set_text("Hello 世界！", Locale::none()));
-    assert_eq!(Some("Hello 世界！".to_owned()), m.text(Locale::none()));
+    assert_eq!(Ok("Hello 世界！".to_owned()), m.text(Locale::none()));
     assert!(!m.set_text_ascii("エッロル", Locale::none()));
 
     let mut m = MLU::new(1);
     assert!(m.set_text_ascii("OK", Locale::none()));
-    assert_eq!(Some(CString::new("OK").unwrap()), m.text_ascii(Locale::none()));
+    assert_eq!(Ok(CString::new("OK").unwrap()), m.text_ascii(Locale::none()));
 }
