@@ -6,7 +6,7 @@ use std;
 use std::os::raw::c_void;
 use std::marker::PhantomData;
 
-impl<F: Copy + Clone, T: Copy + Clone> Transform<F, T> {
+impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<InputPixelFormat, OutputPixelFormat> {
     pub fn new(input: &Profile,
                in_format: PixelFormat,
                output: &Profile,
@@ -63,8 +63,8 @@ impl<F: Copy + Clone, T: Copy + Clone> Transform<F, T> {
         } else {
             Ok(Transform {
                 handle: handle,
-                _from: Self::check_format::<F>(in_format),
-                _to: Self::check_format::<T>(out_format),
+                _from: Self::check_format::<InputPixelFormat>(in_format),
+                _to: Self::check_format::<OutputPixelFormat>(out_format),
             })
         }
     }
@@ -78,7 +78,7 @@ impl<F: Copy + Clone, T: Copy + Clone> Transform<F, T> {
         PhantomData
     }
 
-    pub fn transform_pixels(&self, src: &[F], dst: &mut [T]) {
+    pub fn transform_pixels(&self, src: &[InputPixelFormat], dst: &mut [OutputPixelFormat]) {
         let size = src.len();
         assert_eq!(size, dst.len());
         assert!(size < std::u32::MAX as usize);
@@ -99,8 +99,8 @@ impl<F: Copy + Clone, T: Copy + Clone> Transform<F, T> {
     }
 }
 
-impl<T: Copy + Clone> Transform<T, T> {
-    pub fn transform_in_place(&self, srcdst: &mut [T]) {
+impl<PixelFormat: Copy + Clone> Transform<PixelFormat, PixelFormat> {
+    pub fn transform_in_place(&self, srcdst: &mut [PixelFormat]) {
         let size = srcdst.len();
         assert!(size < std::u32::MAX as usize);
         unsafe {
