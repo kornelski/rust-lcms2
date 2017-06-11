@@ -232,6 +232,12 @@ impl Profile {
     pub fn read_tag<'a>(&'a self, sig: TagSignature) -> Tag<'a> {
         unsafe { Tag::new(sig, ffi::cmsReadTag(self.handle, sig) as *const u8) }
     }
+
+    pub fn write_tag(&mut self, sig: TagSignature, tag: Tag) -> bool {
+        unsafe {
+            ffi::cmsWriteTag(self.handle, sig, tag.data_for_signature(sig) as *const _) != 0
+        }
+    }
 }
 
 impl Drop for Profile {
@@ -244,11 +250,36 @@ impl Drop for Profile {
 
 
 #[test]
-fn tags() {
+fn tags_read() {
     let prof = Profile::new_srgb();
     assert!(prof.read_tag(TagSignature::BToD0Tag).is_none());
     assert_eq!(CIEXYZ::d50().X, match prof.read_tag(TagSignature::MediaWhitePointTag) {
         Tag::CIEXYZ(xyz) => xyz.X,
+        _ => panic!(),
+    });
+}
+
+#[test]
+fn tags_write() {
+    let mut p = Profile::new_placeholder();
+    let mut mlu = MLU::new(1);
+    mlu.set_text_ascii("Testing", Locale::new("en_GB"));
+    assert!(p.write_tag(TagSignature::CopyrightTag, Tag::MLU(&mlu)));
+
+    let xyz = CIEXYZ{X:1., Y:2., Z:3.};
+    assert!(p.write_tag(TagSignature::RedColorantTag, Tag::CIEXYZ(&xyz)));
+
+    assert!(p.has_tag(TagSignature::CopyrightTag));
+    assert!(p.has_tag(TagSignature::RedColorantTag));
+    assert!(!p.has_tag(TagSignature::BlueColorantTag));
+
+    assert_eq!(&xyz, match p.read_tag(TagSignature::RedColorantTag) {
+        Tag::CIEXYZ(d) => d,
+        _ => panic!(),
+    });
+
+    assert_eq!(Ok("Testing".to_owned()), match p.read_tag(TagSignature::CopyrightTag) {
+        Tag::MLU(mlu) => mlu.text(Locale::none()),
         _ => panic!(),
     });
 }
