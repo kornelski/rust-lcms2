@@ -10,6 +10,7 @@ mod tag;
 mod mlu;
 mod namedcolorlist;
 mod pipeline;
+mod eval;
 mod locale;
 mod transform;
 mod tonecurve;

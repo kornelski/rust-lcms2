@@ -1,6 +1,8 @@
 use super::*;
-
 use std::fmt;
+use std::ptr;
+use eval::FloatOrU16;
+use foreign_types::ForeignTypeRef;
 
 foreign_type! {
     type CType = ffi::Pipeline;
@@ -9,9 +11,74 @@ foreign_type! {
     pub struct PipelineRef;
 }
 
-impl fmt::Debug for PipelineRef {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Pipeline")
+impl Pipeline {
+    pub fn new(input_channels: usize, output_channels: usize) -> LCMSResult<Self> {
+        unsafe {
+            Error::if_null(ffi::cmsPipelineAlloc(ptr::null_mut(), input_channels as u32, output_channels as u32))
+        }
     }
 }
 
+impl PipelineRef {
+    pub fn cat(&mut self, append: &PipelineRef) -> bool {
+        unsafe {
+            ffi::cmsPipelineCat(self.as_ptr(), append.as_ptr()) != 0
+        }
+    }
+
+    pub fn stage_count(&self) -> usize {
+        unsafe {
+            ffi::cmsPipelineStageCount(self.as_ptr()) as usize
+        }
+    }
+
+    pub fn set_8bit(&mut self, on: bool) -> bool {
+        unsafe {
+            ffi::cmsPipelineSetSaveAs8bitsFlag(self.as_ptr(), on as i32) != 0
+        }
+    }
+
+    pub fn input_channels(&self) -> usize {
+        unsafe {
+            ffi::cmsPipelineInputChannels(self.as_ptr()) as usize
+        }
+    }
+
+    pub fn output_channels(&self) -> usize {
+        unsafe {
+            ffi::cmsPipelineOutputChannels(self.as_ptr()) as usize
+        }
+    }
+
+    // Evaluates a pipeline usin u16 of f32 numbers. With u16 it's optionally using the optimized path.
+    pub fn eval<Value: FloatOrU16>(&self, input: &[Value], output: &mut [Value]) {
+        assert_eq!(self.input_channels(), input.len());
+        assert_eq!(self.output_channels(), output.len());
+        unsafe {
+            self.eval_unchecked(input, output);
+        }
+    }
+
+    // You must ensure that input and output have length sufficient for channels
+    #[inline]
+    pub unsafe fn eval_unchecked<Value: FloatOrU16>(&self, input: &[Value], output: &mut [Value]) {
+        Value::eval_pipeline(self.as_ptr(), input, output);
+    }
+}
+
+impl fmt::Debug for PipelineRef {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "Pipeline({}->{}ch, {} stages)", self.input_channels(), self.output_channels(), self.stage_count())
+    }
+}
+
+#[test]
+fn pipeline() {
+    let p = Pipeline::new(123, 12);
+    assert!(p.is_err());
+
+    let p = Pipeline::new(4, 3).unwrap();
+    assert_eq!(0, p.stage_count());
+    assert_eq!(4, p.input_channels());
+    assert_eq!(3, p.output_channels());
+}

@@ -1,5 +1,6 @@
 use super::*;
 use std::fmt;
+use eval::FloatOrU16;
 use foreign_types::{ForeignType, ForeignTypeRef};
 
 foreign_type! {
@@ -103,7 +104,7 @@ impl ToneCurveRef {
     /// This function is significantly faster for u16, since it uses a pre-computed 16-bit lookup table.
     pub fn eval<ToneCurveValue: FloatOrU16>(&self, v: ToneCurveValue) -> ToneCurveValue {
         unsafe {
-            v.eval(self.as_ptr())
+            v.eval_tone_curve(self.as_ptr())
         }
     }
 }
@@ -119,22 +120,6 @@ impl Clone for ToneCurve {
 impl fmt::Debug for ToneCurveRef {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "ToneCurve({} entries, gamma ~{:.1})", self.estimated_entries().len(), self.estimated_gamma(1.).unwrap_or(0.))
-    }
-}
-
-pub trait FloatOrU16 {
-    unsafe fn eval(self, handle: *const ffi::ToneCurve) -> Self;
-}
-
-impl FloatOrU16 for f32 {
-    unsafe fn eval(self, handle: *const ffi::ToneCurve) -> Self {
-        ffi::cmsEvalToneCurveFloat(handle, self)
-    }
-}
-
-impl FloatOrU16 for u16 {
-    unsafe fn eval(self, handle: *const ffi::ToneCurve) -> Self {
-        ffi::cmsEvalToneCurve16(handle, self)
     }
 }
 
