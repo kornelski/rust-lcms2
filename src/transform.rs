@@ -60,18 +60,21 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<
         } else {
             Ok(Transform {
                 handle: handle,
-                _from: Self::check_format::<InputPixelFormat>(in_format),
-                _to: Self::check_format::<OutputPixelFormat>(out_format),
+                _from: Self::check_format::<InputPixelFormat>(in_format, true),
+                _to: Self::check_format::<OutputPixelFormat>(out_format, false),
             })
         }
     }
 
-    fn check_format<Z>(format: PixelFormat) -> PhantomData<Z> {
+    fn check_format<Z>(format: PixelFormat, input: bool) -> PhantomData<Z> {
         assert!(!format.planar(), "Planar not supported");
         assert_eq!(format.bytes_per_pixel(),
                    std::mem::size_of::<Z>(),
-                   "PixelFormat {:?} has different size than the Rust data type",
-                   format);
+                   "PixelFormat {:?} has {} bytes per pixel, but the {} format has {}",
+                   format,
+                   format.bytes_per_pixel(),
+                   if input {"input"} else {"output"},
+                   std::mem::size_of::<Z>());
         PhantomData
     }
 
