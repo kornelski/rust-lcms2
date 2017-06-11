@@ -8,6 +8,7 @@ extern crate foreign_types;
 mod profile;
 mod tag;
 mod ciecam;
+mod context;
 mod mlu;
 mod namedcolorlist;
 mod pipeline;
@@ -19,8 +20,10 @@ mod tonecurve;
 mod error;
 use std::marker::PhantomData;
 
+pub use profile::*;
 pub use error::*;
 pub use ciecam::*;
+pub use context::{GlobalContext, ThreadContext};
 pub use mlu::*;
 pub use ext::*;
 pub use locale::*;
@@ -44,12 +47,6 @@ pub use ffi::Intent;
 pub use ffi::ColorSpaceSignature;
 pub use ffi::ProfileClassSignature;
 pub use ffi::ViewingConditions;
-pub type Context = ffi::Context;
-
-/// An ICC color profile
-pub struct Profile {
-    handle: ffi::HPROFILE,
-}
 
 /// Conversion between two ICC profiles
 pub struct Transform<FromFormat, ToFormat> {

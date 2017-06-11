@@ -1,4 +1,5 @@
 use super::*;
+use context::Context;
 use std::path::Path;
 use std::ptr;
 use std::io;
@@ -8,27 +9,29 @@ use std::os::raw::c_void;
 use std::default::Default;
 use foreign_types::ForeignTypeRef;
 
+/// An ICC color profile
+pub struct Profile<Context = GlobalContext> {
+    pub(crate) handle: ffi::HPROFILE,
+    _context_ref: PhantomData<Context>,
+}
+
 /// These are the basic functions on opening profiles.
 /// For simpler operation, you must open two profiles using `new_file`, and then create a transform with these open profiles with `Transform`.
 /// Using this transform you can color correct your bitmaps.
-impl Profile {
+impl Profile<GlobalContext> {
     /// Parse ICC profile from the in-memory array
     pub fn new_icc(data: &[u8]) -> LCMSResult<Self> {
-        Self::new_handle(unsafe {
-            ffi::cmsOpenProfileFromMem(data.as_ptr() as *const c_void, data.len() as u32)
-        })
+        Self::new_icc_context(GlobalContext::new(), data)
     }
 
     /// Load ICC profile file from disk
     pub fn new_file<P: AsRef<Path>>(path: P) -> io::Result<Self> {
-        let mut buf = Vec::new();
-        File::open(path)?.read_to_end(&mut buf)?;
-        Self::new_icc(&buf).map_err(|_| io::ErrorKind::Other.into())
+        Self::new_file_context(GlobalContext::new(), path)
     }
 
     /// Create an ICC virtual profile for sRGB space. sRGB is a standard RGB color space created cooperatively by HP and Microsoft in 1996 for use on monitors, printers, and the Internet.
     pub fn new_srgb() -> Self {
-        Self::new_handle(unsafe { ffi::cmsCreate_sRGBProfile() }).unwrap()
+        Self::new_srgb_context(GlobalContext::new())
     }
 
     /// This function creates a display RGB profile based on White point, primaries and transfer functions. It populates following tags; this conform a standard RGB Display Profile, and then I add (As per addendum II) chromaticity tag.
@@ -47,15 +50,7 @@ impl Profile {
                    primaries: &CIExyYTRIPLE,
                    transfer_function: &[&ToneCurve])
                    -> LCMSResult<Self> {
-        assert_eq!(3, transfer_function.len());
-        Self::new_handle(unsafe {
-            ffi::cmsCreateRGBProfile(white_point,
-                                     primaries,
-                                     [transfer_function[0].as_ptr() as *const _,
-                                      transfer_function[1].as_ptr() as *const _,
-                                      transfer_function[2].as_ptr() as *const _]
-                                         .as_ptr())
-        })
+        Self::new_rgb_context(GlobalContext::new(), white_point, primaries, transfer_function)
     }
 
     /// This function creates a gray profile based on White point and transfer function. It populates following tags; this conform a standard gray display profile.
@@ -64,14 +59,21 @@ impl Profile {
     ///   2. MediaWhitePointTag
     ///   3. GrayTRCTag
     pub fn new_gray(white_point: &CIExyY, curve: &ToneCurve) -> LCMSResult<Self> {
-        Self::new_handle(unsafe { ffi::cmsCreateGrayProfile(white_point, curve.as_ptr()) })
+        Self::new_gray_context(GlobalContext::new(), white_point, curve)
     }
 
-    /// This is a devicelink operating in the target colorspace with as many transfer functions as components.
-    /// Number of tone curves must be sufficient for the color space.
-    pub unsafe fn new_linearization_device_link(color_space: ColorSpaceSignature, curves: &[ToneCurveRef]) -> LCMSResult<Self> {
-        let v: Vec<_> = curves.iter().map(|c| c.as_ptr() as *const _).collect();
-        Self::new_handle(ffi::cmsCreateLinearizationDeviceLink(color_space, v.as_ptr()))
+    /// Creates a XYZ  XYZ identity, marking it as v4 ICC profile.  WhitePoint used in Absolute colorimetric intent  is D50.
+    pub fn new_xyz() -> Self {
+        Self::new_handle(unsafe { ffi::cmsCreateXYZProfile() }).unwrap()
+    }
+
+    /// Creates a fake NULL profile. This profile return 1 channel as always 0. Is useful only for gamut checking tricks.
+    pub fn new_null() -> Self {
+        Self::new_handle(unsafe { ffi::cmsCreateNULLProfile() }).unwrap()
+    }
+
+    pub fn new_placeholder() -> Self {
+        Self::new_handle(unsafe { ffi::cmsCreateProfilePlaceholder(ptr::null_mut()) }).unwrap()
     }
 
     /// This is a devicelink operating in CMYK for ink-limiting. Currently only cmsSigCmykData is supported.
@@ -80,43 +82,14 @@ impl Profile {
         Self::new_handle(unsafe {ffi::cmsCreateInkLimitingDeviceLink(color_space, limit)})
     }
 
-    /// Creates a XYZ  XYZ identity, marking it as v4 ICC profile.  WhitePoint used in Absolute colorimetric intent  is D50.
-    pub fn new_xyz() -> Profile {
-        Self::new_handle(unsafe { ffi::cmsCreateXYZProfile() }).unwrap()
-    }
-
-    /// Creates a fake NULL profile. This profile return 1 channel as always 0. Is useful only for gamut checking tricks.
-    pub fn new_null() -> Profile {
-        Self::new_handle(unsafe { ffi::cmsCreateNULLProfile() }).unwrap()
-    }
-
-    pub fn new_placeholder() -> Self {
-        Self::new_handle(unsafe { ffi::cmsCreateProfilePlaceholder(ptr::null_mut()) }).unwrap()
-    }
-
-    /// Creates a Lab  Lab identity, marking it as v2 ICC profile. Adjustments for accomodating PCS endoing shall be done by Little CMS when using this profile.
-    pub fn new_lab2(white_point: &CIExyY) -> LCMSResult<Self> {
-        Self::new_handle(unsafe { ffi::cmsCreateLab2Profile(white_point) })
-    }
-
-    /// Creates a Lab  Lab identity, marking it as v4 ICC profile.
-    pub fn new_lab4(white_point: &CIExyY) -> LCMSResult<Self> {
-        Self::new_handle(unsafe { ffi::cmsCreateLab4Profile(white_point) })
-    }
-
     /// Generates a device-link profile from a given color transform. This profile can then be used by any other function accepting profile handle.
     /// Depending on the specified version number, the implementation of the devicelink may vary. Accepted versions are in range 1.0…4.3
     pub fn new_device_link<F, T>(transform: &Transform<F, T>, version: f64, flags: u32) -> LCMSResult<Self> {
         Self::new_handle(unsafe { ffi::cmsTransform2DeviceLink(transform.handle, version, flags) })
     }
+}
 
-    fn new_handle(handle: ffi::HPROFILE) -> LCMSResult<Self> {
-        if handle.is_null() {
-            return Err(Error::ObjectCreationError);
-        }
-        Ok(Profile { handle: handle })
-    }
-
+impl<Ctx: Context> Profile<Ctx> {
     /// Create ICC file in memory buffer
     pub fn icc(&self) -> LCMSResult<Vec<u8>> {
         unsafe {
@@ -182,10 +155,6 @@ impl Profile {
     /// Sets the profile connection space signature in profile header, using ICC convention.
     pub fn set_pcs(&mut self, pcs: ColorSpaceSignature) {
         unsafe { ffi::cmsSetPCS(self.handle, pcs) }
-    }
-
-    fn context_id(&self) -> Context {
-        unsafe { ffi::cmsGetProfileContextID(self.handle) }
     }
 
     pub fn info(&self, info: InfoType, locale: Locale) -> Option<String> {
@@ -320,7 +289,89 @@ impl Profile {
     }
 }
 
-impl Drop for Profile {
+/// Per-context functions that can be used with a `ThreadContext`
+impl<Ctx: Context> Profile<Ctx> {
+    pub fn new_icc_context(context: Ctx, data: &[u8]) -> LCMSResult<Self> {
+        Self::new_handle(unsafe {
+            ffi::cmsOpenProfileFromMemTHR(context.as_ptr(), data.as_ptr() as *const c_void, data.len() as u32)
+        })
+    }
+
+    pub fn new_file_context<P: AsRef<Path>>(context: Ctx, path: P) -> io::Result<Self> {
+        let mut buf = Vec::new();
+        File::open(path)?.read_to_end(&mut buf)?;
+        Self::new_icc_context(context, &buf).map_err(|_| io::ErrorKind::Other.into())
+    }
+
+    pub fn new_srgb_context(context: Ctx) -> Self {
+        Self::new_handle(unsafe { ffi::cmsCreate_sRGBProfileTHR(context.as_ptr()) }).unwrap()
+    }
+
+    pub fn new_rgb_context(context: Ctx, white_point: &CIExyY,
+                   primaries: &CIExyYTRIPLE,
+                   transfer_function: &[&ToneCurve])
+                   -> LCMSResult<Self> {
+        assert_eq!(3, transfer_function.len());
+        Self::new_handle(unsafe {
+            ffi::cmsCreateRGBProfileTHR(context.as_ptr(),
+                                     white_point,
+                                     primaries,
+                                     [transfer_function[0].as_ptr() as *const _,
+                                      transfer_function[1].as_ptr() as *const _,
+                                      transfer_function[2].as_ptr() as *const _]
+                                         .as_ptr())
+        })
+    }
+
+    pub fn new_gray_context(context: Ctx, white_point: &CIExyY, curve: &ToneCurve) -> LCMSResult<Self> {
+        Self::new_handle(unsafe { ffi::cmsCreateGrayProfileTHR(context.as_ptr(), white_point, curve.as_ptr()) })
+    }
+
+    /// This is a devicelink operating in the target colorspace with as many transfer functions as components.
+    /// Number of tone curves must be sufficient for the color space.
+    pub unsafe fn new_linearization_device_link_context(context: Ctx, color_space: ColorSpaceSignature, curves: &[ToneCurveRef]) -> LCMSResult<Self> {
+        let v: Vec<_> = curves.iter().map(|c| c.as_ptr() as *const _).collect();
+        Self::new_handle(ffi::cmsCreateLinearizationDeviceLinkTHR(context.as_ptr(), color_space, v.as_ptr()))
+    }
+
+    fn new_handle(handle: ffi::HPROFILE) -> LCMSResult<Self> {
+        if handle.is_null() {
+            return Err(Error::ObjectCreationError);
+        }
+        Ok(Profile {
+            handle,
+            _context_ref: PhantomData,
+        })
+    }
+
+    /// This is a devicelink operating in CMYK for ink-limiting. Currently only cmsSigCmykData is supported.
+    /// Limit: Amount of ink limiting in % (0..400%)
+    pub fn ink_limiting_context(context: Ctx, color_space: ColorSpaceSignature, limit: f64) -> LCMSResult<Self> {
+        Self::new_handle(unsafe {ffi::cmsCreateInkLimitingDeviceLinkTHR(context.as_ptr(), color_space, limit)})
+    }
+
+    /// Creates a XYZ  XYZ identity, marking it as v4 ICC profile.  WhitePoint used in Absolute colorimetric intent  is D50.
+    pub fn new_xyz_context(context: Ctx) -> Self {
+        Self::new_handle(unsafe { ffi::cmsCreateXYZProfileTHR(context.as_ptr()) }).unwrap()
+    }
+
+    /// Creates a fake NULL profile. This profile return 1 channel as always 0. Is useful only for gamut checking tricks.
+    pub fn new_null_context(context: Ctx) -> Self {
+        Self::new_handle(unsafe { ffi::cmsCreateNULLProfileTHR(context.as_ptr()) }).unwrap()
+    }
+
+    /// Creates a Lab  Lab identity, marking it as v2 ICC profile. Adjustments for accomodating PCS endoing shall be done by Little CMS when using this profile.
+    pub fn new_lab2_context(context: Ctx, white_point: &CIExyY) -> LCMSResult<Self> {
+        Self::new_handle(unsafe { ffi::cmsCreateLab2ProfileTHR(context.as_ptr(), white_point) })
+    }
+
+    /// Creates a Lab  Lab identity, marking it as v4 ICC profile.
+    pub fn new_lab4_context(context: Ctx, white_point: &CIExyY) -> LCMSResult<Self> {
+        Self::new_handle(unsafe { ffi::cmsCreateLab4ProfileTHR(context.as_ptr(), white_point) })
+    }
+}
+
+impl<Context> Drop for Profile<Context> {
     fn drop(&mut self) {
         unsafe {
             ffi::cmsCloseProfile(self.handle);
