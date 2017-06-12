@@ -7,11 +7,17 @@ use foreign_types::ForeignTypeRef;
 foreign_type! {
     type CType = ffi::Pipeline;
     fn drop = ffi::cmsPipelineFree;
+    /// This is an owned version of `PipelineRef`.
     pub struct Pipeline;
+    /// Pipelines are a convenient way to model complex operations on image data.
+    ///
+    /// Each pipeline may contain an arbitrary number of stages. Each stage performs a single operation.
+    /// Pipelines may be optimized to be executed on a certain format (8 bits, for example) and can be saved as LUTs in ICC profiles.
     pub struct PipelineRef;
 }
 
 impl Pipeline {
+    /// Allocates an empty pipeline. Final Input and output channels must be specified at creation time.
     pub fn new(input_channels: usize, output_channels: usize) -> LCMSResult<Self> {
         unsafe {
             Error::if_null(ffi::cmsPipelineAlloc(ptr::null_mut(), input_channels as u32, output_channels as u32))
@@ -20,6 +26,7 @@ impl Pipeline {
 }
 
 impl PipelineRef {
+    /// Appends pipeline given as argument at the end of this pipeline. Channel count must match.
     pub fn cat(&mut self, append: &PipelineRef) -> bool {
         if append.input_channels() != self.output_channels() {
             return false;

@@ -5,6 +5,7 @@ use foreign_types::ForeignTypeRef;
 use std::ffi::{CStr,CString};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
+/// Color in the palette
 pub struct NamedColorInfo {
     pub name: String,
     pub prefix: String,
@@ -16,7 +17,9 @@ pub struct NamedColorInfo {
 foreign_type! {
     type CType = ffi::NAMEDCOLORLIST;
     fn drop = ffi::cmsFreeNamedColorList;
+    /// Owned version of `NamedColorListRef`
     pub struct NamedColorList;
+    /// Palette of colors with names
     pub struct NamedColorListRef;
 }
 
@@ -35,12 +38,14 @@ impl NamedColorList {
 }
 
 impl NamedColorListRef {
+    /// Number of colors in the palette
     fn len(&self) -> usize {
         unsafe {
             ffi::cmsNamedColorCount(self.as_ptr()) as usize
         }
     }
 
+    /// Find color by name
     fn index_of(&self, color_name: &str) -> usize {
         let s = CString::new(color_name).unwrap();
         unsafe {
@@ -48,6 +53,7 @@ impl NamedColorListRef {
         }
     }
 
+    /// Get color info
     fn get(&self, index: usize) -> Option<NamedColorInfo> {
         let mut name = [0i8; 256];
         let mut prefix = [0i8; 33];
@@ -81,6 +87,7 @@ impl NamedColorListRef {
         (0..self.len()).filter_map(|i| self.get(i)).collect()
     }
 
+    /// Push a color at the end of the palette
     fn append(&mut self, color_name: &str, mut pcs: [u16; 3], mut colorant: [u16; ffi::MAXCHANNELS]) -> bool {
         let s = CString::new(color_name).unwrap();
         unsafe {

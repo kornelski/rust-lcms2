@@ -39,24 +39,29 @@ pub use ffi::ColorSpaceSignature;
 pub use ffi::ProfileClassSignature;
 pub type Context = ffi::Context;
 
+/// An ICC color profile
 pub struct Profile {
     handle: ffi::HPROFILE,
 }
 
-pub struct Transform<F, T> {
+/// Conversion between two ICC profiles
+pub struct Transform<FromFormat, ToFormat> {
     handle: ffi::HTRANSFORM,
-    _from: PhantomData<F>,
-    _to: PhantomData<T>,
+    _from: PhantomData<FromFormat>,
+    _to: PhantomData<ToFormat>,
 }
 
 #[derive(Debug)]
+/// Value of a tag in an ICC profile
 pub enum Tag<'a> {
     CIExyYTRIPLE(&'a ffi::CIExyYTRIPLE),
     CIEXYZ(&'a ffi::CIEXYZ),
     ICCData(&'a ffi::ICCData),
     ICCMeasurementConditions(&'a ffi::ICCMeasurementConditions),
     ICCViewingConditions(&'a ffi::ICCViewingConditions),
+    /// Unicode string
     MLU(&'a mlu::MLURef),
+    /// A palette
     NAMEDCOLORLIST(&'a NamedColorListRef),
     Pipeline(&'a PipelineRef),
     Screening(&'a ffi::Screening),
@@ -65,9 +70,11 @@ pub enum Tag<'a> {
     Technology(ffi::TechnologySignature),
     ToneCurve(&'a ToneCurveRef),
     UcrBg(&'a ffi::UcrBg),
+    /// Unknown format or missing data
     None,
 }
 
+/// LCMS version
 pub fn version() -> u32 {
     unsafe {
         ffi::cmsGetEncodedCMMversion() as u32

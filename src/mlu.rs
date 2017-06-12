@@ -11,11 +11,14 @@ use foreign_types::{ForeignType, ForeignTypeRef};
 foreign_type! {
     type CType = ffi::MLU;
     fn drop = ffi::cmsMLUfree;
+    /// This represents owned Multi Localized Unicode type. Most methods are implemented on `MLURef`.
     pub struct MLU;
+    /// This is a borrwed Multi Localized Unicode type. It holds Unicode strings associated with `Locale`.
     pub struct MLURef;
 }
 
 impl MLU {
+    /// Allocates an empty multilocalized unicode object.
     pub fn new(items: usize) -> Self {
         unsafe {
             let handle = ffi::cmsMLUalloc(ptr::null_mut(), items as u32);
@@ -26,6 +29,7 @@ impl MLU {
 }
 
 impl MLURef {
+    /// Fills an ASCII (7 bit) entry for the given Language and country.
     pub fn set_text_ascii(&mut self, text: &str, locale: Locale) -> bool {
         unsafe {
             ffi::cmsMLUsetASCII(self.as_ptr(),
@@ -35,6 +39,7 @@ impl MLURef {
         }
     }
 
+    /// Fills a UNICODE wide char (16 bit) entry for the given Language and country.
     pub fn set_text(&mut self, text: &str, locale: Locale) -> bool {
         let chars: Vec<_> = text.chars().map(|c| c as wchar_t).chain(repeat(0 as wchar_t).take(1)).collect();
 
@@ -46,6 +51,7 @@ impl MLURef {
         }
     }
 
+    /// Gets an ASCII (7 bit) entry for the given Language and country.
     pub fn text_ascii(&self, locale: Locale) -> LCMSResult<CString> {
         let len = unsafe {
             ffi::cmsMLUgetASCII(self.as_ptr(),
@@ -73,6 +79,7 @@ impl MLURef {
         }
     }
 
+    /// Gets a Unicode entry for the given Language and country
     pub fn text(&self, locale: Locale) -> LCMSResult<String> {
         let len_bytes = unsafe {
             ffi::cmsMLUgetWide(self.as_ptr(),
@@ -100,6 +107,7 @@ impl MLURef {
         }
     }
 
+    /// Obtains the translations stored in a given multilocalized unicode object.
     pub fn tanslations(&self) -> Vec<Locale> {
         let count = unsafe { ffi::cmsMLUtranslationsCount(self.as_ptr()) };
         let mut out = Vec::with_capacity(count as usize);

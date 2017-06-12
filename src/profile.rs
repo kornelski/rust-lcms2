@@ -8,13 +8,18 @@ use std::os::raw::c_void;
 use std::default::Default;
 use foreign_types::ForeignTypeRef;
 
+/// These are the basic functions on opening profiles.
+/// For simpler operation, you must open two profiles using `new_file`, and then create a transform with these open profiles with `Transform`.
+/// Using this transform you can color correct your bitmaps.
 impl Profile {
-    pub fn new_icc(data: &[u8]) -> Result<Self, Error> {
+    /// Parse ICC profile from the in-memory array
+    pub fn new_icc(data: &[u8]) -> LCMSResult<Self> {
         Self::new_handle(unsafe {
             ffi::cmsOpenProfileFromMem(data.as_ptr() as *const c_void, data.len() as u32)
         })
     }
 
+    /// Load ICC profile file from disk
     pub fn new_file<P: AsRef<Path>>(path: P) -> io::Result<Self> {
         let mut buf = Vec::new();
         File::open(path)?.read_to_end(&mut buf)?;
@@ -26,10 +31,22 @@ impl Profile {
         Self::new_handle(unsafe { ffi::cmsCreate_sRGBProfile() }).unwrap()
     }
 
+    /// This function creates a display RGB profile based on White point, primaries and transfer functions. It populates following tags; this conform a standard RGB Display Profile, and then I add (As per addendum II) chromaticity tag.
+    ///
+    ///   1. ProfileDescriptionTag
+    ///   2. MediaWhitePointTag
+    ///   3. RedColorantTag
+    ///   4. GreenColorantTag
+    ///   5. BlueColorantTag
+    ///   6. RedTRCTag
+    ///   7. GreenTRCTag
+    ///   8. BlueTRCTag
+    ///   9. Chromatic adaptation Tag
+    /// 1  0. ChromaticityTag
     pub fn new_rgb(white_point: &CIExyY,
                    primaries: &CIExyYTRIPLE,
                    transfer_function: &[&ToneCurve])
-                   -> Result<Self, Error> {
+                   -> LCMSResult<Self> {
         assert_eq!(3, transfer_function.len());
         Self::new_handle(unsafe {
             ffi::cmsCreateRGBProfile(white_point,
@@ -41,11 +58,17 @@ impl Profile {
         })
     }
 
-    pub fn new_gray(white_point: &CIExyY, curve: &ToneCurve) -> Result<Self, Error> {
+    /// This function creates a gray profile based on White point and transfer function. It populates following tags; this conform a standard gray display profile.
+    ///
+    ///   1. ProfileDescriptionTag
+    ///   2. MediaWhitePointTag
+    ///   3. GrayTRCTag
+    pub fn new_gray(white_point: &CIExyY, curve: &ToneCurve) -> LCMSResult<Self> {
         Self::new_handle(unsafe { ffi::cmsCreateGrayProfile(white_point, curve.as_ptr()) })
     }
 
-    /// Number of tone curves must be sufficient for the color space
+    /// This is a devicelink operating in the target colorspace with as many transfer functions as components.
+    /// Number of tone curves must be sufficient for the color space.
     pub unsafe fn new_linearization_device_link(color_space: ColorSpaceSignature, curves: &[ToneCurveRef]) -> LCMSResult<Self> {
         let v: Vec<_> = curves.iter().map(|c| c.as_ptr() as *const _).collect();
         Self::new_handle(ffi::cmsCreateLinearizationDeviceLink(color_space, v.as_ptr()))
@@ -57,10 +80,12 @@ impl Profile {
         Self::new_handle(unsafe {ffi::cmsCreateInkLimitingDeviceLink(color_space, limit)})
     }
 
+    /// Creates a XYZ  XYZ identity, marking it as v4 ICC profile.  WhitePoint used in Absolute colorimetric intent  is D50.
     pub fn new_xyz() -> Profile {
         Self::new_handle(unsafe { ffi::cmsCreateXYZProfile() }).unwrap()
     }
 
+    /// Creates a fake NULL profile. This profile return 1 channel as always 0. Is useful only for gamut checking tricks.
     pub fn new_null() -> Profile {
         Self::new_handle(unsafe { ffi::cmsCreateNULLProfile() }).unwrap()
     }
@@ -69,26 +94,31 @@ impl Profile {
         Self::new_handle(unsafe { ffi::cmsCreateProfilePlaceholder(ptr::null_mut()) }).unwrap()
     }
 
-    pub fn new_lab2(white_point: &CIExyY) -> Result<Self, Error> {
+    /// Creates a Lab  Lab identity, marking it as v2 ICC profile. Adjustments for accomodating PCS endoing shall be done by Little CMS when using this profile.
+    pub fn new_lab2(white_point: &CIExyY) -> LCMSResult<Self> {
         Self::new_handle(unsafe { ffi::cmsCreateLab2Profile(white_point) })
     }
 
-    pub fn new_lab4(white_point: &CIExyY) -> Result<Self, Error> {
+    /// Creates a Lab  Lab identity, marking it as v4 ICC profile.
+    pub fn new_lab4(white_point: &CIExyY) -> LCMSResult<Self> {
         Self::new_handle(unsafe { ffi::cmsCreateLab4Profile(white_point) })
     }
 
-    pub fn new_device_link<F, T>(transform: &Transform<F, T>, version: f64, flags: u32) -> Result<Self, Error> {
+    /// Generates a device-link profile from a given color transform. This profile can then be used by any other function accepting profile handle.
+    /// Depending on the specified version number, the implementation of the devicelink may vary. Accepted versions are in range 1.0…4.3
+    pub fn new_device_link<F, T>(transform: &Transform<F, T>, version: f64, flags: u32) -> LCMSResult<Self> {
         Self::new_handle(unsafe { ffi::cmsTransform2DeviceLink(transform.handle, version, flags) })
     }
 
-    fn new_handle(handle: ffi::HPROFILE) -> Result<Self, Error> {
+    fn new_handle(handle: ffi::HPROFILE) -> LCMSResult<Self> {
         if handle.is_null() {
             return Err(Error::ObjectCreationError);
         }
         Ok(Profile { handle: handle })
     }
 
-    pub fn icc(&self) -> Result<Vec<u8>, Error> {
+    /// Create ICC file in memory buffer
+    pub fn icc(&self) -> LCMSResult<Vec<u8>> {
         unsafe {
             let mut len = 0;
             if ffi::cmsSaveProfileToMem(self.handle, std::ptr::null_mut(), &mut len) == 0 {
@@ -102,9 +132,12 @@ impl Profile {
         }
     }
 
+    /// Gets the device class signature from profile header.
     pub fn device_class(&self) -> ProfileClassSignature {
         unsafe { ffi::cmsGetDeviceClass(self.handle) }
     }
+
+    /// Returns the profile ICC version in the same format as it is stored in the header.
     pub fn encoded_icc_version(&self) -> u32 {
         unsafe { ffi::cmsGetEncodedICCversion(self.handle) }
     }
@@ -173,6 +206,7 @@ impl Profile {
             .collect())
     }
 
+    /// Returns the profile ICC version. The version is decoded to readable floating point format.
     pub fn version(&self) -> f64 {
         unsafe { ffi::cmsGetProfileVersion(self.handle) }
     }

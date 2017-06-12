@@ -6,17 +6,23 @@ use foreign_types::{ForeignType, ForeignTypeRef};
 foreign_type! {
     type CType = ffi::ToneCurve;
     fn drop = ffi::cmsFreeToneCurve;
+    /// Owned version of `ToneCurveRef`
     pub struct ToneCurve;
+    /// Tone curves are powerful constructs that can contain curves specified in diverse ways.
+    ///
+    /// The curve is stored in segments, where each segment can be sampled or specified by parameters. A 16.bit simplification of the *whole* curve is kept for optimization purposes. For float operation, each segment is evaluated separately. Plug-ins may be used to define new parametric schemes.
     pub struct ToneCurveRef;
 }
 
 impl ToneCurve {
+    /// Simplified wrapper to cmsBuildParametricToneCurve. Builds a parametric curve of type 1.
     pub fn new(gamma: f64) -> Self {
         unsafe {
             Self::from_ptr(ffi::cmsBuildGamma(std::ptr::null_mut(), gamma))
         }
     }
 
+    /// Builds a tone curve based on a table of 16-bit values. Tone curves built with this function are restricted to 0…1.0 domain.
     pub fn new_tabulated(values: &[u16]) -> Self {
         assert!(values.len() < std::i32::MAX as usize);
         unsafe { Self::new_handle(
@@ -24,6 +30,7 @@ impl ToneCurve {
         )}
     }
 
+    /// Builds a tone curve based on a table of floating point  values. Tone curves built with this function are **not** restricted to 0…1.0 domain.
     pub fn new_tabulated_float(values: &[f32]) -> Self {
         assert!(values.len() < std::i32::MAX as usize);
         unsafe { Self::new_handle(
@@ -60,18 +67,22 @@ impl ToneCurveRef {
         }
     }
 
+    /// Returns TRUE if the tone curve contains more than one segment, FALSE if it has only one segment.
     pub fn is_multisegment(&self) -> bool {
         unsafe { ffi::cmsIsToneCurveMultisegment(self.as_ptr()) != 0 }
     }
 
+    /// Returns an estimation of cube being an identity (1:1) in the [0..1] domain. Does not take unbounded parts into account. This is just a coarse approximation, with no mathematical validity.
     pub fn is_linear(&self) -> bool {
         unsafe { ffi::cmsIsToneCurveLinear(self.as_ptr()) != 0 }
     }
 
+    /// Returns an estimation of monotonicity of curve in the [0..1] domain. Does not take unbounded parts into account. This is just a coarse approximation, with no mathematical validity.
     pub fn is_monotonic(&self) -> bool {
         unsafe { ffi::cmsIsToneCurveMonotonic(self.as_ptr()) != 0 }
     }
 
+    /// Does not take unbounded parts into account.
     pub fn is_descending(&self) -> bool {
         unsafe { ffi::cmsIsToneCurveDescending(self.as_ptr()) != 0 }
     }
@@ -87,10 +98,12 @@ impl ToneCurveRef {
         if g <= -1.0 {None} else {Some(g)}
     }
 
+    /// Smoothes tone curve according to the lambda parameter. From: Eilers, P.H.C. (1994) Smoothing and interpolation with finite differences. in: Graphic Gems IV, Heckbert, P.S. (ed.), Academic press.
     pub fn smooth(&mut self, lambda: f64) -> bool {
         unsafe { ffi::cmsSmoothToneCurve(self.as_ptr(), lambda) != 0 }
     }
 
+    /// Tone curves do maintain a shadow low-resolution tabulated representation of the curve. This function returns a pointer to this table.
     pub fn estimated_entries(&self) -> &[u16] {
         unsafe {
             let len = ffi::cmsGetToneCurveEstimatedTableEntries(self.as_ptr()) as usize;

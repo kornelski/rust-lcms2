@@ -19,6 +19,7 @@ impl Error {
     }
 }
 
+/// This is a regular `Result` type with LCMS-specific `Error`
 pub type LCMSResult<T> = Result<T, Error>;
 
 impl fmt::Display for Error {

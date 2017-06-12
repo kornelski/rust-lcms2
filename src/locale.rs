@@ -2,6 +2,7 @@ use std::cmp;
 use std::fmt;
 use std::fmt::Write;
 
+/// Language code from ISO-639/2 and region code from ISO-3166.
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd)]
 pub struct Locale {
     language: [i8; 3],
@@ -26,6 +27,7 @@ impl Locale {
         locale
     }
 
+    /// Default/unspecified/any locale
     pub fn none() -> Self {
         Locale {
             language: [0; 3],
