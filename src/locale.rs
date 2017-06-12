@@ -35,19 +35,19 @@ impl Locale {
         }
     }
 
-    pub fn language_ptr(&self) -> *const i8 {
+    pub(crate) fn language_ptr(&self) -> *const i8 {
         &self.language as _
     }
 
-    pub fn country_ptr(&self) -> *const i8 {
+    pub(crate) fn country_ptr(&self) -> *const i8 {
         &self.country as _
     }
 
-    pub fn language_ptr_mut(&mut self) -> *mut i8 {
+    pub(crate) fn language_ptr_mut(&mut self) -> *mut i8 {
         &self.language as *const i8 as _
     }
 
-    pub fn country_ptr_mut(&mut self) -> *mut i8 {
+    pub(crate) fn country_ptr_mut(&mut self) -> *mut i8 {
         &self.country as *const i8 as _
     }
 }
