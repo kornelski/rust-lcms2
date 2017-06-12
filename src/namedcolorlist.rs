@@ -5,7 +5,7 @@ use foreign_types::ForeignTypeRef;
 use std::ffi::{CStr,CString};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct ColorInfo {
+pub struct NamedColorInfo {
     pub name: String,
     pub prefix: String,
     pub suffix: String,
@@ -48,7 +48,7 @@ impl NamedColorListRef {
         }
     }
 
-    fn get(&self, index: usize) -> Option<ColorInfo> {
+    fn get(&self, index: usize) -> Option<NamedColorInfo> {
         let mut name = [0i8; 256];
         let mut prefix = [0i8; 33];
         let mut suffix = [0i8; 33];
@@ -65,7 +65,7 @@ impl NamedColorListRef {
                 colorant.as_mut_ptr())
         };
         if ok {
-            Some(unsafe {ColorInfo {
+            Some(unsafe {NamedColorInfo {
                 name: CStr::from_ptr(name.as_ptr()).to_string_lossy().into_owned(),
                 prefix: CStr::from_ptr(prefix.as_ptr()).to_string_lossy().into_owned(),
                 suffix: CStr::from_ptr(suffix.as_ptr()).to_string_lossy().into_owned(),
@@ -77,7 +77,7 @@ impl NamedColorListRef {
         }
     }
 
-    fn colors(&self) -> Vec<ColorInfo> {
+    fn colors(&self) -> Vec<NamedColorInfo> {
         (0..self.len()).filter_map(|i| self.get(i)).collect()
     }
 
