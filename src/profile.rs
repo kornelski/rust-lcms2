@@ -141,12 +141,20 @@ impl Profile {
     pub fn encoded_icc_version(&self) -> u32 {
         unsafe { ffi::cmsGetEncodedICCversion(self.handle) }
     }
-    pub fn header_attributes(&self) -> u64 {
+
+    /// Gets the attribute flags. Currently defined values correspond to the low 4 bytes of the 8 byte attribute quantity.
+    ///
+    ///  * `Reflective`
+    ///  * `Transparency`
+    ///  * `Glossy`
+    ///  * `Matte`
+
+    pub fn header_attributes(&self) -> u32 {
         let mut flags = 0;
         unsafe {
             ffi::cmsGetHeaderAttributes(self.handle, &mut flags);
         }
-        flags
+        flags as u32
     }
 
     pub fn header_creator(&self) -> u32 {
