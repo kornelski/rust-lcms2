@@ -173,8 +173,15 @@ impl Profile {
     pub fn header_rendering_intent(&self) -> u32 {
         unsafe { ffi::cmsGetHeaderRenderingIntent(self.handle) }
     }
+
+    /// Gets the profile connection space used by the given profile, using the ICC convention.
     pub fn pcs(&self) -> ColorSpaceSignature {
         unsafe { ffi::cmsGetPCS(self.handle) }
+    }
+
+    /// Sets the profile connection space signature in profile header, using ICC convention.
+    pub fn set_pcs(&mut self, pcs: ColorSpaceSignature) {
+        unsafe { ffi::cmsSetPCS(self.handle, pcs) }
     }
 
     fn context_id(&self) -> Context {
@@ -251,8 +258,17 @@ impl Profile {
         unsafe { ffi::cmsDetectTAC(self.handle) }
     }
 
+    /// Gets the color space used by the given profile, using the ICC convention.
     pub fn color_space(&self) -> ColorSpaceSignature {
-        unsafe { ffi::cmsGetColorSpace(self.handle) }
+        unsafe {
+            let v = ffi::cmsGetColorSpace(self.handle);
+            if 0 != v as u32 {v} else {ColorSpaceSignature::Sig1colorData}
+        }
+    }
+
+    /// Sets the profile connection space signature in profile header, using ICC convention.
+    pub fn set_color_space(&mut self, sig: ColorSpaceSignature) {
+        unsafe { ffi::cmsSetColorSpace(self.handle, sig) }
     }
 
     pub fn is_clut(&self, intent: Intent, used_direction: u32) -> bool {
@@ -324,6 +340,14 @@ fn tags_write() {
         Tag::MLU(mlu) => mlu.text(Locale::none()),
         _ => panic!(),
     });
+}
+
+#[test]
+fn setters() {
+    let mut p = Profile::new_placeholder();
+    assert_eq!(ColorSpaceSignature::Sig1colorData, p.color_space());
+    p.set_color_space(ColorSpaceSignature::RgbData);
+    assert_eq!(ColorSpaceSignature::RgbData, p.color_space());
 }
 
 #[test]

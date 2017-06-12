@@ -1,5 +1,17 @@
 use super::*;
 
+pub trait ColorSpaceSignatureExt: Sized + Copy {
+    fn channels(self) -> u32;
+}
+
+impl ColorSpaceSignatureExt for ColorSpaceSignature {
+    fn channels(self) -> u32 {
+        unsafe {
+            ffi::cmsChannelsOf(self)
+        }
+    }
+}
+
 /// Chromatic adaptation
 pub trait CIEXYZExt: Sized {
     /// Adapts a color to a given illuminant. Original color is expected to have
