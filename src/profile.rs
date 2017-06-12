@@ -296,6 +296,28 @@ impl Profile {
             ffi::cmsWriteTag(self.handle, sig, tag.data_for_signature(sig) as *const _) != 0
         }
     }
+
+    /// Retrieves the Profile ID stored in the profile header.
+    pub fn profile_id(&self) -> ffi::ProfileID {
+        let mut id = ffi::ProfileID::default();
+        unsafe {
+            ffi::cmsGetHeaderProfileID(self.handle, &mut id as *mut ffi::ProfileID as *mut _);
+        }
+        id
+    }
+
+    /// Computes a MD5 checksum and stores it as Profile ID in the profile header.
+    pub fn set_default_profile_id(&mut self) {
+        unsafe {
+            ffi::cmsMD5computeID(self.handle);
+        }
+    }
+
+    pub fn set_profile_id(&mut self, id: ffi::ProfileID) {
+        unsafe {
+            ffi::cmsSetHeaderProfileID(self.handle, &id as *const ffi::ProfileID as *mut _);
+        }
+    }
 }
 
 impl Drop for Profile {
