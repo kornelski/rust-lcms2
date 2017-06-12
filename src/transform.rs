@@ -38,6 +38,40 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<
                          out_format)
     }
 
+    /// Adaptation state for absolute colorimetric intent, on all but cmsCreateExtendedTransform.
+    pub fn global_adaptation_state() -> f64 {
+        unsafe {
+            ffi::cmsSetAdaptationState(-1.)
+        }
+    }
+
+    /// Sets adaptation state for absolute colorimetric intent, on all but cmsCreateExtendedTransform.
+    /// Little CMS can handle incomplete adaptation states.
+    ///
+    /// Degree on adaptation 0=Not adapted, 1=Complete adaptation,  in-between=Partial adaptation.
+    pub fn set_global_adaptation_state(value: f64) {
+        unsafe {
+            ffi::cmsSetAdaptationState(value);
+        }
+    }
+
+    /// Sets the global codes used to mark out-out-gamut on Proofing transforms. Values are meant to be encoded in 16 bits.
+    /// AlarmCodes: Array [16] of codes. ALL 16 VALUES MUST BE SPECIFIED, set to zero unused channels.
+    pub fn set_global_alarm_codes(codes: [u16; ffi::MAXCHANNELS]) {
+        unsafe {
+            ffi::cmsSetAlarmCodes(codes.as_ptr())
+        }
+    }
+
+    /// Gets the current global codes used to mark out-out-gamut on Proofing transforms. Values are meant to be encoded in 16 bits.
+    pub fn get_global_alarm_codes() -> [u16; ffi::MAXCHANNELS] {
+        let mut tmp = [0u16; ffi::MAXCHANNELS];
+        unsafe {
+            ffi::cmsGetAlarmCodes(tmp.as_mut_ptr());
+        }
+        tmp
+    }
+
     /// A proofing transform does emulate the colors that would appear as  the image were rendered on a specific device.
     /// The obtained transform emulates the device described by the "Proofing" profile. Useful to preview final result without rendering to the physical medium.
     ///
