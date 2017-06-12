@@ -21,6 +21,9 @@ impl Pipeline {
 
 impl PipelineRef {
     pub fn cat(&mut self, append: &PipelineRef) -> bool {
+        if append.input_channels() != self.output_channels() {
+            return false;
+        }
         unsafe {
             ffi::cmsPipelineCat(self.as_ptr(), append.as_ptr()) != 0
         }
