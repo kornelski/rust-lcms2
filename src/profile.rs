@@ -45,7 +45,7 @@ impl Profile<GlobalContext> {
     ///   7. GreenTRCTag
     ///   8. BlueTRCTag
     ///   9. Chromatic adaptation Tag
-    /// 1  0. ChromaticityTag
+    ///   10. ChromaticityTag
     pub fn new_rgb(white_point: &CIExyY,
                    primaries: &CIExyYTRIPLE,
                    transfer_function: &[&ToneCurve])
@@ -72,6 +72,9 @@ impl Profile<GlobalContext> {
         Self::new_handle(unsafe { ffi::cmsCreateNULLProfile() }).unwrap()
     }
 
+    /// Creates an empty profile object, ready to be populated by the programmer.
+    ///
+    /// WARNING: The obtained profile without adding any information is not directly useable.
     pub fn new_placeholder() -> Self {
         Self::new_handle(unsafe { ffi::cmsCreateProfilePlaceholder(ptr::null_mut()) }).unwrap()
     }

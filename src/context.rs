@@ -1,7 +1,10 @@
 use super::*;
 use std::ptr;
+use std::mem;
+use std::ffi::CStr;
 use std::os::raw::c_void;
 use std::cell::UnsafeCell;
+use std::collections::HashMap;
 
 /// A special case for non-thread-aware functions.
 ///
@@ -92,6 +95,19 @@ impl ThreadContext {
             ffi::cmsUnregisterPluginsTHR(self.handle);
         }
     }
+
+    pub fn supported_intents(&self) -> HashMap<Intent, &CStr> {
+        let mut codes = [Intent::PreserveKOnlySaturation; 32];
+        let mut descs = [ptr::null_mut(); 32];
+        let len = unsafe {
+            assert_eq!(mem::size_of::<Intent>(), mem::size_of::<u32>());
+            ffi::cmsGetSupportedIntentsTHR(self.handle, 32, &mut codes as *mut _ as *mut u32, descs.as_mut_ptr())
+        };
+        assert!(len <= 32);
+        codes.iter().zip(descs.iter()).take(len as usize).map(|(&code,&desc)|{
+            (code, unsafe {CStr::from_ptr(desc)})
+        }).collect()
+    }
 }
 
 impl Clone for ThreadContext {
@@ -128,6 +144,8 @@ fn context() {
     assert!(c.user_data().is_null());
     c.unregister_plugins();
     assert!(Profile::new_icc_context(&c, &[]).is_err());
+
+    assert!(c.supported_intents().contains_key(&Intent::RelativeColorimetric));
 
     let _ = GlobalContext::default();
 }
