@@ -13,7 +13,7 @@ fn main() {
         tr.transform_pixels(&[[1u8,2,3]], &mut [out]);
     }).join().unwrap();
 
-    /// Or each object can also own its context, which allows it to be sent to another thread
+    // Or each object can also own its context, which allows it to be sent to another thread
     let profile = Profile::new_srgb_context(ThreadContext::new());
     let tr = Transform::new_context(ThreadContext::new(), &profile, PixelFormat::RGB_8, &profile, PixelFormat::RGB_8, Intent::Saturation).unwrap();
 

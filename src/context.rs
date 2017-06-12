@@ -169,7 +169,7 @@ impl Drop for ThreadContext {
 impl Default for GlobalContext {
     fn default() -> Self {
         Self::new()
-    }
+        }
 }
 
 impl Default for ThreadContext {

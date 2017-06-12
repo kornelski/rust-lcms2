@@ -6,8 +6,10 @@ use eval::FloatOrU16;
 use foreign_types::ForeignTypeRef;
 
 foreign_type! {
+    #[doc(hidden)]
     type CType = ffi::Pipeline;
     fn drop = ffi::cmsPipelineFree;
+    fn clone = ffi::cmsPipelineDup;
     /// This is an owned version of `PipelineRef`.
     pub struct Pipeline;
     /// Pipelines are a convenient way to model complex operations on image data.

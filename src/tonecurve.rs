@@ -7,6 +7,7 @@ use foreign_types::{ForeignType, ForeignTypeRef};
 foreign_type! {
     type CType = ffi::ToneCurve;
     fn drop = ffi::cmsFreeToneCurve;
+    fn clone = ffi::cmsDupToneCurve;
     /// Owned version of `ToneCurveRef`
     pub struct ToneCurve;
     /// Tone curves are powerful constructs that can contain curves specified in diverse ways.
@@ -85,7 +86,7 @@ impl ToneCurveRef {
     /// Creates a tone curve that is the inverse  of given tone curve. In the case it couldn’t be analytically reversed, a tablulated curve of nResultSamples is created.
     pub fn reversed_samples(&self, samples: usize) -> ToneCurve {
         unsafe { ToneCurve::from_ptr(ffi::cmsReverseToneCurveEx(samples as i32, self.as_ptr())) }
-    }
+        }
 
     /// Composites two tone curves in the form Y^-1(X(t))
     /// (self is X, the argument is Y)
@@ -148,12 +149,6 @@ impl ToneCurveRef {
     }
 }
 
-impl Clone for ToneCurve {
-    fn clone(&self) -> ToneCurve {
-        unsafe { ToneCurve::from_ptr(ffi::cmsDupToneCurve(self.as_ptr())) }
-    }
-}
-
 impl fmt::Debug for ToneCurveRef {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "ToneCurve({} entries, gamma ~{:.1})", self.estimated_entries().len(), self.estimated_gamma(1.).unwrap_or(0.))
@@ -167,7 +162,8 @@ fn tones() {
     let _ = ToneCurve::new(-10.);
 
     let g = ToneCurve::new(1./2.2);
-    let mut z = g.clone();
+    let r: &ToneCurveRef = &g;
+    let mut z: ToneCurve = r.to_owned().clone();
     assert!(g.estimated_gamma(0.1).is_some());
     assert_eq!(1., g.eval(1.));
     assert_eq!(0, g.eval(0u16));
