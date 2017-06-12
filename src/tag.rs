@@ -1,5 +1,4 @@
 use super::*;
-use std::mem;
 use foreign_types::ForeignTypeRef;
 
 impl<'a> Tag<'a> {
@@ -11,65 +10,86 @@ impl<'a> Tag<'a> {
     }
 
     pub unsafe fn data_for_signature(&self, sig: TagSignature) -> *const u8 {
+        use TagSignature::*;
         match (sig, self) {
-            (TagSignature::BlueColorantTag, &Tag::CIEXYZ(data)) => (data) as *const _ as *const u8,
-            (TagSignature::GreenColorantTag, &Tag::CIEXYZ(data)) => data as *const _ as *const u8,
-            (TagSignature::LuminanceTag, &Tag::CIEXYZ(data)) => data as *const _ as *const u8,
-            (TagSignature::MediaBlackPointTag, &Tag::CIEXYZ(data)) => data as *const _ as *const u8,
-            (TagSignature::MediaWhitePointTag, &Tag::CIEXYZ(data)) => data as *const _ as *const u8,
-            (TagSignature::RedColorantTag, &Tag::CIEXYZ(data)) => data as *const _ as *const u8,
-            (TagSignature::CharTargetTag, &Tag::MLU(data)) => data.as_ptr() as *const _,
-            (TagSignature::CopyrightTag, &Tag::MLU(data)) => data.as_ptr() as *const _,
-            (TagSignature::DeviceMfgDescTag, &Tag::MLU(data)) => data.as_ptr() as *const _,
-            (TagSignature::DeviceModelDescTag, &Tag::MLU(data)) => data.as_ptr() as *const _,
-            (TagSignature::ProfileDescriptionTag, &Tag::MLU(data)) => data.as_ptr() as *const _,
-            (TagSignature::ScreeningDescTag, &Tag::MLU(data)) => data.as_ptr() as *const _,
-            (TagSignature::ViewingCondDescTag, &Tag::MLU(data)) => data.as_ptr() as *const _,
-            (TagSignature::ChromaticityTag, &Tag::CIExyYTRIPLE(data)) => data as *const _ as *const u8,
-            (TagSignature::ChromaticAdaptationTag, &Tag::CIExyYTRIPLE(data)) => data as *const _ as *const u8,
-            (TagSignature::ColorantTableTag, &Tag::NAMEDCOLORLIST(data)) => data as *const _ as *const u8,
-            (TagSignature::ColorantTableOutTag, &Tag::NAMEDCOLORLIST(data)) => data as *const _ as *const u8,
-            (TagSignature::CrdInfoTag, &Tag::NAMEDCOLORLIST(data)) => data as *const _ as *const u8,
-            (TagSignature::NamedColor2Tag, &Tag::NAMEDCOLORLIST(data)) => data as *const _ as *const u8,
-            (TagSignature::DataTag, &Tag::ICCData(data)) => data as *const _ as *const u8,
-            (TagSignature::Ps2CRD0Tag, &Tag::ICCData(data)) => data as *const _ as *const u8,
-            (TagSignature::Ps2CRD1Tag, &Tag::ICCData(data)) => data as *const _ as *const u8,
-            (TagSignature::Ps2CRD2Tag, &Tag::ICCData(data)) => data as *const _ as *const u8,
-            (TagSignature::Ps2CRD3Tag, &Tag::ICCData(data)) => data as *const _ as *const u8,
-            (TagSignature::Ps2CSATag, &Tag::ICCData(data)) => data as *const _ as *const u8,
-            (TagSignature::Ps2RenderingIntentTag, &Tag::ICCData(data)) => data as *const _ as *const u8,
-            (TagSignature::AToB0Tag, &Tag::Pipeline(data)) => data.as_ptr() as *const _,
-            (TagSignature::AToB1Tag, &Tag::Pipeline(data)) => data.as_ptr() as *const _,
-            (TagSignature::AToB2Tag, &Tag::Pipeline(data)) => data.as_ptr() as *const _,
-            (TagSignature::BToA0Tag, &Tag::Pipeline(data)) => data.as_ptr() as *const _,
-            (TagSignature::BToA1Tag, &Tag::Pipeline(data)) => data.as_ptr() as *const _,
-            (TagSignature::BToA2Tag, &Tag::Pipeline(data)) => data.as_ptr() as *const _,
-            (TagSignature::DToB0Tag, &Tag::Pipeline(data)) => data.as_ptr() as *const _,
-            (TagSignature::DToB1Tag, &Tag::Pipeline(data)) => data.as_ptr() as *const _,
-            (TagSignature::DToB2Tag, &Tag::Pipeline(data)) => data.as_ptr() as *const _,
-            (TagSignature::DToB3Tag, &Tag::Pipeline(data)) => data.as_ptr() as *const _,
-            (TagSignature::BToD0Tag, &Tag::Pipeline(data)) => data.as_ptr() as *const _,
-            (TagSignature::BToD1Tag, &Tag::Pipeline(data)) => data.as_ptr() as *const _,
-            (TagSignature::BToD2Tag, &Tag::Pipeline(data)) => data.as_ptr() as *const _,
-            (TagSignature::BToD3Tag, &Tag::Pipeline(data)) => data.as_ptr() as *const _,
-            (TagSignature::GamutTag, &Tag::Pipeline(data)) => data.as_ptr() as *const _,
-            (TagSignature::Preview0Tag, &Tag::Pipeline(data)) => data.as_ptr() as *const _,
-            (TagSignature::Preview1Tag, &Tag::Pipeline(data)) => data.as_ptr() as *const _,
-            (TagSignature::Preview2Tag, &Tag::Pipeline(data)) => data.as_ptr() as *const _,
-            (TagSignature::BlueTRCTag, &Tag::ToneCurve(data)) => data.as_ptr() as *const _,
-            (TagSignature::GrayTRCTag, &Tag::ToneCurve(data)) => data.as_ptr() as *const _,
-            (TagSignature::GreenTRCTag, &Tag::ToneCurve(data)) => data.as_ptr() as *const _,
-            (TagSignature::RedTRCTag, &Tag::ToneCurve(data)) => data.as_ptr() as *const _,
-            (TagSignature::ColorimetricIntentImageStateTag, &Tag::Signature(data)) => data as *const _ as *const u8,
-            (TagSignature::PerceptualRenderingIntentGamutTag, &Tag::Signature(data)) => data as *const _ as *const u8,
-            (TagSignature::SaturationRenderingIntentGamutTag, &Tag::Signature(data)) => data as *const _ as *const u8,
-            (TagSignature::TechnologyTag, &Tag::Technology(ref data)) => data as *const _ as *const u8,
-            (TagSignature::MeasurementTag, &Tag::ICCMeasurementConditions(data)) => data as *const _ as *const u8,
-            (TagSignature::ProfileSequenceDescTag, &Tag::SEQ(data)) => data as *const _ as *const u8,
-            (TagSignature::ProfileSequenceIdTag, &Tag::SEQ(data)) => data as *const _ as *const u8,
-            (TagSignature::ScreeningTag, &Tag::Screening(data)) => data as *const _ as *const u8,
-            (TagSignature::UcrBgTag, &Tag::UcrBg(data)) => data as *const _ as *const u8,
-            (TagSignature::ViewingConditionsTag, &Tag::ICCViewingConditions(data)) => data as *const _ as *const u8,
+            (RedColorantTag, &Tag::CIEXYZ(data)) |
+            (BlueColorantTag, &Tag::CIEXYZ(data)) |
+            (GreenColorantTag, &Tag::CIEXYZ(data)) |
+            (LuminanceTag, &Tag::CIEXYZ(data)) |
+            (MediaBlackPointTag, &Tag::CIEXYZ(data)) |
+            (MediaWhitePointTag, &Tag::CIEXYZ(data)) => {
+                data as *const _ as *const u8
+            },
+            (ViewingCondDescTag, &Tag::MLU(data)) |
+            (CharTargetTag, &Tag::MLU(data)) |
+            (CopyrightTag, &Tag::MLU(data)) |
+            (DeviceMfgDescTag, &Tag::MLU(data)) |
+            (DeviceModelDescTag, &Tag::MLU(data)) |
+            (ProfileDescriptionTag, &Tag::MLU(data)) |
+            (ScreeningDescTag, &Tag::MLU(data)) => {
+                data.as_ptr() as *const _
+            },
+            (ChromaticityTag, &Tag::CIExyYTRIPLE(data)) |
+            (ChromaticAdaptationTag, &Tag::CIExyYTRIPLE(data)) => {
+                data as *const _ as *const u8
+            },
+            (ColorantTableTag, &Tag::NAMEDCOLORLIST(data)) |
+            (ColorantTableOutTag, &Tag::NAMEDCOLORLIST(data)) |
+            (CrdInfoTag, &Tag::NAMEDCOLORLIST(data)) |
+            (NamedColor2Tag, &Tag::NAMEDCOLORLIST(data)) => data as *const _ as *const u8,
+            (DataTag, &Tag::ICCData(data)) |
+            (Ps2CRD0Tag, &Tag::ICCData(data)) |
+            (Ps2CRD1Tag, &Tag::ICCData(data)) |
+            (Ps2CRD2Tag, &Tag::ICCData(data)) |
+            (Ps2CRD3Tag, &Tag::ICCData(data)) |
+            (Ps2CSATag, &Tag::ICCData(data)) => data as *const _ as *const u8,
+            (Ps2RenderingIntentTag, &Tag::ICCData(data)) => data as *const _ as *const u8,
+            (AToB0Tag, &Tag::Pipeline(data)) |
+            (AToB1Tag, &Tag::Pipeline(data)) |
+            (AToB2Tag, &Tag::Pipeline(data)) |
+            (BToA0Tag, &Tag::Pipeline(data)) |
+            (BToA1Tag, &Tag::Pipeline(data)) |
+            (BToA2Tag, &Tag::Pipeline(data)) |
+            (DToB0Tag, &Tag::Pipeline(data)) |
+            (DToB1Tag, &Tag::Pipeline(data)) |
+            (DToB2Tag, &Tag::Pipeline(data)) |
+            (DToB3Tag, &Tag::Pipeline(data)) |
+            (BToD0Tag, &Tag::Pipeline(data)) |
+            (BToD1Tag, &Tag::Pipeline(data)) |
+            (BToD2Tag, &Tag::Pipeline(data)) |
+            (BToD3Tag, &Tag::Pipeline(data)) |
+            (GamutTag, &Tag::Pipeline(data)) |
+            (Preview0Tag, &Tag::Pipeline(data)) |
+            (Preview1Tag, &Tag::Pipeline(data)) |
+            (Preview2Tag, &Tag::Pipeline(data)) => {
+                data.as_ptr() as *const _
+            },
+            (BlueTRCTag, &Tag::ToneCurve(data)) |
+            (GrayTRCTag, &Tag::ToneCurve(data)) |
+            (GreenTRCTag, &Tag::ToneCurve(data)) |
+            (RedTRCTag, &Tag::ToneCurve(data)) => {
+                data.as_ptr() as *const _
+            },
+            (ColorimetricIntentImageStateTag, &Tag::Signature(data)) => {
+                data as *const _ as *const u8
+            },
+            (PerceptualRenderingIntentGamutTag, &Tag::Signature(data)) |
+            (SaturationRenderingIntentGamutTag, &Tag::Signature(data)) => {
+                data as *const _ as *const u8
+            },
+            (TechnologyTag, &Tag::Technology(ref data)) => data as *const _ as *const u8,
+            (MeasurementTag, &Tag::ICCMeasurementConditions(data)) => {
+                data as *const _ as *const u8
+            },
+            (ProfileSequenceDescTag, &Tag::SEQ(data)) |
+            (ProfileSequenceIdTag, &Tag::SEQ(data)) => {
+                data as *const _ as *const u8
+            },
+            (ScreeningTag, &Tag::Screening(data)) => data as *const _ as *const u8,
+            (UcrBgTag, &Tag::UcrBg(data)) => data as *const _ as *const u8,
+            (ViewingConditionsTag, &Tag::ICCViewingConditions(data)) => {
+                data as *const _ as *const u8
+            },
             (sig, _) => panic!("Signature type {:?} does not support this tag data type", sig),
         }
     }
@@ -78,72 +98,69 @@ impl<'a> Tag<'a> {
         if data.is_null() {
             return Tag::None;
         }
+        use TagSignature::*;
         match sig {
-            TagSignature::BlueColorantTag => Tag::CIEXYZ(mem::transmute(data)),
-            TagSignature::GreenColorantTag => Tag::CIEXYZ(mem::transmute(data)),
-            TagSignature::LuminanceTag => Tag::CIEXYZ(mem::transmute(data)),
-            TagSignature::MediaBlackPointTag => Tag::CIEXYZ(mem::transmute(data)),
-            TagSignature::MediaWhitePointTag => Tag::CIEXYZ(mem::transmute(data)),
-            TagSignature::RedColorantTag => Tag::CIEXYZ(mem::transmute(data)),
-            TagSignature::CharTargetTag => Tag::MLU(MLURef::from_ptr(data as *mut _)),
-            TagSignature::CopyrightTag => Tag::MLU(MLURef::from_ptr(data as *mut _)),
-            TagSignature::DeviceMfgDescTag => Tag::MLU(MLURef::from_ptr(data as *mut _)),
-            TagSignature::DeviceModelDescTag => Tag::MLU(MLURef::from_ptr(data as *mut _)),
-            TagSignature::ProfileDescriptionTag => Tag::MLU(MLURef::from_ptr(data as *mut _)),
-            TagSignature::ScreeningDescTag => Tag::MLU(MLURef::from_ptr(data as *mut _)),
-            TagSignature::ViewingCondDescTag => Tag::MLU(MLURef::from_ptr(data as *mut _)),
-            TagSignature::ChromaticityTag => Tag::CIExyYTRIPLE(mem::transmute(data)),
-            TagSignature::ChromaticAdaptationTag => Tag::CIExyYTRIPLE(mem::transmute(data)),
-            TagSignature::ColorantTableTag => Tag::NAMEDCOLORLIST(NamedColorListRef::from_ptr(data as *mut _)),
-            TagSignature::ColorantTableOutTag => Tag::NAMEDCOLORLIST(NamedColorListRef::from_ptr(data as *mut _)),
-            TagSignature::CrdInfoTag => Tag::NAMEDCOLORLIST(NamedColorListRef::from_ptr(data as *mut _)),
-            TagSignature::NamedColor2Tag => Tag::NAMEDCOLORLIST(NamedColorListRef::from_ptr(data as *mut _)),
-            TagSignature::DataTag => Tag::ICCData(mem::transmute(data)),
-            TagSignature::Ps2CRD0Tag => Tag::ICCData(mem::transmute(data)),
-            TagSignature::Ps2CRD1Tag => Tag::ICCData(mem::transmute(data)),
-            TagSignature::Ps2CRD2Tag => Tag::ICCData(mem::transmute(data)),
-            TagSignature::Ps2CRD3Tag => Tag::ICCData(mem::transmute(data)),
-            TagSignature::Ps2CSATag => Tag::ICCData(mem::transmute(data)),
-            TagSignature::Ps2RenderingIntentTag => Tag::ICCData(mem::transmute(data)),
-            TagSignature::AToB0Tag => Tag::Pipeline(PipelineRef::from_ptr(data as *mut _)),
-            TagSignature::AToB1Tag => Tag::Pipeline(PipelineRef::from_ptr(data as *mut _)),
-            TagSignature::AToB2Tag => Tag::Pipeline(PipelineRef::from_ptr(data as *mut _)),
-            TagSignature::BToA0Tag => Tag::Pipeline(PipelineRef::from_ptr(data as *mut _)),
-            TagSignature::BToA1Tag => Tag::Pipeline(PipelineRef::from_ptr(data as *mut _)),
-            TagSignature::BToA2Tag => Tag::Pipeline(PipelineRef::from_ptr(data as *mut _)),
-            TagSignature::DToB0Tag => Tag::Pipeline(PipelineRef::from_ptr(data as *mut _)),
-            TagSignature::DToB1Tag => Tag::Pipeline(PipelineRef::from_ptr(data as *mut _)),
-            TagSignature::DToB2Tag => Tag::Pipeline(PipelineRef::from_ptr(data as *mut _)),
-            TagSignature::DToB3Tag => Tag::Pipeline(PipelineRef::from_ptr(data as *mut _)),
-            TagSignature::BToD0Tag => Tag::Pipeline(PipelineRef::from_ptr(data as *mut _)),
-            TagSignature::BToD1Tag => Tag::Pipeline(PipelineRef::from_ptr(data as *mut _)),
-            TagSignature::BToD2Tag => Tag::Pipeline(PipelineRef::from_ptr(data as *mut _)),
-            TagSignature::BToD3Tag => Tag::Pipeline(PipelineRef::from_ptr(data as *mut _)),
-            TagSignature::GamutTag => Tag::Pipeline(PipelineRef::from_ptr(data as *mut _)),
-            TagSignature::Preview0Tag => Tag::Pipeline(PipelineRef::from_ptr(data as *mut _)),
-            TagSignature::Preview1Tag => Tag::Pipeline(PipelineRef::from_ptr(data as *mut _)),
-            TagSignature::Preview2Tag => Tag::Pipeline(PipelineRef::from_ptr(data as *mut _)),
-            TagSignature::BlueTRCTag => Tag::ToneCurve(ToneCurveRef::from_ptr(data as *mut _)),
-            TagSignature::GrayTRCTag => Tag::ToneCurve(ToneCurveRef::from_ptr(data as *mut _)),
-            TagSignature::GreenTRCTag => Tag::ToneCurve(ToneCurveRef::from_ptr(data as *mut _)),
-            TagSignature::RedTRCTag => Tag::ToneCurve(ToneCurveRef::from_ptr(data as *mut _)),
-            TagSignature::ColorimetricIntentImageStateTag => {
-                Tag::Signature(mem::transmute(data))
-            }
-            TagSignature::PerceptualRenderingIntentGamutTag => {
-                Tag::Signature(mem::transmute(data))
-            }
-            TagSignature::SaturationRenderingIntentGamutTag => {
-                Tag::Signature(mem::transmute(data))
-            }
-            TagSignature::TechnologyTag => Tag::Technology(*(data as *const ffi::TechnologySignature)),
-            TagSignature::MeasurementTag => Tag::ICCMeasurementConditions(mem::transmute(data)),
-            TagSignature::ProfileSequenceDescTag => Tag::SEQ(mem::transmute(data)),
-            TagSignature::ProfileSequenceIdTag => Tag::SEQ(mem::transmute(data)),
-            TagSignature::ScreeningTag => Tag::Screening(mem::transmute(data)),
-            TagSignature::UcrBgTag => Tag::UcrBg(mem::transmute(data)),
-            TagSignature::ViewingConditionsTag => {
-                Tag::ICCViewingConditions(mem::transmute(data))
+            BlueColorantTag |
+            GreenColorantTag |
+            LuminanceTag |
+            MediaBlackPointTag |
+            MediaWhitePointTag |
+            RedColorantTag => Tag::CIEXYZ(&*(data as *const _)),
+            CharTargetTag |
+            CopyrightTag |
+            DeviceMfgDescTag |
+            DeviceModelDescTag |
+            ProfileDescriptionTag |
+            ScreeningDescTag |
+            ViewingCondDescTag => Tag::MLU(MLURef::from_ptr(data as *mut _)),
+            ChromaticityTag |
+            ChromaticAdaptationTag => Tag::CIExyYTRIPLE(&*(data as *const _)),
+            ColorantTableTag |
+            ColorantTableOutTag |
+            CrdInfoTag |
+            NamedColor2Tag => Tag::NAMEDCOLORLIST(NamedColorListRef::from_ptr(data as *mut _)),
+            DataTag |
+            Ps2CRD0Tag |
+            Ps2CRD1Tag |
+            Ps2CRD2Tag |
+            Ps2CRD3Tag |
+            Ps2CSATag |
+            Ps2RenderingIntentTag => Tag::ICCData(&*(data as *const _)),
+            AToB0Tag |
+            AToB1Tag |
+            AToB2Tag |
+            BToA0Tag |
+            BToA1Tag |
+            BToA2Tag |
+            DToB0Tag |
+            DToB1Tag |
+            DToB2Tag |
+            DToB3Tag |
+            BToD0Tag |
+            BToD1Tag |
+            BToD2Tag |
+            BToD3Tag |
+            GamutTag |
+            Preview0Tag |
+            Preview1Tag |
+            Preview2Tag => Tag::Pipeline(PipelineRef::from_ptr(data as *mut _)),
+            BlueTRCTag |
+            GrayTRCTag |
+            GreenTRCTag |
+            RedTRCTag => Tag::ToneCurve(ToneCurveRef::from_ptr(data as *mut _)),
+            ColorimetricIntentImageStateTag |
+            PerceptualRenderingIntentGamutTag |
+            SaturationRenderingIntentGamutTag => {
+                Tag::Signature(&*(data as *const _))
+            },
+            TechnologyTag => Tag::Technology(*(data as *const ffi::TechnologySignature)),
+            MeasurementTag => Tag::ICCMeasurementConditions(&*(data as *const _)),
+            ProfileSequenceDescTag |
+            ProfileSequenceIdTag => Tag::SEQ(&*(data as *const _)),
+            ScreeningTag => Tag::Screening(&*(data as *const _)),
+            UcrBgTag => Tag::UcrBg(&*(data as *const _)),
+            ViewingConditionsTag => {
+                Tag::ICCViewingConditions(&*(data as *const _))
             }
             _ => Tag::None,
         }

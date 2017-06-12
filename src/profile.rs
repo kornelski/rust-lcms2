@@ -287,7 +287,7 @@ impl Profile {
         unsafe { ffi::cmsIsTag(self.handle, sig) != 0 }
     }
 
-    pub fn read_tag<'a>(&'a self, sig: TagSignature) -> Tag<'a> {
+    pub fn read_tag(&self, sig: TagSignature) -> Tag {
         unsafe { Tag::new(sig, ffi::cmsReadTag(self.handle, sig) as *const u8) }
     }
 

@@ -31,11 +31,12 @@ impl MLU {
 impl MLURef {
     /// Fills an ASCII (7 bit) entry for the given Language and country.
     pub fn set_text_ascii(&mut self, text: &str, locale: Locale) -> bool {
+        let cstr = CString::new(text).unwrap();
         unsafe {
             ffi::cmsMLUsetASCII(self.as_ptr(),
                 locale.language_ptr(),
                 locale.country_ptr(),
-                CString::new(text).unwrap().as_ptr()) != 0
+                cstr.as_ptr()) != 0
         }
     }
 
@@ -70,7 +71,7 @@ impl MLURef {
                 buf[..].as_ptr() as *mut i8, len);
             if let Some(0) = buf.pop() { // terminating zero
                 for c in &mut buf {
-                    if *c > 127 {*c = '?' as u8}
+                    if *c > 127 {*c = b'?'}
                 }
                 CString::new(buf).map_err(|_| Error::InvalidString)
             } else {
