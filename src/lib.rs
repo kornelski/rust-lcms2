@@ -7,10 +7,12 @@ extern crate foreign_types;
 
 mod profile;
 mod tag;
+mod ciecam;
 mod mlu;
 mod namedcolorlist;
 mod pipeline;
 mod eval;
+mod ext;
 mod locale;
 mod transform;
 mod tonecurve;
@@ -18,18 +20,22 @@ mod error;
 use std::marker::PhantomData;
 
 pub use error::*;
+pub use ciecam::*;
 pub use mlu::*;
+pub use ext::*;
 pub use locale::*;
 pub use pipeline::*;
 pub use tonecurve::*;
 pub use namedcolorlist::*;
 
-#[doc(hidden)]
 pub use ffi::CIEXYZ;
+pub use ffi::CIELab;
 #[doc(hidden)]
 pub use ffi::CIExyYTRIPLE;
 #[doc(hidden)]
 pub use ffi::CIExyY;
+#[doc(hidden)]
+pub use ffi::JCh;
 
 pub use ffi::PixelFormat;
 pub use ffi::InfoType;
@@ -37,6 +43,7 @@ pub use ffi::TagSignature;
 pub use ffi::Intent;
 pub use ffi::ColorSpaceSignature;
 pub use ffi::ProfileClassSignature;
+pub use ffi::ViewingConditions;
 pub type Context = ffi::Context;
 
 /// An ICC color profile
@@ -78,5 +85,23 @@ pub enum Tag<'a> {
 pub fn version() -> u32 {
     unsafe {
         ffi::cmsGetEncodedCMMversion() as u32
+    }
+}
+
+/// Temperature <-> Chromaticity (Black body)
+/// Color temperature is a characteristic of visible light that has important applications.
+///
+/// The color temperature of a light source is determined by comparing its chromaticity with that of an ideal black-body radiator.
+/// The temperature (usually measured in kelvin, K) is that source's color temperature at which the heated black-body radiator matches the color of the light source for a black body source.
+/// Higher color temperatures (5,000 K or more) are cool (bluish white) colors, and lower color temperatures (2,700–3,000 K) warm (yellowish white through red) colors.
+pub fn white_point_from_temp(temp: f64) -> Option<CIExyY> {
+    let mut res = CIExyY{x:0.,y:0.,Y:0.};
+    let ok = unsafe {
+        ffi::cmsWhitePointFromTemp(&mut res, temp) != 0
+    };
+    if ok {
+        Some(res)
+    } else {
+        None
     }
 }
