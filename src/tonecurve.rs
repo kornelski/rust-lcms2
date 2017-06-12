@@ -1,5 +1,6 @@
 use super::*;
 use std::fmt;
+use std::ptr;
 use eval::FloatOrU16;
 use foreign_types::{ForeignType, ForeignTypeRef};
 
@@ -15,10 +16,10 @@ foreign_type! {
 }
 
 impl ToneCurve {
-    /// Simplified wrapper to cmsBuildParametricToneCurve. Builds a parametric curve of type 1.
+    /// Simplified wrapper to `new_parametric`. Builds a parametric curve of type 1.
     pub fn new(gamma: f64) -> Self {
         unsafe {
-            Self::from_ptr(ffi::cmsBuildGamma(std::ptr::null_mut(), gamma))
+            Self::from_ptr(ffi::cmsBuildGamma(ptr::null_mut(), gamma))
         }
     }
 
@@ -26,7 +27,7 @@ impl ToneCurve {
     pub fn new_tabulated(values: &[u16]) -> Self {
         assert!(values.len() < std::i32::MAX as usize);
         unsafe { Self::new_handle(
-            ffi::cmsBuildTabulatedToneCurve16(std::ptr::null_mut(), values.len() as i32, values.as_ptr())
+            ffi::cmsBuildTabulatedToneCurve16(ptr::null_mut(), values.len() as i32, values.as_ptr())
         )}
     }
 
@@ -34,8 +35,43 @@ impl ToneCurve {
     pub fn new_tabulated_float(values: &[f32]) -> Self {
         assert!(values.len() < std::i32::MAX as usize);
         unsafe { Self::new_handle(
-            ffi::cmsBuildTabulatedToneCurveFloat(std::ptr::null_mut(), values.len() as u32, values.as_ptr())
+            ffi::cmsBuildTabulatedToneCurveFloat(ptr::null_mut(), values.len() as u32, values.as_ptr())
         )}
+    }
+
+    /// See Table 52 in LCMS documentation for descriptino of the types.
+    ///
+    ///  1. Exponential
+    ///  2. CIE 122-1966
+    ///  3. IEC 61966-3
+    ///  4. IEC 61966-2.1 (sRGB)
+    ///  5. See PDF
+    ///  6. Identical to 5, unbounded.
+    ///  7. See PDF
+    ///  8. See PDF
+    ///  108. (108) S-Shaped sigmoidal
+    ///
+    /// Always use 10-parameter slice for plug-in types.
+    pub fn new_parametric(curve_type: u16, params: &[f64]) -> LCMSResult<Self> {
+        let params_min_len = match curve_type {
+            1 => 1,
+            2 => 3,
+            3 => 4,
+            4 => 5,
+            5 => 7,
+            6 => 4,
+            7 => 5,
+            8 => 6,
+            108 => 1,
+            _ => 10,
+        };
+        if params.len() < params_min_len {
+            return Err(Error::MissingData);
+        }
+
+        unsafe {
+            Error::if_null(ffi::cmsBuildParametricToneCurve(ptr::null_mut(), curve_type.into(), params.as_ptr()))
+        }
     }
 
     unsafe fn new_handle(handle: *mut ffi::ToneCurve) -> Self {
@@ -63,7 +99,7 @@ impl ToneCurveRef {
     /// (self is X, the argument is Y)
     pub fn join(&self, y: &ToneCurveRef, points: usize) -> ToneCurve {
         unsafe {
-            ToneCurve::from_ptr(ffi::cmsJoinToneCurve(std::ptr::null_mut(), self.as_ptr(), y.as_ptr(), points as u32))
+            ToneCurve::from_ptr(ffi::cmsJoinToneCurve(ptr::null_mut(), self.as_ptr(), y.as_ptr(), points as u32))
         }
     }
 
@@ -155,4 +191,6 @@ fn tones() {
 
     assert_eq!(0, g.estimated_entries()[0]);
     assert_eq!(std::u16::MAX, *g.estimated_entries().last().unwrap());
+
+    assert!(ToneCurve::new_parametric(7, &[0.]).is_err());
 }
