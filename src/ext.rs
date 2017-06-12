@@ -17,6 +17,9 @@ pub trait CIEXYZExt: Sized {
     /// Adapts a color to a given illuminant. Original color is expected to have
     /// a `source_white_point` white point.
     fn adapt_to_illuminant(&self, source_white_point: &CIEXYZ, illuminant: &CIEXYZ) -> Option<CIEXYZ>;
+
+    /// Colorimetric space conversion.
+    fn to_lab(&self, white_point: &CIEXYZ) -> CIELab;
 }
 
 impl CIEXYZExt for CIEXYZ {
@@ -27,6 +30,31 @@ impl CIEXYZExt for CIEXYZ {
         };
         if ok {
             Some(res)
+        } else {
+            None
+        }
+    }
+
+    fn to_lab(&self, white_point: &CIEXYZ) -> CIELab {
+        let mut out = CIELab::default();
+        unsafe {
+            ffi::cmsXYZ2Lab(white_point, &mut out, self)
+        }
+        out
+    }
+}
+
+/// White point
+pub trait CIExzYExt: Sized {
+    /// Correlates a black body temperature in ºK from given chromaticity.
+    fn temp(&self) -> Option<f64>;
+}
+
+impl CIExzYExt for CIExyY {
+    fn temp(&self) -> Option<f64> {
+        let mut out = 0.;
+        if 0 != unsafe {ffi::cmsTempFromWhitePoint(&mut out, self)} {
+            Some(out)
         } else {
             None
         }
@@ -80,6 +108,9 @@ pub trait CIELabExt: Sized {
 
     /// Encodes a Lab value, from a CIELab value to ICC v2 convention.
     fn encoded_v2(&self) -> [u16; 3];
+
+    /// Colorimetric space conversion.
+    fn to_xyz(&self, white_point: &CIEXYZ) -> CIEXYZ;
 }
 
 impl CIELabExt for CIELab {
@@ -131,6 +162,14 @@ impl CIELabExt for CIELab {
         let mut out = [0u16; 3];
         unsafe {
             ffi::cmsFloat2LabEncodedV2(out.as_mut_ptr(), self)
+        }
+        out
+    }
+
+    fn to_xyz(&self, white_point: &CIEXYZ) -> CIEXYZ {
+        let mut out = CIEXYZ::default();
+        unsafe {
+            ffi::cmsLab2XYZ(white_point, &mut out, self)
         }
         out
     }

@@ -94,6 +94,8 @@ pub fn version() -> u32 {
 /// The color temperature of a light source is determined by comparing its chromaticity with that of an ideal black-body radiator.
 /// The temperature (usually measured in kelvin, K) is that source's color temperature at which the heated black-body radiator matches the color of the light source for a black body source.
 /// Higher color temperatures (5,000 K or more) are cool (bluish white) colors, and lower color temperatures (2,700–3,000 K) warm (yellowish white through red) colors.
+///
+/// See `CIExzYExt::temp()`
 pub fn white_point_from_temp(temp: f64) -> Option<CIExyY> {
     let mut res = CIExyY{x:0.,y:0.,Y:0.};
     let ok = unsafe {
