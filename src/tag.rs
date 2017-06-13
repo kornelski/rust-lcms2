@@ -70,12 +70,12 @@ impl<'a> Tag<'a> {
             (RedTRCTag, &Tag::ToneCurve(data)) => {
                 data.as_ptr() as *const _
             },
-            (ColorimetricIntentImageStateTag, &Tag::Signature(data)) => {
-                data as *const _ as *const u8
+            (ColorimetricIntentImageStateTag, &Tag::ColorimetricIntentImageState(ref data)) => {
+                data as *const ffi::ColorimetricIntentImageState as *const u8
             },
-            (PerceptualRenderingIntentGamutTag, &Tag::Signature(data)) |
-            (SaturationRenderingIntentGamutTag, &Tag::Signature(data)) => {
-                data as *const _ as *const u8
+            (PerceptualRenderingIntentGamutTag, &Tag::Intent(ref data)) |
+            (SaturationRenderingIntentGamutTag, &Tag::Intent(ref data)) => {
+                data as *const ffi::Intent as *const u8
             },
             (TechnologyTag, &Tag::Technology(ref data)) => data as *const _ as *const u8,
             (MeasurementTag, &Tag::ICCMeasurementConditions(data)) => {
@@ -148,10 +148,12 @@ impl<'a> Tag<'a> {
             GrayTRCTag |
             GreenTRCTag |
             RedTRCTag => Tag::ToneCurve(ToneCurveRef::from_ptr(data as *mut _)),
-            ColorimetricIntentImageStateTag |
+            ColorimetricIntentImageStateTag  => {
+                Tag::ColorimetricIntentImageState(*(data as *const ffi::ColorimetricIntentImageState))
+            },
             PerceptualRenderingIntentGamutTag |
             SaturationRenderingIntentGamutTag => {
-                Tag::Signature(&*(data as *const _))
+                Tag::Intent(*(data as *const ffi::Intent))
             },
             TechnologyTag => Tag::Technology(*(data as *const ffi::TechnologySignature)),
             MeasurementTag => Tag::ICCMeasurementConditions(&*(data as *const _)),

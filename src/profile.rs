@@ -2,7 +2,6 @@ use super::*;
 use context::Context;
 use std::path::Path;
 use std::ptr;
-use std::mem;
 use std::io;
 use std::io::Read;
 use std::fs::File;
@@ -197,7 +196,7 @@ impl<Ctx: Context> Profile<Ctx> {
     /// Therefore, this flag may not have any meaning until the profile is used in some context, e.g. in a Devicelink or an embedded source profile.”
     pub fn header_rendering_intent(&self) -> Intent {
         unsafe {
-            mem::transmute(ffi::cmsGetHeaderRenderingIntent(self.handle) as u32)
+            ffi::cmsGetHeaderRenderingIntent(self.handle)
         }
     }
 
