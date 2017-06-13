@@ -41,48 +41,6 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<
         Self::new_flags_context(GlobalContext::new(), input, in_format, output, out_format, intent, flags)
     }
 
-    /// Adaptation state for absolute colorimetric intent, on all but cmsCreateExtendedTransform.
-    ///
-    /// See `ThreadContext::adaptation_state()`
-    pub fn global_adaptation_state() -> f64 {
-        unsafe {
-            ffi::cmsSetAdaptationState(-1.)
-        }
-    }
-
-    /// Sets adaptation state for absolute colorimetric intent, on all but cmsCreateExtendedTransform.
-    /// Little CMS can handle incomplete adaptation states.
-    ///
-    /// See `ThreadContext::set_adaptation_state()`
-    ///
-    /// Degree on adaptation 0=Not adapted, 1=Complete adaptation,  in-between=Partial adaptation.
-    pub fn set_global_adaptation_state(value: f64) {
-        unsafe {
-            ffi::cmsSetAdaptationState(value);
-        }
-    }
-
-    /// Sets the global codes used to mark out-out-gamut on Proofing transforms. Values are meant to be encoded in 16 bits.
-    /// AlarmCodes: Array [16] of codes. ALL 16 VALUES MUST BE SPECIFIED, set to zero unused channels.
-    ///
-    /// See `ThreadContext::set_alarm_codes()`
-    pub fn set_global_alarm_codes(codes: [u16; ffi::MAXCHANNELS]) {
-        unsafe {
-            ffi::cmsSetAlarmCodes(codes.as_ptr())
-        }
-    }
-
-    /// Gets the current global codes used to mark out-out-gamut on Proofing transforms. Values are meant to be encoded in 16 bits.
-    ///
-    /// See `ThreadContext::alarm_codes()`
-    pub fn global_alarm_codes() -> [u16; ffi::MAXCHANNELS] {
-        let mut tmp = [0u16; ffi::MAXCHANNELS];
-        unsafe {
-            ffi::cmsGetAlarmCodes(tmp.as_mut_ptr());
-        }
-        tmp
-    }
-
     /// A proofing transform does emulate the colors that would appear as  the image were rendered on a specific device.
     /// The obtained transform emulates the device described by the "Proofing" profile. Useful to preview final result without rendering to the physical medium.
     ///
@@ -106,6 +64,19 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<
     /// Color spaces must be paired with the exception of Lab/XYZ, which can be interchanged.
     pub fn new_multiprofile(profiles: &[&Profile], in_format: PixelFormat, out_format: PixelFormat, intent: Intent, flags: u32) -> LCMSResult<Self> {
         Self::new_multiprofile_context(GlobalContext::new(), profiles, in_format, out_format, intent, flags)
+    }
+}
+
+impl<PixelFormat: Copy + Clone, Ctx: Context> Transform<PixelFormat, PixelFormat, Ctx> {
+    pub fn transform_in_place(&self, srcdst: &mut [PixelFormat]) {
+        let size = srcdst.len();
+        assert!(size < std::u32::MAX as usize);
+        unsafe {
+            ffi::cmsDoTransform(self.handle,
+                                srcdst.as_ptr() as *const c_void,
+                                srcdst.as_ptr() as *mut c_void,
+                                size as u32);
+        }
     }
 }
 
@@ -198,16 +169,50 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
     }
 }
 
-impl<PixelFormat: Copy + Clone, Ctx: Context> Transform<PixelFormat, PixelFormat, Ctx> {
-    pub fn transform_in_place(&self, srcdst: &mut [PixelFormat]) {
-        let size = srcdst.len();
-        assert!(size < std::u32::MAX as usize);
+impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<InputPixelFormat, OutputPixelFormat, GlobalContext> {
+
+    /// Adaptation state for absolute colorimetric intent, on all but cmsCreateExtendedTransform.
+    ///
+    /// See `ThreadContext::adaptation_state()`
+    pub fn global_adaptation_state() -> f64 {
         unsafe {
-            ffi::cmsDoTransform(self.handle,
-                                srcdst.as_ptr() as *const c_void,
-                                srcdst.as_ptr() as *mut c_void,
-                                size as u32);
+            ffi::cmsSetAdaptationState(-1.)
         }
+    }
+
+    /// Sets adaptation state for absolute colorimetric intent, on all but cmsCreateExtendedTransform.
+    /// Little CMS can handle incomplete adaptation states.
+    ///
+    /// See `ThreadContext::set_adaptation_state()`
+    ///
+    /// Degree on adaptation 0=Not adapted, 1=Complete adaptation,  in-between=Partial adaptation.
+    #[deprecated(note="Use `ThreadContext::set_adaptation_state()`")]
+    pub fn set_global_adaptation_state(value: f64) {
+        unsafe {
+            ffi::cmsSetAdaptationState(value);
+        }
+    }
+
+    /// Sets the global codes used to mark out-out-gamut on Proofing transforms. Values are meant to be encoded in 16 bits.
+    /// AlarmCodes: Array [16] of codes. ALL 16 VALUES MUST BE SPECIFIED, set to zero unused channels.
+    ///
+    /// See `ThreadContext::set_alarm_codes()`
+    #[deprecated(note="Use `ThreadContext::set_alarm_codes()`")]
+    pub fn set_global_alarm_codes(codes: [u16; ffi::MAXCHANNELS]) {
+        unsafe {
+            ffi::cmsSetAlarmCodes(codes.as_ptr())
+        }
+    }
+
+    /// Gets the current global codes used to mark out-out-gamut on Proofing transforms. Values are meant to be encoded in 16 bits.
+    ///
+    /// See `ThreadContext::alarm_codes()`
+    pub fn global_alarm_codes() -> [u16; ffi::MAXCHANNELS] {
+        let mut tmp = [0u16; ffi::MAXCHANNELS];
+        unsafe {
+            ffi::cmsGetAlarmCodes(tmp.as_mut_ptr());
+        }
+        tmp
     }
 }
 
