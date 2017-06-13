@@ -363,7 +363,9 @@ impl<Ctx: Context> Profile<Ctx> {
         Self::new_handle(unsafe { ffi::cmsCreateNULLProfileTHR(context.as_ptr()) }).unwrap()
     }
 
-    /// Creates a Lab  Lab identity, marking it as v2 ICC profile. Adjustments for accomodating PCS endoing shall be done by Little CMS when using this profile.
+    /// Creates a Lab  Lab identity, marking it as v2 ICC profile.
+    ///
+    /// Adjustments for accomodating PCS endoing shall be done by Little CMS when using this profile.
     pub fn new_lab2_context(context: Ctx, white_point: &CIExyY) -> LCMSResult<Self> {
         Self::new_handle(unsafe { ffi::cmsCreateLab2ProfileTHR(context.as_ptr(), white_point) })
     }

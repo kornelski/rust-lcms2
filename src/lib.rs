@@ -28,6 +28,7 @@ pub use mlu::*;
 pub use ext::*;
 pub use locale::*;
 pub use pipeline::*;
+pub use transform::*;
 pub use tonecurve::*;
 pub use namedcolorlist::*;
 
@@ -47,13 +48,6 @@ pub use ffi::Intent;
 pub use ffi::ColorSpaceSignature;
 pub use ffi::ProfileClassSignature;
 pub use ffi::ViewingConditions;
-
-/// Conversion between two ICC profiles
-pub struct Transform<FromFormat, ToFormat> {
-    handle: ffi::HTRANSFORM,
-    _from: PhantomData<FromFormat>,
-    _to: PhantomData<ToFormat>,
-}
 
 #[derive(Debug)]
 /// Value of a tag in an ICC profile

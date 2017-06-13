@@ -1,6 +1,7 @@
 extern crate lcms2;
-
 use lcms2::*;
+
+const PROFILE: &'static [u8] = include_bytes!("tinysrgb.icc");
 
 #[derive(Copy, Clone, PartialEq, Eq, Debug)]
 struct RGB16 {
@@ -74,7 +75,6 @@ fn transform_gray_to_gray() {
 
 #[test]
 fn transform() {
-    const PROFILE: &'static [u8] = include_bytes!("tinysrgb.icc");
     let tiny = Profile::new_icc(PROFILE).unwrap();
     assert_eq!(ColorSpaceSignature::RgbData, tiny.color_space());
     assert_eq!("c2", tiny.info(InfoType::Description, Locale::new("en_US")).unwrap());
@@ -107,4 +107,18 @@ fn transform() {
         RGB16{r:0x7F7F,g:0x7F7F,b:0x7F7F},
         RGB16{r:0x1010,g:0x1010,b:0x1010},
     ], dst);
+}
+
+#[test]
+fn context() {
+    let c = ThreadContext::new();
+    let in_p = Profile::new_srgb_context(&c);
+    let out_p = Profile::new_srgb_context(&c);
+    let proof = Profile::new_icc_context(&c, PROFILE).unwrap();
+    let t = Transform::new_proofing_context(&c,
+        &in_p, PixelFormat::RGB_8,
+        &out_p, PixelFormat::RGB_8,
+        &proof, Intent::Perceptual, Intent::Perceptual, 0).unwrap();
+    let tmp = (0u8,0u8,0u8);
+    t.transform_in_place(&mut [tmp]);
 }
