@@ -1,13 +1,25 @@
 use super::*;
+use std::mem;
 
 pub trait ColorSpaceSignatureExt: Sized + Copy {
+    /// Returns channel count for a given color space.
+    ///
+    /// Returns 3 on error (sic).
     fn channels(self) -> u32;
+    /// Converts from ICC color space notation (LCMS PDF Table 10) to Little CMS color space notation (LCMS PDF Table 36).
+    fn pixel_format(self) -> PixelFormat;
 }
 
 impl ColorSpaceSignatureExt for ColorSpaceSignature {
     fn channels(self) -> u32 {
         unsafe {
             ffi::cmsChannelsOf(self)
+        }
+    }
+
+    fn pixel_format(self) -> PixelFormat {
+        unsafe {
+            mem::transmute(ffi::_cmsLCMScolorSpace(self) as u32)
         }
     }
 }
