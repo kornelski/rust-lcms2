@@ -27,7 +27,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<
                in_format: PixelFormat,
                output: &Profile,
                out_format: PixelFormat,
-               intent: Intent) -> Result<Self, Error> {
+               intent: Intent) -> LCMSResult<Self> {
         Self::new_flags(input, in_format, output, out_format, intent, 0)
     }
 
@@ -37,7 +37,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<
                      out_format: PixelFormat,
                      intent: Intent,
                      flags: u32)
-                     -> Result<Self, Error> {
+                     -> LCMSResult<Self> {
         Self::new_flags_context(GlobalContext::new(), input, in_format, output, out_format, intent, flags)
     }
 
@@ -88,13 +88,21 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<
                         output: &Profile, out_format: PixelFormat,
                         proofing: &Profile, intent: Intent, proofng_intent: Intent,
                         flags: u32)
-                        -> Result<Self, Error> {
+                        -> LCMSResult<Self> {
         Self::new_proofing_context(GlobalContext::new(), input, in_format, output, out_format, proofing, intent, proofng_intent, flags)
+    }
+
+    /// Multiprofile transforms
+    ///
+    /// User passes in an array of handles to open profiles. The returned color transform do "smelt" all profiles in a single devicelink.
+    /// Color spaces must be paired with the exception of Lab/XYZ, which can be interchanged.
+    pub fn new_multiprofile(profiles: &[&Profile], in_format: PixelFormat, out_format: PixelFormat, intent: Intent, flags: u32) -> LCMSResult<Self> {
+        Self::new_multiprofile_context(GlobalContext::new(), profiles, in_format, out_format, intent, flags)
     }
 }
 
 impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Context> Transform<InputPixelFormat, OutputPixelFormat, Ctx> {
-    fn new_handle(handle: ffi::HTRANSFORM, in_format: PixelFormat, out_format: PixelFormat) -> Result<Self, Error> {
+    fn new_handle(handle: ffi::HTRANSFORM, in_format: PixelFormat, out_format: PixelFormat) -> LCMSResult<Self> {
         if handle.is_null() {
             Err(Error::ObjectCreationError)
         } else {
@@ -148,7 +156,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
     pub fn new_flags_context(context: Ctx, input: &Profile<Ctx>, in_format: PixelFormat,
                              output: &Profile<Ctx>, out_format: PixelFormat,
                              intent: Intent, flags: u32)
-                             -> Result<Self, Error> {
+                             -> LCMSResult<Self> {
         Self::new_handle(unsafe {
                              ffi::cmsCreateTransformTHR(context.as_ptr(),
                                 input.handle, in_format,
@@ -162,13 +170,23 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
                         output: &Profile<Ctx>, out_format: PixelFormat,
                         proofing: &Profile<Ctx>, intent: Intent, proofng_intent: Intent,
                         flags: u32)
-                        -> Result<Self, Error> {
+                        -> LCMSResult<Self> {
         Self::new_handle(unsafe {
                              ffi::cmsCreateProofingTransformTHR(context.as_ptr(), input.handle, in_format,
                                 output.handle, out_format,
                                 proofing.handle, intent, proofng_intent, flags)
                          },
                          in_format, out_format)
+    }
+
+    fn new_multiprofile_context(context: Ctx, profiles: &[&Profile],
+                                in_format: PixelFormat, out_format: PixelFormat, intent: Intent, flags: u32) -> LCMSResult<Self> {
+        let mut handles: Vec<_> = profiles.iter().map(|p| p.handle).collect();
+        unsafe {
+            Self::new_handle(ffi::cmsCreateMultiprofileTransformTHR(context.as_ptr(), handles.as_mut_ptr(), handles.len() as u32,
+                             in_format, out_format, intent, flags),
+                in_format, out_format)
+        }
     }
 }
 
