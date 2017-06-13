@@ -108,6 +108,41 @@ impl ThreadContext {
             (code, unsafe {CStr::from_ptr(desc)})
         }).collect()
     }
+
+    /// Adaptation state for absolute colorimetric intent, on all but cmsCreateExtendedTransform.
+    pub fn adaptation_state(&self) -> f64 {
+        unsafe {
+            ffi::cmsSetAdaptationStateTHR(self.handle, -1.)
+        }
+    }
+
+    /// Sets adaptation state for absolute colorimetric intent in the given context.  Adaptation state applies on all but cmsCreateExtendedTransformTHR().
+    /// Little CMS can handle incomplete adaptation states.
+    ///
+    /// Degree on adaptation 0=Not adapted, 1=Complete adaptation,  in-between=Partial adaptation.
+    pub fn set_adaptation_state(&mut self, value: f64) {
+        unsafe {
+            ffi::cmsSetAdaptationStateTHR(self.handle, value);
+        }
+    }
+
+    /// Sets the codes used to mark out-out-gamut on Proofing transforms for a given context. Values are meant to be encoded in 16 bits.
+    ///
+    /// AlarmCodes: Array [16] of codes. ALL 16 VALUES MUST BE SPECIFIED, set to zero unused channels.
+    pub fn set_alarm_codes(&mut self, codes: [u16; ffi::MAXCHANNELS]) {
+        unsafe {
+            ffi::cmsSetAlarmCodesTHR(self.handle, codes.as_ptr())
+        }
+    }
+
+    /// Gets the current codes used to mark out-out-gamut on Proofing transforms for the given context. Values are meant to be encoded in 16 bits.
+    pub fn alarm_codes(&self) -> [u16; ffi::MAXCHANNELS] {
+        let mut tmp = [0u16; ffi::MAXCHANNELS];
+        unsafe {
+            ffi::cmsGetAlarmCodesTHR(self.handle, tmp.as_mut_ptr());
+        }
+        tmp
+    }
 }
 
 impl Clone for ThreadContext {
