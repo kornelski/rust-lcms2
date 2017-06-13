@@ -2,6 +2,7 @@ use super::*;
 use context::Context;
 use std::path::Path;
 use std::ptr;
+use std::mem;
 use std::io;
 use std::io::Read;
 use std::fs::File;
@@ -113,6 +114,11 @@ impl<Ctx: Context> Profile<Ctx> {
         unsafe { ffi::cmsGetDeviceClass(self.handle) }
     }
 
+    /// Sets the device class signature in profile header.
+    pub fn set_device_class(&mut self, cls: ProfileClassSignature) {
+        unsafe { ffi::cmsSetDeviceClass(self.handle, cls) }
+    }
+
     /// Returns the profile ICC version in the same format as it is stored in the header.
     pub fn encoded_icc_version(&self) -> u32 {
         unsafe { ffi::cmsGetEncodedICCversion(self.handle) }
@@ -125,29 +131,80 @@ impl<Ctx: Context> Profile<Ctx> {
     ///  * `Glossy`
     ///  * `Matte`
 
-    pub fn header_attributes(&self) -> u32 {
+    pub fn header_attributes(&self) -> u64 {
         let mut flags = 0;
         unsafe {
             ffi::cmsGetHeaderAttributes(self.handle, &mut flags);
         }
-        flags as u32
+        flags
+    }
+
+    /// Sets the attribute flags in the profile header.
+    pub fn set_header_attributes(&mut self, flags: u64) {
+        unsafe {
+            ffi::cmsSetHeaderAttributes(self.handle, flags);
+        }
     }
 
     pub fn header_creator(&self) -> u32 {
         unsafe { ffi::cmsGetHeaderCreator(self.handle) }
     }
+
+    /// Get header flags of given ICC profile object.
+    ///
+    /// The profile flags field does contain flags to indicate various hints for the CMM such as distributed processing and caching options.
+    /// The least-significant 16 bits are reserved for the ICC. Flags in bit positions 0 and 1 shall be used as indicated in Table 7 of LCMS PDF.
     pub fn header_flags(&self) -> u32 {
         unsafe { ffi::cmsGetHeaderFlags(self.handle) }
     }
+
+    /// Sets header flags of given ICC profile object. Valid flags are defined in Table 7 of LCMS PDF.
+    pub fn set_header_flags(&mut self, flags: u32) {
+        unsafe { ffi::cmsSetHeaderFlags(self.handle, flags); }
+    }
+
     pub fn header_manufacturer(&self) -> u32 {
         unsafe { ffi::cmsGetHeaderManufacturer(self.handle) }
     }
+
+    pub fn set_header_manufacturer(&self) -> u32 {
+        unsafe { ffi::cmsGetHeaderManufacturer(self.handle) }
+    }
+
+    /// Returns the model signature as described in the header.
+    ///
+    /// This funcionality is widely superseded by the model tag. Of use only in elder profiles.
     pub fn header_model(&self) -> u32 {
         unsafe { ffi::cmsGetHeaderModel(self.handle) }
     }
 
-    pub fn header_rendering_intent(&self) -> u32 {
-        unsafe { ffi::cmsGetHeaderRenderingIntent(self.handle) }
+    /// Sets the model signature in the profile header.
+    ///
+    /// This funcionality is widely superseded by the model tag. Of use only in elder profiles.
+    #[deprecated(note="This funcionality is widely superseded by the model tag")]
+    pub fn set_header_model(&mut self, model: u32) {
+        unsafe {
+            ffi::cmsSetHeaderModel(self.handle, model);
+        }
+    }
+
+    /// Gets the profile header rendering intent.
+    ///
+    /// From the ICC spec: “The rendering intent field shall specify the rendering intent which should be used
+    /// (or, in the case of a Devicelink profile, was used) when this profile is (was) combined with another profile.
+    /// In a sequence of more than two profiles, it applies to the combination of this profile and the next profile in the sequence and not to the entire sequence.
+    /// Typically, the user or application will set the rendering intent dynamically at runtime or embedding time.
+    /// Therefore, this flag may not have any meaning until the profile is used in some context, e.g. in a Devicelink or an embedded source profile.”
+    pub fn header_rendering_intent(&self) -> Intent {
+        unsafe {
+            mem::transmute(ffi::cmsGetHeaderRenderingIntent(self.handle) as u32)
+        }
+    }
+
+    pub fn set_header_rendering_intent(&mut self, intent: Intent) {
+        unsafe {
+            ffi::cmsSetHeaderRenderingIntent(self.handle, intent)
+        }
     }
 
     /// Gets the profile connection space used by the given profile, using the ICC convention.
@@ -196,6 +253,13 @@ impl<Ctx: Context> Profile<Ctx> {
     /// Returns the profile ICC version. The version is decoded to readable floating point format.
     pub fn version(&self) -> f64 {
         unsafe { ffi::cmsGetProfileVersion(self.handle) }
+    }
+
+    /// Sets the ICC version in profile header. The version is given to this function as a float n.m
+    pub fn set_version(&mut self, ver: f64) {
+        unsafe {
+            ffi::cmsSetProfileVersion(self.handle, ver);
+        }
     }
 
     pub fn tag_signatures(&self) -> Vec<TagSignature> {
