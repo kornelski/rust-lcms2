@@ -15,6 +15,8 @@ pub struct Transform<InputPixelFormat, OutputPixelFormat, Context = GlobalContex
     _context_ref: PhantomData<Context>,
 }
 
+unsafe impl<'a,F,T,C: Send> Send for Transform<F,T,C> {}
+
 impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<InputPixelFormat, OutputPixelFormat, GlobalContext> {
     /// Creates a color transform for translating bitmaps.
     ///

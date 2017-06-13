@@ -15,6 +15,8 @@ pub struct Profile<Context = GlobalContext> {
     _context_ref: PhantomData<Context>,
 }
 
+unsafe impl<'a, C:Send> Send for Profile<C> {}
+
 /// These are the basic functions on opening profiles.
 /// For simpler operation, you must open two profiles using `new_file`, and then create a transform with these open profiles with `Transform`.
 /// Using this transform you can color correct your bitmaps.

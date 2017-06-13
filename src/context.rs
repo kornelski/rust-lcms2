@@ -19,6 +19,13 @@ pub trait Context {
     fn as_ptr(&self) -> ffi::Context;
 }
 
+impl<'a> Context for &'a GlobalContext {
+    #[inline]
+    fn as_ptr(&self) -> ffi::Context {
+        ptr::null_mut()
+    }
+}
+
 impl Context for GlobalContext {
     #[inline]
     fn as_ptr(&self) -> ffi::Context {
@@ -26,7 +33,16 @@ impl Context for GlobalContext {
     }
 }
 
+unsafe impl Send for ThreadContext {}
+
 impl<'a> Context for &'a ThreadContext {
+    #[inline]
+    fn as_ptr(&self) -> ffi::Context {
+        self.handle
+    }
+}
+
+impl Context for ThreadContext {
     #[inline]
     fn as_ptr(&self) -> ffi::Context {
         self.handle
