@@ -400,6 +400,25 @@ impl<Ctx: Context> Profile<Ctx> {
         Self::new_handle(ffi::cmsCreateLinearizationDeviceLinkTHR(context.as_ptr(), color_space, v.as_ptr()))
     }
 
+    /// Creates an abstract devicelink operating in Lab for Bright/Contrast/Hue/Saturation and white point translation.
+    /// White points are specified as temperatures ºK
+    ///
+    /// nLUTPoints : Resulting color map resolution
+    /// Bright: Bright increment. May be negative
+    /// Contrast : Contrast increment. May be negative.
+    /// Hue : Hue displacement in degree.
+    /// Saturation: Saturation increment. May be negative
+    /// TempSrc: Source white point temperature
+    /// TempDest: Destination white point temperature.
+    /// To prevent white point adjustment, set Temp to None
+    pub fn new_bchsw_abstract_context(context: Ctx, lut_points: usize, bright: f64, contrast: f64, hue: f64, saturation: f64,
+                                      temp_src_dst: Option<(u32, u32)>) -> LCMSResult<Self> {
+        let (temp_src, temp_dest) = temp_src_dst.unwrap_or((0,0));
+        Self::new_handle(unsafe {
+            ffi::cmsCreateBCHSWabstractProfileTHR(context.as_ptr(), lut_points as i32, bright, contrast, hue, saturation, temp_src as i32, temp_dest as i32)
+        })
+    }
+
     fn new_handle(handle: ffi::HPROFILE) -> LCMSResult<Self> {
         if handle.is_null() {
             return Err(Error::ObjectCreationError);
