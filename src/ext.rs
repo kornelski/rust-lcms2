@@ -32,6 +32,9 @@ pub trait CIEXYZExt: Sized {
 
     /// Colorimetric space conversion.
     fn to_lab(&self, white_point: &CIEXYZ) -> CIELab;
+
+    /// Decodes a XYZ value, encoded on ICC convention
+    fn from_encoded(icc: &[u16; 3]) -> Self;
 }
 
 impl CIEXYZExt for CIEXYZ {
@@ -51,6 +54,14 @@ impl CIEXYZExt for CIEXYZ {
         let mut out = CIELab::default();
         unsafe {
             ffi::cmsXYZ2Lab(white_point, &mut out, self)
+        }
+        out
+    }
+
+    fn from_encoded(icc: &[u16; 3]) -> Self {
+        let mut out = Self::default();
+        unsafe {
+            ffi::cmsXYZEncoded2Float(&mut out, icc.as_ptr());
         }
         out
     }
@@ -121,6 +132,12 @@ pub trait CIELabExt: Sized {
     /// Encodes a Lab value, from a CIELab value to ICC v2 convention.
     fn encoded_v2(&self) -> [u16; 3];
 
+    /// Decodes a Lab value, encoded on ICC v4 convention
+    fn from_encoded(icc: &[u16; 3]) -> Self;
+
+    /// Decodes a Lab value, encoded on ICC v2 convention
+    fn from_encoded_v2(icc: &[u16; 3]) -> Self;
+
     /// Colorimetric space conversion.
     fn to_xyz(&self, white_point: &CIEXYZ) -> CIEXYZ;
 }
@@ -174,6 +191,22 @@ impl CIELabExt for CIELab {
         let mut out = [0u16; 3];
         unsafe {
             ffi::cmsFloat2LabEncodedV2(out.as_mut_ptr(), self)
+        }
+        out
+    }
+
+    fn from_encoded(icc: &[u16; 3]) -> Self {
+        let mut out = Self::default();
+        unsafe {
+            ffi::cmsLabEncoded2Float(&mut out, icc.as_ptr());
+        }
+        out
+    }
+
+    fn from_encoded_v2(icc: &[u16; 3]) -> Self {
+        let mut out = Self::default();
+        unsafe {
+            ffi::cmsLabEncoded2FloatV2(&mut out, icc.as_ptr());
         }
         out
     }
