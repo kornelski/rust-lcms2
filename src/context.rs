@@ -65,10 +65,7 @@ impl Context for ThreadContext {
 /// For example, if you create a `Transform` with a context (calling `new_*_context()`), then it will only support `Profile` with a context as well.
 pub struct ThreadContext {
     handle: ffi::Context,
-    // _user_data: PhantomData<UserData>
 }
-
-// pub type ContextUserData = *mut std::os::raw::c_void;
 
 impl GlobalContext {
     pub fn new() -> Self {
