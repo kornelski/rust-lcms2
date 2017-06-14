@@ -125,6 +125,10 @@ impl<Ctx: Context> Profile<Ctx> {
         unsafe { ffi::cmsGetEncodedICCversion(self.handle) }
     }
 
+    pub fn set_encoded_icc_version(&self, v: u32) {
+        unsafe { ffi::cmsSetEncodedICCversion(self.handle, v) }
+    }
+
     /// Gets the attribute flags. Currently defined values correspond to the low 4 bytes of the 8 byte attribute quantity.
     ///
     ///  * `Reflective`
@@ -164,12 +168,19 @@ impl<Ctx: Context> Profile<Ctx> {
         unsafe { ffi::cmsSetHeaderFlags(self.handle, flags); }
     }
 
+    /// Returns the manufacturer signature as described in the header.
+    ///
+    /// This funcionality is widely superseded by the manufaturer tag. Of use only in elder profiles.
     pub fn header_manufacturer(&self) -> u32 {
         unsafe { ffi::cmsGetHeaderManufacturer(self.handle) }
     }
 
-    pub fn set_header_manufacturer(&self) -> u32 {
-        unsafe { ffi::cmsGetHeaderManufacturer(self.handle) }
+    /// Sets the manufacturer signature in the header.
+    ///
+    /// This funcionality is widely superseded by the manufaturer tag. Of use only in elder profiles.
+    #[deprecated(note="This funcionality is widely superseded by the manufaturer tag")]
+    pub fn set_header_manufacturer(&mut self, m: u32) {
+        unsafe { ffi::cmsSetHeaderManufacturer(self.handle, m) }
     }
 
     /// Returns the model signature as described in the header.
