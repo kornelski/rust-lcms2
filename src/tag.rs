@@ -26,6 +26,7 @@ impl<'a> Tag<'a> {
             (DeviceMfgDescTag, &Tag::MLU(data)) |
             (DeviceModelDescTag, &Tag::MLU(data)) |
             (ProfileDescriptionTag, &Tag::MLU(data)) |
+            (ProfileDescriptionMLTag, &Tag::MLU(data)) |
             (ScreeningDescTag, &Tag::MLU(data)) => {
                 data.as_ptr() as *const _
             },
@@ -111,6 +112,7 @@ impl<'a> Tag<'a> {
             DeviceMfgDescTag |
             DeviceModelDescTag |
             ProfileDescriptionTag |
+            ProfileDescriptionMLTag |
             ScreeningDescTag |
             ViewingCondDescTag => Tag::MLU(MLURef::from_ptr(data as *mut _)),
             ChromaticityTag |
