@@ -11,8 +11,9 @@ fn main() {
     };
 
     for &info in &[InfoType::Description, InfoType::Manufacturer, InfoType::Model, InfoType::Copyright] {
-        let data = profile.info(info, Locale::none());
-        println!("{:?} = {:?}", info, data);
+        if let Some(data) = profile.info(info, Locale::none()) {
+            println!("{:?} = {:?}", info, data);
+        }
     }
 
     for sig in profile.tag_signatures() {
