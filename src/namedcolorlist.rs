@@ -2,7 +2,7 @@ use super::*;
 use std::fmt;
 use std::ptr;
 use foreign_types::ForeignTypeRef;
-use std::ffi::{CStr,CString};
+use std::ffi::{CStr, CString};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 /// Color in the palette
@@ -40,17 +40,13 @@ impl NamedColorList {
 impl NamedColorListRef {
     /// Number of colors in the palette
     fn len(&self) -> usize {
-        unsafe {
-            ffi::cmsNamedColorCount(self.as_ptr()) as usize
-        }
+        unsafe { ffi::cmsNamedColorCount(self.as_ptr()) as usize }
     }
 
     /// Find color by name
     fn index_of(&self, color_name: &str) -> usize {
         let s = CString::new(color_name).unwrap();
-        unsafe {
-            ffi::cmsNamedColorIndex(self.as_ptr(), s.as_ptr()) as usize
-        }
+        unsafe { ffi::cmsNamedColorIndex(self.as_ptr(), s.as_ptr()) as usize }
     }
 
     /// Get color info

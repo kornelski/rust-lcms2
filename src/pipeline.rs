@@ -32,15 +32,11 @@ impl PipelineRef {
         if append.input_channels() != self.output_channels() {
             return false;
         }
-        unsafe {
-            ffi::cmsPipelineCat(self.as_ptr(), append.as_ptr()) != 0
-        }
+        unsafe { ffi::cmsPipelineCat(self.as_ptr(), append.as_ptr()) != 0 }
     }
 
     pub fn stage_count(&self) -> usize {
-        unsafe {
-            ffi::cmsPipelineStageCount(self.as_ptr()) as usize
-        }
+        unsafe { ffi::cmsPipelineStageCount(self.as_ptr()) as usize }
     }
 
     pub fn first_stage(&self) -> Option<&StageRef> {
@@ -62,21 +58,15 @@ impl PipelineRef {
     }
 
     pub fn set_8bit(&mut self, on: bool) -> bool {
-        unsafe {
-            ffi::cmsPipelineSetSaveAs8bitsFlag(self.as_ptr(), on as i32) != 0
-        }
+        unsafe { ffi::cmsPipelineSetSaveAs8bitsFlag(self.as_ptr(), on as i32) != 0 }
     }
 
     pub fn input_channels(&self) -> usize {
-        unsafe {
-            ffi::cmsPipelineInputChannels(self.as_ptr()) as usize
-        }
+        unsafe { ffi::cmsPipelineInputChannels(self.as_ptr()) as usize }
     }
 
     pub fn output_channels(&self) -> usize {
-        unsafe {
-            ffi::cmsPipelineOutputChannels(self.as_ptr()) as usize
-        }
+        unsafe { ffi::cmsPipelineOutputChannels(self.as_ptr()) as usize }
     }
 
     // Evaluates a pipeline usin u16 of f32 numbers. With u16 it's optionally using the optimized path.

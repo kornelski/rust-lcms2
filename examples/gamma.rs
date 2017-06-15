@@ -3,7 +3,7 @@ use lcms2::*;
 
 #[repr(C)]
 #[derive(Copy, Clone, Debug)]
-struct RGB(u8,u8,u8);
+struct RGB(u8, u8, u8);
 
 #[repr(C)]
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]

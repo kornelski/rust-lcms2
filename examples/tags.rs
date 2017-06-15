@@ -24,8 +24,8 @@ fn main() {
                 for stage in pipeline.stages() {
                     println!(" └─ {:?}", stage);
                 }
-            }
-            _ => {}
+            },
+            _ => {},
         }
     }
 }

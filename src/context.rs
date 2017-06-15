@@ -11,7 +11,7 @@ use std::collections::HashMap;
 /// This context is used by default and you don't need to create it manually.
 #[doc(hidden)]
 pub struct GlobalContext {
-    _not_thread_safe: UnsafeCell<()>
+    _not_thread_safe: UnsafeCell<()>,
 }
 
 #[doc(hidden)]
@@ -90,7 +90,7 @@ impl ThreadContext {
 
     unsafe fn new_handle(handle: ffi::Context) -> Self {
         assert!(!handle.is_null());
-        Self {handle}
+        Self { handle }
     }
 
     pub fn user_data(&self) -> *mut c_void {
@@ -124,9 +124,7 @@ impl ThreadContext {
 
     /// Adaptation state for absolute colorimetric intent, on all but cmsCreateExtendedTransform.
     pub fn adaptation_state(&self) -> f64 {
-        unsafe {
-            ffi::cmsSetAdaptationStateTHR(self.handle, -1.)
-        }
+        unsafe { ffi::cmsSetAdaptationStateTHR(self.handle, -1.) }
     }
 
     /// Sets adaptation state for absolute colorimetric intent in the given context.  Adaptation state applies on all but cmsCreateExtendedTransformTHR().
@@ -143,9 +141,7 @@ impl ThreadContext {
     ///
     /// AlarmCodes: Array [16] of codes. ALL 16 VALUES MUST BE SPECIFIED, set to zero unused channels.
     pub fn set_alarm_codes(&mut self, codes: [u16; ffi::MAXCHANNELS]) {
-        unsafe {
-            ffi::cmsSetAlarmCodesTHR(self.handle, codes.as_ptr())
-        }
+        unsafe { ffi::cmsSetAlarmCodesTHR(self.handle, codes.as_ptr()) }
     }
 
     /// Gets the current codes used to mark out-out-gamut on Proofing transforms for the given context. Values are meant to be encoded in 16 bits.
@@ -160,17 +156,13 @@ impl ThreadContext {
 
 impl Clone for ThreadContext {
     fn clone(&self) -> Self {
-        unsafe {
-            Self::new_handle(ffi::cmsDupContext(self.handle, ptr::null_mut()))
-        }
+        unsafe { Self::new_handle(ffi::cmsDupContext(self.handle, ptr::null_mut())) }
     }
 }
 
 impl Drop for ThreadContext {
     fn drop(&mut self) {
-        unsafe {
-            ffi::cmsDeleteContext(self.handle)
-        }
+        unsafe { ffi::cmsDeleteContext(self.handle) }
     }
 }
 

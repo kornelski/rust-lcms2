@@ -65,12 +65,8 @@ fn transform_gray_to_gray() {
 
     let tr = Transform::new(&gray, PixelFormat::GRAY_8, &sg, PixelFormat::GRAY_8, Intent::Perceptual).unwrap();
     let mut dest = vec![0u8; 3];
-    tr.transform_pixels(&[0u8,100u8,255u8], &mut dest);
-    assert_eq!(&dest, &[
-        0,
-        119,
-        255,
-    ]);
+    tr.transform_pixels(&[0u8, 100u8, 255u8], &mut dest);
+    assert_eq!(&dest, &[0, 119, 255]);
 }
 
 #[test]

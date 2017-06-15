@@ -42,7 +42,7 @@ impl Stage {
     /// Note that Matrix is specified in double precision, whilst CLUT has only float precision.
     /// That is because an ICC profile can encode matrices with far more precision that CLUTS.
     pub fn new_matrix(matrix2d: &[f64], rows: usize, cols: usize, offsets: Option<&[f64]>) -> LCMSResult<Self> {
-        if matrix2d.len() < rows*cols {
+        if matrix2d.len() < rows * cols {
             return Err(Error::MissingData);
         }
         if let Some(offsets) = offsets {
@@ -75,21 +75,15 @@ impl Stage {
 
 impl StageRef {
     pub fn input_channels(&self) -> usize {
-        unsafe {
-            ffi::cmsStageInputChannels(self.as_ptr()) as usize
-        }
+        unsafe { ffi::cmsStageInputChannels(self.as_ptr()) as usize }
     }
 
     pub fn output_channels(&self) -> usize {
-        unsafe {
-            ffi::cmsStageOutputChannels(self.as_ptr()) as usize
-        }
+        unsafe { ffi::cmsStageOutputChannels(self.as_ptr()) as usize }
     }
 
     pub fn stage_type(&self) -> ffi::StageSignature {
-        unsafe {
-            ffi::cmsStageType(self.as_ptr())
-        }
+        unsafe { ffi::cmsStageType(self.as_ptr()) }
     }
 }
 

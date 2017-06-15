@@ -18,10 +18,10 @@ impl Locale {
             language: [0; 3],
             country: [0; 3],
         };
-        for (c,s) in locale.language.iter_mut().zip(language_str.bytes().take(2)) {
+        for (c, s) in locale.language.iter_mut().zip(language_str.bytes().take(2)) {
             *c = s as i8;
         }
-        for (c,s) in locale.country.iter_mut().zip(country_str.bytes().take(2)) {
+        for (c, s) in locale.country.iter_mut().zip(country_str.bytes().take(2)) {
             *c = s as i8;
         }
         locale
@@ -86,24 +86,24 @@ impl fmt::Display for Locale {
 #[test]
 fn locale() {
     let l = Locale::new("");
-    assert_eq!([0i8;3], l.language);
-    assert_eq!([0i8;3], l.country);
+    assert_eq!([0i8; 3], l.language);
+    assert_eq!([0i8; 3], l.country);
 
     let l = Locale::none();
-    assert_eq!([0i8;3], l.language);
-    assert_eq!([0i8;3], l.country);
+    assert_eq!([0i8; 3], l.language);
+    assert_eq!([0i8; 3], l.country);
 
     let l = Locale::new("Ab");
-    assert_eq!(['A' as i8,'b' as i8,0], l.language);
-    assert_eq!([0i8;3], l.country);
+    assert_eq!(['A' as i8, 'b' as i8, 0], l.language);
+    assert_eq!([0i8; 3], l.country);
 
     let l = Locale::new("Ab-X");
-    assert_eq!(['A' as i8,'b' as i8,0], l.language);
-    assert_eq!(['X' as i8,0,0], l.country);
+    assert_eq!(['A' as i8, 'b' as i8, 0], l.language);
+    assert_eq!(['X' as i8, 0, 0], l.country);
 
     let l = Locale::new("overlong");
-    assert_eq!(['o' as i8,'v' as i8,0], l.language);
-    assert_eq!(['r' as i8,'l' as i8,0], l.country);
+    assert_eq!(['o' as i8, 'v' as i8, 0], l.language);
+    assert_eq!(['r' as i8, 'l' as i8, 0], l.country);
     unsafe {
         assert_eq!('o' as i8, *l.language_ptr());
     }

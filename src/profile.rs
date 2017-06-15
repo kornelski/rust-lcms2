@@ -15,7 +15,7 @@ pub struct Profile<Context = GlobalContext> {
     _context_ref: PhantomData<Context>,
 }
 
-unsafe impl<'a, C:Send> Send for Profile<C> {}
+unsafe impl<'a, C: Send> Send for Profile<C> {}
 
 /// These are the basic functions on opening profiles.
 /// For simpler operation, you must open two profiles using `new_file`, and then create a transform with these open profiles with `Transform`.
@@ -84,7 +84,7 @@ impl Profile<GlobalContext> {
     /// This is a devicelink operating in CMYK for ink-limiting. Currently only cmsSigCmykData is supported.
     /// Limit: Amount of ink limiting in % (0..400%)
     pub fn ink_limiting(color_space: ColorSpaceSignature, limit: f64) -> LCMSResult<Self> {
-        Self::new_handle(unsafe {ffi::cmsCreateInkLimitingDeviceLink(color_space, limit)})
+        Self::new_handle(unsafe { ffi::cmsCreateInkLimitingDeviceLink(color_space, limit) })
     }
 
     /// Generates a device-link profile from a given color transform. This profile can then be used by any other function accepting profile handle.
@@ -178,7 +178,7 @@ impl<Ctx: Context> Profile<Ctx> {
     /// Sets the manufacturer signature in the header.
     ///
     /// This funcionality is widely superseded by the manufaturer tag. Of use only in elder profiles.
-    #[deprecated(note="This funcionality is widely superseded by the manufaturer tag")]
+    #[deprecated(note = "This funcionality is widely superseded by the manufaturer tag")]
     pub fn set_header_manufacturer(&mut self, m: u32) {
         unsafe { ffi::cmsSetHeaderManufacturer(self.handle, m) }
     }
@@ -193,7 +193,7 @@ impl<Ctx: Context> Profile<Ctx> {
     /// Sets the model signature in the profile header.
     ///
     /// This funcionality is widely superseded by the model tag. Of use only in elder profiles.
-    #[deprecated(note="This funcionality is widely superseded by the model tag")]
+    #[deprecated(note = "This funcionality is widely superseded by the model tag")]
     pub fn set_header_model(&mut self, model: u32) {
         unsafe {
             ffi::cmsSetHeaderModel(self.handle, model);
@@ -208,15 +208,11 @@ impl<Ctx: Context> Profile<Ctx> {
     /// Typically, the user or application will set the rendering intent dynamically at runtime or embedding time.
     /// Therefore, this flag may not have any meaning until the profile is used in some context, e.g. in a Devicelink or an embedded source profile.”
     pub fn header_rendering_intent(&self) -> Intent {
-        unsafe {
-            ffi::cmsGetHeaderRenderingIntent(self.handle)
-        }
+        unsafe { ffi::cmsGetHeaderRenderingIntent(self.handle) }
     }
 
     pub fn set_header_rendering_intent(&mut self, intent: Intent) {
-        unsafe {
-            ffi::cmsSetHeaderRenderingIntent(self.handle, intent)
-        }
+        unsafe { ffi::cmsSetHeaderRenderingIntent(self.handle, intent) }
     }
 
     /// Gets the profile connection space used by the given profile, using the ICC convention.
@@ -445,7 +441,7 @@ impl<Ctx: Context> Profile<Ctx> {
     /// This is a devicelink operating in CMYK for ink-limiting. Currently only cmsSigCmykData is supported.
     /// Limit: Amount of ink limiting in % (0..400%)
     pub fn ink_limiting_context(context: Ctx, color_space: ColorSpaceSignature, limit: f64) -> LCMSResult<Self> {
-        Self::new_handle(unsafe {ffi::cmsCreateInkLimitingDeviceLinkTHR(context.as_ptr(), color_space, limit)})
+        Self::new_handle(unsafe { ffi::cmsCreateInkLimitingDeviceLinkTHR(context.as_ptr(), color_space, limit) })
     }
 
     /// Creates a XYZ  XYZ identity, marking it as v4 ICC profile.  WhitePoint used in Absolute colorimetric intent  is D50.
@@ -531,6 +527,6 @@ fn icc() {
 
 #[test]
 fn bad_icc() {
-    let err = Profile::new_icc(&[1,2,3]);
+    let err = Profile::new_icc(&[1, 2, 3]);
     assert!(err.is_err());
 }

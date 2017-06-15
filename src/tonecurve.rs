@@ -18,17 +18,13 @@ foreign_type! {
 impl ToneCurve {
     /// Simplified wrapper to `new_parametric`. Builds a parametric curve of type 1.
     pub fn new(gamma: f64) -> Self {
-        unsafe {
-            Self::from_ptr(ffi::cmsBuildGamma(ptr::null_mut(), gamma))
-        }
+        unsafe { Self::from_ptr(ffi::cmsBuildGamma(ptr::null_mut(), gamma)) }
     }
 
     /// Builds a tone curve based on a table of 16-bit values. Tone curves built with this function are restricted to 0…1.0 domain.
     pub fn new_tabulated(values: &[u16]) -> Self {
         assert!(values.len() < std::i32::MAX as usize);
-        unsafe { Self::new_handle(
-            ffi::cmsBuildTabulatedToneCurve16(ptr::null_mut(), values.len() as i32, values.as_ptr())
-        )}
+        unsafe { Self::new_handle(ffi::cmsBuildTabulatedToneCurve16(ptr::null_mut(), values.len() as i32, values.as_ptr())) }
     }
 
     /// Builds a tone curve based on a table of floating point  values. Tone curves built with this function are **not** restricted to 0…1.0 domain.
@@ -83,16 +79,12 @@ impl ToneCurve {
 impl ToneCurveRef {
     /// Creates a tone curve that is the inverse  of given tone curve.
     pub fn reversed(&self) -> ToneCurve {
-        unsafe {
-            ToneCurve::from_ptr(ffi::cmsReverseToneCurve(self.as_ptr()))
-        }
+        unsafe { ToneCurve::from_ptr(ffi::cmsReverseToneCurve(self.as_ptr())) }
     }
 
     /// Creates a tone curve that is the inverse  of given tone curve. In the case it couldn’t be analytically reversed, a tablulated curve of nResultSamples is created.
     pub fn reversed_samples(&self, samples: usize) -> ToneCurve {
-        unsafe {
-            ToneCurve::from_ptr(ffi::cmsReverseToneCurveEx(samples as i32, self.as_ptr()))
-        }
+        unsafe { ToneCurve::from_ptr(ffi::cmsReverseToneCurveEx(samples as i32, self.as_ptr())) }
     }
 
     /// Composites two tone curves in the form Y^-1(X(t))
@@ -131,7 +123,7 @@ impl ToneCurveRef {
     /// Precision: The maximum standard deviation allowed on the residuals, 0.01 is a fair value, set it to a big number to fit any curve, mo matter how good is the fit.
     pub fn estimated_gamma(&self, precision: f64) -> Option<f64> {
         let g = unsafe { ffi::cmsEstimateGamma(self.as_ptr(), precision) };
-        if g <= -1.0 {None} else {Some(g)}
+        if g <= -1.0 { None } else { Some(g) }
     }
 
     /// Smoothes tone curve according to the lambda parameter. From: Eilers, P.H.C. (1994) Smoothing and interpolation with finite differences. in: Graphic Gems IV, Heckbert, P.S. (ed.), Academic press.
@@ -152,17 +144,13 @@ impl ToneCurveRef {
     ///
     /// This function is significantly faster for u16, since it uses a pre-computed 16-bit lookup table.
     pub fn eval<ToneCurveValue: FloatOrU16>(&self, v: ToneCurveValue) -> ToneCurveValue {
-        unsafe {
-            v.eval_tone_curve(self.as_ptr())
-        }
+        unsafe { v.eval_tone_curve(self.as_ptr()) }
     }
 }
 
 impl Clone for ToneCurve {
     fn clone(&self) -> ToneCurve {
-        unsafe {
-            ToneCurve::from_ptr( ffi::cmsDupToneCurve(self.as_ptr()))
-        }
+        unsafe { ToneCurve::from_ptr(ffi::cmsDupToneCurve(self.as_ptr())) }
     }
 }
 

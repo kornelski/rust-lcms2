@@ -42,7 +42,10 @@ impl MLURef {
 
     /// Fills a UNICODE wide char (16 bit) entry for the given Language and country.
     pub fn set_text(&mut self, text: &str, locale: Locale) -> bool {
-        let chars: Vec<_> = text.chars().map(|c| c as wchar_t).chain(repeat(0 as wchar_t).take(1)).collect();
+        let chars: Vec<_> = text.chars()
+            .map(|c| c as wchar_t)
+            .chain(repeat(0 as wchar_t).take(1))
+            .collect();
 
         unsafe {
             ffi::cmsMLUsetWide(self.as_ptr(),
@@ -145,7 +148,7 @@ impl MLURef {
 impl fmt::Debug for MLURef {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let t = self.text(Locale::none());
-        write!(f, "MLU({:?} {:?})", if let Ok(ref t) = t {&t} else {"None"}, self.tanslations())
+        write!(f, "MLU({:?} {:?})", if let Ok(ref t) = t { &t } else { "None" }, self.tanslations())
     }
 }
 

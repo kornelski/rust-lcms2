@@ -95,9 +95,5 @@ pub fn white_point_from_temp(temp: f64) -> Option<CIExyY> {
     let ok = unsafe {
         ffi::cmsWhitePointFromTemp(&mut res, temp) != 0
     };
-    if ok {
-        Some(res)
-    } else {
-        None
-    }
+    if ok { Some(res) } else { None }
 }
