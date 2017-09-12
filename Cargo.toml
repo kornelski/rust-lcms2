@@ -1,15 +1,15 @@
 [package]
 name = "lcms2"
 authors = ["Kornel Lesiński <kornel@geekhood.net>"]
+description = "ICC color profile handling. Rusty wrapper for Little CMS"
 keywords = ["icc", "profile", "color", "lcms"]
 include = ["src/**/*", "tests/**/*", "examples/**/*", "Cargo.toml", "README.md"]
-description = "ICC color profile handling. Rusty wrapper Little CMS"
 readme = "README.md"
 license = "MIT"
 documentation = "https://pornel.github.io/rust-lcms2/lcms2/"
 repository = "https://github.com/pornel/rust-lcms2.git"
 categories = ["multimedia::images", "api-bindings"]
-version = "4.2.0"
+version = "4.2.1"
 
 [dependencies]
 foreign-types = "0.3.0"

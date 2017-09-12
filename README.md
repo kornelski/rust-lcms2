@@ -1,8 +1,8 @@
-# [Little CMS](http://www.littlecms.com) wrapper for [Rust](http://www.rust-lang.org/)
+# [Little CMS](http://www.littlecms.com) wrapper for [Rust](https://www.rust-lang.org/)
 
 Convert and apply color profiles with a safe abstraction layer for the LCMS library.
 
-See [API reference](https://docs.rs/lcms2/) for Rust functions and the [LCMS2 documentation HTML](https://pornel.github.io/rust-lcms2-sys/)/[PDF](http://www.littlecms.com/LittleCMS2.7%20API.pdf) for more background information about the functions.
+See [API reference](https://docs.rs/lcms2/) for Rust functions and the [LCMS2 documentation HTML](https://pornel.github.io/rust-lcms2-sys/)/[PDF](http://www.littlecms.com/LittleCMS2.8%20API.pdf) for more background information about the functions.
 
 ```rust
 extern crate rgb;
@@ -42,4 +42,4 @@ if b"ICC_PROFILE\0" == &app2_marker_data[0..12] {
 
 There's more in the `examples` directory.
 
-This crate requires Rust 1.18 or later. It's up to date with LCMS 2.8 (should work with 2.6+).
+This crate requires Rust 1.18 or later. It's up to date with LCMS 2.8 (should work with 2.6 to 2.9).
