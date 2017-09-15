@@ -84,7 +84,7 @@ fn transform() {
     let tiny2 = tiny.icc().unwrap();
     let tiny2 = Profile::new_icc(&tiny2).unwrap();
 
-    let tr = Transform::new_flags(&tiny, PixelFormat::RGBA_8, &tiny2, PixelFormat::RGB_16, Intent::Perceptual, 0).unwrap();
+    let tr = Transform::new_flags(&tiny, PixelFormat::RGBA_8, &tiny2, PixelFormat::RGB_16, Intent::Perceptual, Flags::default()).unwrap();
     let src = vec![0xFFFFFFFFu32,0,0x7F7F7F7F,0x10101010];
     let mut dst = vec![RGB16{r:0,g:1,b:2}; 4];
     tr.transform_pixels(&src, &mut dst);
@@ -114,7 +114,7 @@ fn context() {
     let t = Transform::new_proofing_context(&c,
         &in_p, PixelFormat::RGB_8,
         &out_p, PixelFormat::RGB_8,
-        &proof, Intent::Perceptual, Intent::Perceptual, 0).unwrap();
+        &proof, Intent::Perceptual, Intent::Perceptual, Flags::default()).unwrap();
     let tmp = (0u8,0u8,0u8);
     t.transform_in_place(&mut [tmp]);
 }

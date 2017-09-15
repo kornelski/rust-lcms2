@@ -89,8 +89,8 @@ impl Profile<GlobalContext> {
 
     /// Generates a device-link profile from a given color transform. This profile can then be used by any other function accepting profile handle.
     /// Depending on the specified version number, the implementation of the devicelink may vary. Accepted versions are in range 1.0…4.3
-    pub fn new_device_link<F, T>(transform: &Transform<F, T>, version: f64, flags: u32) -> LCMSResult<Self> {
-        Self::new_handle(unsafe { ffi::cmsTransform2DeviceLink(transform.handle, version, flags) })
+    pub fn new_device_link<F, T>(transform: &Transform<F, T>, version: f64, flags: Flags) -> LCMSResult<Self> {
+        Self::new_handle(unsafe { ffi::cmsTransform2DeviceLink(transform.handle, version, flags.bits()) })
     }
 }
 

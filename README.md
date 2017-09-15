@@ -42,10 +42,10 @@ if b"ICC_PROFILE\0" == &app2_marker_data[0..12] {
 
 There's more in the `examples` directory.
 
-This crate requires Rust 1.18 or later. It's up to date with LCMS 2.8 (should work with 2.6 to 2.9).
+This crate requires Rust 1.20 or later. It's up to date with LCMS 2.8 (should work with 2.6 to 2.9).
 
 ## Threads
 
 In LCMS all functions are in 2 flavors: global and `*THR()` functions. In this crate this is represented by having functions with `GlobalContext` and `ThreadContext`. Create profiles, transforms, etc. using `*_context()` constructors to give them their private coontext, which makes them sendable between threads (i.e. they're `Send`).
 
-`Transform` does not implement `Sync`, because LCMS2 has a thread-unsafe cache in the transform.
+By default `Transform` does not implement `Sync`, because LCMS2 has a thread-unsafe cache in the transform. You can set `Flags::NO_CACHE` to make it safe (this is checked at compile time).

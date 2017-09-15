@@ -17,23 +17,35 @@ use std::marker::PhantomData;
 /// then don't worry! Write some code that calls `transform_pixels()`,
 /// because this is the function that makes the type of the transform clear.
 ///
+/// In case you need to store the transform in a struct or return from a function, the full type of `Transform` is:
+///
+/// ```rust,ignore
+/// Transform<InputPixelFormat, OutputPixelFormat, Context = GlobalContext, Flags = AllowCache>
+/// ```
+///
 ///  * `InputPixelFormat` — e.g. `(u8,u8,u8)` or struct `RGB<u8>`, etc.
 ///     The type must have appropriate number of bytes per pixel (i.e. you can't just use `[u8]` for everything).
 ///  * `OutputPixelFormat` — similar to `InputPixelFormat`. If both are the same, then `transform_in_place()` function works.
 ///  * `Context` — it's `GlobalContext` for the default non-thread-safe version, or `ThreadContext` for thread-safe version.
+///  * `Flags` — `AllowCache` or `DisallowCache`. If you disallow cache, then the transform will be accessible from multiple threads.
+///
 /// Thread-safety:
 ///
 ///  * Transform is `Send` if you create it with `ThreadContext` (use `new_*_context()` functions).
-pub struct Transform<InputPixelFormat, OutputPixelFormat, Context = GlobalContext> {
+///  * Transform is `Sync` if you create it without cache. Set flags to `Flags::NO_CACHE`.
+///
+pub struct Transform<InputPixelFormat, OutputPixelFormat, Context = GlobalContext, Flags = AllowCache> {
     pub(crate) handle: ffi::HTRANSFORM,
     _from: PhantomData<InputPixelFormat>,
     _to: PhantomData<OutputPixelFormat>,
     _context_ref: PhantomData<Context>,
+    _flags_ref: PhantomData<Flags>,
 }
 
-unsafe impl<'a, F, T, C: Send> Send for Transform<F, T, C> {}
+unsafe impl<'a, F, T, C: Send, Z> Send for Transform<F, T, C, Z> {}
+unsafe impl<'a, F, T, C: Send> Sync for Transform<F, T, C, DisallowCache> {}
 
-impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<InputPixelFormat, OutputPixelFormat, GlobalContext> {
+impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<InputPixelFormat, OutputPixelFormat, GlobalContext, AllowCache> {
     /// Creates a color transform for translating bitmaps.
     ///
     /// Basic, non-tread-safe version.
@@ -50,17 +62,18 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<
                output: &Profile,
                out_format: PixelFormat,
                intent: Intent) -> LCMSResult<Self> {
-        Self::new_flags(input, in_format, output, out_format, intent, 0)
+        Self::new_flags(input, in_format, output, out_format, intent, Flags::default())
     }
 
-    pub fn new_flags(input: &Profile,
+    /// Non-thread-safe
+    pub fn new_flags<Fl: CacheFlag>(input: &Profile,
                      in_format: PixelFormat,
                      output: &Profile,
                      out_format: PixelFormat,
                      intent: Intent,
-                     flags: u32)
+                     flags: Flags<Fl>)
                      -> LCMSResult<Self> {
-        Self::new_flags_context(GlobalContext::new(), input, in_format, output, out_format, intent, flags)
+        Self::new_flags_context(GlobalContext::new(), input, in_format, output, out_format, intent, flags.allow_cache())
     }
 
     /// A proofing transform does emulate the colors that would appear as  the image were rendered on a specific device.
@@ -75,7 +88,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<
     pub fn new_proofing(input: &Profile, in_format: PixelFormat,
                         output: &Profile, out_format: PixelFormat,
                         proofing: &Profile, intent: Intent, proofng_intent: Intent,
-                        flags: u32)
+                        flags: Flags)
                         -> LCMSResult<Self> {
         Self::new_proofing_context(GlobalContext::new(), input, in_format, output, out_format, proofing, intent, proofng_intent, flags)
     }
@@ -84,12 +97,12 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<
     ///
     /// User passes in an array of handles to open profiles. The returned color transform do "smelt" all profiles in a single devicelink.
     /// Color spaces must be paired with the exception of Lab/XYZ, which can be interchanged.
-    pub fn new_multiprofile(profiles: &[&Profile], in_format: PixelFormat, out_format: PixelFormat, intent: Intent, flags: u32) -> LCMSResult<Self> {
+    pub fn new_multiprofile(profiles: &[&Profile], in_format: PixelFormat, out_format: PixelFormat, intent: Intent, flags: Flags) -> LCMSResult<Self> {
         Self::new_multiprofile_context(GlobalContext::new(), profiles, in_format, out_format, intent, flags)
     }
 }
 
-impl<PixelFormat: Copy + Clone, Ctx: Context> Transform<PixelFormat, PixelFormat, Ctx> {
+impl<PixelFormat: Copy + Clone, Ctx: Context, C> Transform<PixelFormat, PixelFormat, Ctx, C> {
     pub fn transform_in_place(&self, srcdst: &mut [PixelFormat]) {
         let size = srcdst.len();
         assert!(size < std::u32::MAX as usize);
@@ -102,7 +115,17 @@ impl<PixelFormat: Copy + Clone, Ctx: Context> Transform<PixelFormat, PixelFormat
     }
 }
 
-impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Context> Transform<InputPixelFormat, OutputPixelFormat, Ctx> {
+impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Context> Transform<InputPixelFormat, OutputPixelFormat, Ctx, AllowCache> {
+    // Same as `new()`, but allows specifying thread-safe context (enables `Send`)
+    //
+    // For `Sync`, see `new_flags_context` and `Flags::NO_CACHE`
+    pub fn new_context(context: Ctx, input: &Profile<Ctx>, in_format: PixelFormat,
+                       output: &Profile<Ctx>, out_format: PixelFormat, intent: Intent) -> LCMSResult<Self> {
+        Self::new_flags_context(context, input, in_format, output, out_format, intent, Flags::default())
+    }
+}
+
+impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Context, Fl: CacheFlag> Transform<InputPixelFormat, OutputPixelFormat, Ctx, Fl> {
     fn new_handle(handle: ffi::HTRANSFORM, in_format: PixelFormat, out_format: PixelFormat) -> LCMSResult<Self> {
         if handle.is_null() {
             Err(Error::ObjectCreationError)
@@ -112,6 +135,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
                 _from: Self::check_format::<InputPixelFormat>(in_format, true),
                 _to: Self::check_format::<OutputPixelFormat>(out_format, false),
                 _context_ref: PhantomData,
+                _flags_ref: PhantomData,
             })
         }
     }
@@ -149,20 +173,15 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
         unsafe { ffi::cmsGetTransformOutputFormat(self.handle) as PixelFormat }
     }
 
-    pub fn new_context(context: Ctx, input: &Profile<Ctx>, in_format: PixelFormat,
-                       output: &Profile<Ctx>, out_format: PixelFormat, intent: Intent) -> LCMSResult<Self> {
-        Self::new_flags_context(context, input, in_format, output, out_format, intent, 0)
-    }
-
     pub fn new_flags_context(context: Ctx, input: &Profile<Ctx>, in_format: PixelFormat,
                              output: &Profile<Ctx>, out_format: PixelFormat,
-                             intent: Intent, flags: u32)
+                             intent: Intent, flags: Flags<Fl>)
                              -> LCMSResult<Self> {
         Self::new_handle(unsafe {
                              ffi::cmsCreateTransformTHR(context.as_ptr(),
                                 input.handle, in_format,
                                 output.handle, out_format,
-                                intent, flags)
+                                intent, flags.bits())
                          },
                          in_format, out_format)
     }
@@ -170,22 +189,22 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
     pub fn new_proofing_context(context: Ctx, input: &Profile<Ctx>, in_format: PixelFormat,
                         output: &Profile<Ctx>, out_format: PixelFormat,
                         proofing: &Profile<Ctx>, intent: Intent, proofng_intent: Intent,
-                        flags: u32)
+                        flags: Flags<Fl>)
                         -> LCMSResult<Self> {
         Self::new_handle(unsafe {
                              ffi::cmsCreateProofingTransformTHR(context.as_ptr(), input.handle, in_format,
                                 output.handle, out_format,
-                                proofing.handle, intent, proofng_intent, flags)
+                                proofing.handle, intent, proofng_intent, flags.bits())
                          },
                          in_format, out_format)
     }
 
     fn new_multiprofile_context(context: Ctx, profiles: &[&Profile],
-                                in_format: PixelFormat, out_format: PixelFormat, intent: Intent, flags: u32) -> LCMSResult<Self> {
+                                in_format: PixelFormat, out_format: PixelFormat, intent: Intent, flags: Flags<Fl>) -> LCMSResult<Self> {
         let mut handles: Vec<_> = profiles.iter().map(|p| p.handle).collect();
         unsafe {
             Self::new_handle(
-                ffi::cmsCreateMultiprofileTransformTHR(context.as_ptr(), handles.as_mut_ptr(), handles.len() as u32, in_format, out_format, intent, flags),
+                ffi::cmsCreateMultiprofileTransformTHR(context.as_ptr(), handles.as_mut_ptr(), handles.len() as u32, in_format, out_format, intent, flags.bits()),
                 in_format,
                 out_format,
             )
@@ -193,7 +212,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
     }
 }
 
-impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<InputPixelFormat, OutputPixelFormat, GlobalContext> {
+impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, C> Transform<InputPixelFormat, OutputPixelFormat, GlobalContext, C> {
     /// Adaptation state for absolute colorimetric intent, on all but cmsCreateExtendedTransform.
     ///
     /// See `ThreadContext::adaptation_state()`
@@ -235,10 +254,11 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<
     }
 }
 
-impl<F, T, C> Drop for Transform<F, T, C> {
+impl<F, T, C, L> Drop for Transform<F, T, C, L> {
     fn drop(&mut self) {
         unsafe {
             ffi::cmsDeleteTransform(self.handle);
         }
     }
 }
+
