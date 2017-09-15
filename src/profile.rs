@@ -276,10 +276,10 @@ impl<Ctx: Context> Profile<Ctx> {
         }
     }
 
-    pub fn detect_black_point(&self, intent: Intent, flags: u32) -> Option<CIEXYZ> {
+    pub fn detect_black_point(&self, intent: Intent) -> Option<CIEXYZ> {
         unsafe {
             let mut b = Default::default();
-            if ffi::cmsDetectBlackPoint(&mut b, self.handle, intent, flags) != 0 {
+            if ffi::cmsDetectBlackPoint(&mut b, self.handle, intent, 0) != 0 {
                 Some(b)
             } else {
                 None
@@ -287,10 +287,10 @@ impl<Ctx: Context> Profile<Ctx> {
         }
     }
 
-    pub fn detect_destination_black_point(&self, intent: Intent, flags: u32) -> Option<CIEXYZ> {
+    pub fn detect_destination_black_point(&self, intent: Intent) -> Option<CIEXYZ> {
         unsafe {
             let mut b = Default::default();
-            if ffi::cmsDetectDestinationBlackPoint(&mut b, self.handle, intent, flags) != 0 {
+            if ffi::cmsDetectDestinationBlackPoint(&mut b, self.handle, intent, 0) != 0 {
                 Some(b)
             } else {
                 None
