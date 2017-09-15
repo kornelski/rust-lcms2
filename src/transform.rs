@@ -3,11 +3,27 @@ use context::Context;
 use std::os::raw::c_void;
 use std::marker::PhantomData;
 
-/// Conversion between two ICC profiles
+/// Conversion between two ICC profiles.
 ///
-/// Usually you don't need to specify `InputPixelFormat`/`OutputPixelFormat` parameters explicitly.
-/// They will be inferred from the call to `transform_pixels` or `transform_in_place`.
-/// You might get "cannot infer type for `InputPixelFormat`" error before you write calls to one of these functions.
+/// The transform ensures type safety and thread safety at compile time. To do this, it has a few generic types associated with it.
+/// Usually, you don't need to specify any of the generic parameters (like `InputPixelFormat`/`OutputPixelFormat`) explicitly,
+/// because they are inferred from calls to constructors and `transform_pixels` or `transform_in_place`.
+///
+/// If you get error such as:
+///
+/// > cannot infer type for `InputPixelFormat`
+/// > type annotations required: cannot resolve `_: std::marker::Copy`
+///
+/// then don't worry! Write some code that calls `transform_pixels()`,
+/// because this is the function that makes the type of the transform clear.
+///
+///  * `InputPixelFormat` — e.g. `(u8,u8,u8)` or struct `RGB<u8>`, etc.
+///     The type must have appropriate number of bytes per pixel (i.e. you can't just use `[u8]` for everything).
+///  * `OutputPixelFormat` — similar to `InputPixelFormat`. If both are the same, then `transform_in_place()` function works.
+///  * `Context` — it's `GlobalContext` for the default non-thread-safe version, or `ThreadContext` for thread-safe version.
+/// Thread-safety:
+///
+///  * Transform is `Send` if you create it with `ThreadContext` (use `new_*_context()` functions).
 pub struct Transform<InputPixelFormat, OutputPixelFormat, Context = GlobalContext> {
     pub(crate) handle: ffi::HTRANSFORM,
     _from: PhantomData<InputPixelFormat>,
@@ -20,11 +36,15 @@ unsafe impl<'a, F, T, C: Send> Send for Transform<F, T, C> {}
 impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<InputPixelFormat, OutputPixelFormat, GlobalContext> {
     /// Creates a color transform for translating bitmaps.
     ///
+    /// Basic, non-tread-safe version.
+    ///
     ///  * Input: Handle to a profile object capable to work in input direction
-    ///  * InputFormat: A bit-field format specifier as described in Formatters section.
+    ///  * InputFormat: A bit-field format specifier
     ///  * Output: Handle to a profile object capable to work in output direction
-    ///  * OutputFormat: A bit-field format specifier as described in Formatters section.
+    ///  * OutputFormat: A bit-field format specifier
     ///  * Intent: Rendering intent
+    ///
+    ///  See documentation of these types for more detail.
     pub fn new(input: &Profile,
                in_format: PixelFormat,
                output: &Profile,

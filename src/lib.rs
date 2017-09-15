@@ -1,7 +1,10 @@
 //! See [Little CMS full documentation](https://pornel.github.io/rust-lcms2-sys/) for more in-depth information about LCMS functions.
+//!
+//! The main types you need to use in this crate are `Profile` and `Transform`
 #![allow(dead_code)]
 
 extern crate lcms2_sys as ffi;
+
 #[macro_use]
 extern crate foreign_types;
 
