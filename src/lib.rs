@@ -2,6 +2,8 @@
 //!
 //! The main types you need to use in this crate are `Profile` and `Transform`
 #![allow(dead_code)]
+#![doc(html_logo_url = "https://pornel.github.io/rust-lcms2/lcms_logo.png")]
+#![doc(html_root_url = "https://pornel.github.io/rust-lcms2")]
 
 extern crate lcms2_sys as ffi;
 
