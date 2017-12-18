@@ -96,10 +96,19 @@ impl Default for Flags {
 }
 
 #[derive(Copy, Clone, Debug)]
+#[doc(hidden)]
+/// Special marker used to vary `Flags` at compile time
 pub struct DisallowCache;
 #[derive(Copy, Clone, Debug)]
+#[doc(hidden)]
+/// Special marker used to vary `Flags` at compile time
 pub struct AllowCache;
 
+/// Used by `Flags` to keep track whether `Flags::NO_CACHE` has been used,
+/// which enables thread-safe sharing of `Transform`s.
+///
+/// Valid values are `AllowCache` and `DisallowCache`,
+/// but you won't need to use them directly. Just use `Flags`' constants.
 pub trait CacheFlag: Sized {}
 impl CacheFlag for AllowCache {}
 impl CacheFlag for DisallowCache {}
