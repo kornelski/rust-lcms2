@@ -26,7 +26,7 @@ impl ToneCurve {
     /// Builds a tone curve based on a table of 16-bit values. Tone curves built with this function are restricted to 0…1.0 domain.
     pub fn new_tabulated(values: &[u16]) -> Self {
         assert!(values.len() < std::i32::MAX as usize);
-        unsafe { Self::new_handle(ffi::cmsBuildTabulatedToneCurve16(ptr::null_mut(), values.len() as i32, values.as_ptr())) }
+        unsafe { Self::new_handle(ffi::cmsBuildTabulatedToneCurve16(ptr::null_mut(), values.len() as _, values.as_ptr())) }
     }
 
     /// Builds a tone curve based on a table of floating point  values. Tone curves built with this function are **not** restricted to 0…1.0 domain.
@@ -86,7 +86,7 @@ impl ToneCurveRef {
 
     /// Creates a tone curve that is the inverse  of given tone curve. In the case it couldn’t be analytically reversed, a tablulated curve of nResultSamples is created.
     pub fn reversed_samples(&self, samples: usize) -> ToneCurve {
-        unsafe { ToneCurve::from_ptr(ffi::cmsReverseToneCurveEx(samples as i32, self.as_ptr())) }
+        unsafe { ToneCurve::from_ptr(ffi::cmsReverseToneCurveEx(samples as _, self.as_ptr())) }
         }
 
     /// Composites two tone curves in the form Y^-1(X(t))

@@ -424,7 +424,7 @@ impl<Ctx: Context> Profile<Ctx> {
                                       temp_src_dst: Option<(u32, u32)>) -> LCMSResult<Self> {
         let (temp_src, temp_dest) = temp_src_dst.unwrap_or((0,0));
         Self::new_handle(unsafe {
-            ffi::cmsCreateBCHSWabstractProfileTHR(context.as_ptr(), lut_points as i32, bright, contrast, hue, saturation, temp_src as i32, temp_dest as i32)
+            ffi::cmsCreateBCHSWabstractProfileTHR(context.as_ptr(), lut_points as _, bright, contrast, hue, saturation, temp_src as _, temp_dest as _)
         })
     }
 
