@@ -1,7 +1,7 @@
 use super::*;
 use std::fmt;
 use std::ffi::CString;
-use ffi::wchar_t;
+use crate::ffi::wchar_t;
 use std::iter::repeat;
 use std::ptr;
 use std::mem;
@@ -9,12 +9,12 @@ use std::char::{decode_utf16, REPLACEMENT_CHARACTER};
 use foreign_types::{ForeignType, ForeignTypeRef};
 
 foreign_type! {
-    type CType = ffi::MLU;
-    fn drop = ffi::cmsMLUfree;
     /// This represents owned Multi Localized Unicode type. Most methods are implemented on `MLURef`.
-    pub struct MLU;
     /// This is a borrwed Multi Localized Unicode type. It holds Unicode strings associated with `Locale`.
-    pub struct MLURef;
+    pub type MLU {
+        type CType = ffi::MLU;
+        fn drop = ffi::cmsMLUfree;
+    }
 }
 
 impl MLU {

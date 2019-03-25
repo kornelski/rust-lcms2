@@ -1,22 +1,23 @@
 use super::*;
-use eval::FloatOrU16;
+use crate::eval::FloatOrU16;
 use std::fmt;
 use std::ptr;
 use foreign_types::ForeignTypeRef;
-use context::Context;
+use crate::context::Context;
 
 foreign_type! {
-    type CType = ffi::Stage;
-    fn drop = ffi::cmsStageFree;
-    /// This is an owned version of `Stage`.
-    pub struct Stage;
     /// Stage functions
     ///
     /// Stages are single-step operations that can be chained to create pipelines.
     /// Actual stage types does include matrices, tone curves, Look-up interpolation and user-defined.
     /// There are functions to create new stage types and a plug-in type to allow stages to be saved in multi profile elements tag types.
     /// See the plug-in API for further details.
-    pub struct StageRef;
+    ///
+    /// This is an owned version of `Stage`.
+    pub type Stage {
+        type CType = ffi::Stage;
+        fn drop = ffi::cmsStageFree;
+    }
 }
 
 impl Stage {

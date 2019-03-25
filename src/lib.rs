@@ -1,9 +1,9 @@
-//! See [Little CMS full documentation](https://pornel.github.io/rust-lcms2-sys/) for more in-depth information about LCMS functions.
+//! See [Little CMS full documentation](https://kornelski.github.io/rust-lcms2-sys/) for more in-depth information about LCMS functions.
 //!
 //! The main types you need to use in this crate are `Profile` and `Transform`
 #![allow(dead_code)]
-#![doc(html_logo_url = "https://pornel.github.io/rust-lcms2/lcms_logo.png")]
-#![doc(html_root_url = "https://pornel.github.io/rust-lcms2")]
+#![doc(html_logo_url = "https://kornelski.github.io/rust-lcms2/lcms_logo.png")]
+#![doc(html_root_url = "https://kornelski.github.io/rust-lcms2")]
 
 extern crate lcms2_sys as ffi;
 
@@ -27,36 +27,36 @@ mod tonecurve;
 mod error;
 use std::marker::PhantomData;
 
-pub use profile::*;
-pub use error::*;
-pub use ciecam::*;
-pub use context::{GlobalContext, ThreadContext};
-pub use mlu::*;
-pub use ext::*;
-pub use flags::*;
-pub use locale::*;
-pub use pipeline::*;
-pub use stage::*;
-pub use transform::*;
-pub use tonecurve::*;
-pub use namedcolorlist::*;
+pub use crate::profile::*;
+pub use crate::error::*;
+pub use crate::ciecam::*;
+pub use crate::context::{GlobalContext, ThreadContext};
+pub use crate::mlu::*;
+pub use crate::ext::*;
+pub use crate::flags::*;
+pub use crate::locale::*;
+pub use crate::pipeline::*;
+pub use crate::stage::*;
+pub use crate::transform::*;
+pub use crate::tonecurve::*;
+pub use crate::namedcolorlist::*;
 
-pub use ffi::CIEXYZ;
-pub use ffi::CIELab;
+pub use crate::ffi::CIEXYZ;
+pub use crate::ffi::CIELab;
 #[doc(hidden)]
-pub use ffi::CIExyYTRIPLE;
+pub use crate::ffi::CIExyYTRIPLE;
 #[doc(hidden)]
-pub use ffi::CIExyY;
+pub use crate::ffi::CIExyY;
 #[doc(hidden)]
-pub use ffi::JCh;
+pub use crate::ffi::JCh;
 
-pub use ffi::PixelFormat;
-pub use ffi::InfoType;
-pub use ffi::TagSignature;
-pub use ffi::Intent;
-pub use ffi::ColorSpaceSignature;
-pub use ffi::ProfileClassSignature;
-pub use ffi::ViewingConditions;
+pub use crate::ffi::PixelFormat;
+pub use crate::ffi::InfoType;
+pub use crate::ffi::TagSignature;
+pub use crate::ffi::Intent;
+pub use crate::ffi::ColorSpaceSignature;
+pub use crate::ffi::ProfileClassSignature;
+pub use crate::ffi::ViewingConditions;
 
 #[derive(Debug)]
 /// Value of a tag in an ICC profile

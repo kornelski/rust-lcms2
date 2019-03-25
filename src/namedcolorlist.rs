@@ -15,12 +15,11 @@ pub struct NamedColorInfo {
 }
 
 foreign_type! {
-    type CType = ffi::NAMEDCOLORLIST;
-    fn drop = ffi::cmsFreeNamedColorList;
-    /// Owned version of `NamedColorListRef`
-    pub struct NamedColorList;
     /// Palette of colors with names
-    pub struct NamedColorListRef;
+    pub type NamedColorList {
+        type CType = ffi::NAMEDCOLORLIST;
+        fn drop = ffi::cmsFreeNamedColorList;
+    }
 }
 
 impl NamedColorList {

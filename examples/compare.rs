@@ -1,6 +1,3 @@
-#![feature(iterator_step_by)]
-#![allow(deprecated)]
-
 extern crate lcms2;
 use lcms2::*;
 

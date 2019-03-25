@@ -1,22 +1,23 @@
 use super::*;
 use std::fmt;
-use stage::*;
+use crate::stage::*;
 use std::ptr;
-use eval::FloatOrU16;
+use crate::eval::FloatOrU16;
 use foreign_types::ForeignTypeRef;
 
 foreign_type! {
-    #[doc(hidden)]
-    type CType = ffi::Pipeline;
-    fn drop = ffi::cmsPipelineFree;
-    fn clone = ffi::cmsPipelineDup;
-    /// This is an owned version of `PipelineRef`.
-    pub struct Pipeline;
     /// Pipelines are a convenient way to model complex operations on image data.
     ///
     /// Each pipeline may contain an arbitrary number of stages. Each stage performs a single operation.
     /// Pipelines may be optimized to be executed on a certain format (8 bits, for example) and can be saved as LUTs in ICC profiles.
-    pub struct PipelineRef;
+    ///
+    /// This is an owned version of `PipelineRef`.
+    #[doc(hidden)]
+    pub type Pipeline {
+        type CType = ffi::Pipeline;
+        fn drop = ffi::cmsPipelineFree;
+        fn clone = ffi::cmsPipelineDup;
+    }
 }
 
 impl Pipeline {

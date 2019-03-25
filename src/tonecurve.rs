@@ -1,19 +1,20 @@
 use super::*;
 use std::fmt;
 use std::ptr;
-use eval::FloatOrU16;
+use crate::eval::FloatOrU16;
 use foreign_types::{ForeignType, ForeignTypeRef};
 
 foreign_type! {
-    type CType = ffi::ToneCurve;
-    fn drop = ffi::cmsFreeToneCurve;
-    fn clone = ffi::cmsDupToneCurve;
-    /// Owned version of `ToneCurveRef`
-    pub struct ToneCurve;
     /// Tone curves are powerful constructs that can contain curves specified in diverse ways.
     ///
     /// The curve is stored in segments, where each segment can be sampled or specified by parameters. A 16.bit simplification of the *whole* curve is kept for optimization purposes. For float operation, each segment is evaluated separately. Plug-ins may be used to define new parametric schemes.
-    pub struct ToneCurveRef;
+    ///
+    /// Owned version of `ToneCurveRef`
+    pub type ToneCurve {
+        type CType = ffi::ToneCurve;
+        fn drop = ffi::cmsFreeToneCurve;
+        fn clone = ffi::cmsDupToneCurve;
+    }
 }
 
 impl ToneCurve {

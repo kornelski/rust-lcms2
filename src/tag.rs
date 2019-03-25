@@ -10,7 +10,7 @@ impl<'a> Tag<'a> {
     }
 
     pub unsafe fn data_for_signature(&self, sig: TagSignature) -> *const u8 {
-        use TagSignature::*;
+        use crate::TagSignature::*;
         match (sig, self) {
             (RedColorantTag, &Tag::CIEXYZ(data)) |
             (BlueColorantTag, &Tag::CIEXYZ(data)) |
@@ -99,7 +99,7 @@ impl<'a> Tag<'a> {
         if data.is_null() {
             return Tag::None;
         }
-        use TagSignature::*;
+        use crate::TagSignature::*;
         match sig {
             BlueColorantTag |
             GreenColorantTag |

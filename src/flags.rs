@@ -1,4 +1,4 @@
-use ffi;
+use crate::ffi;
 use std::ops;
 
 #[derive(Debug, Copy, Clone)]
