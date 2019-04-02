@@ -1,3 +1,4 @@
+use std::os::raw::c_char;
 use std::cmp;
 use std::fmt;
 use std::fmt::Write;
@@ -5,8 +6,8 @@ use std::fmt::Write;
 /// Language code from ISO-639/2 and region code from ISO-3166.
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd)]
 pub struct Locale {
-    language: [i8; 3],
-    country: [i8; 3],
+    language: [c_char; 3],
+    country: [c_char; 3],
 }
 
 impl Locale {
@@ -19,10 +20,10 @@ impl Locale {
             country: [0; 3],
         };
         for (c, s) in locale.language.iter_mut().zip(language_str.bytes().take(2)) {
-            *c = s as i8;
+            *c = s as c_char;
         }
         for (c, s) in locale.country.iter_mut().zip(country_str.bytes().take(2)) {
-            *c = s as i8;
+            *c = s as c_char;
         }
         locale
     }
@@ -35,20 +36,20 @@ impl Locale {
         }
     }
 
-    pub(crate) fn language_ptr(&self) -> *const i8 {
+    pub(crate) fn language_ptr(&self) -> *const c_char {
         &self.language as _
     }
 
-    pub(crate) fn country_ptr(&self) -> *const i8 {
+    pub(crate) fn country_ptr(&self) -> *const c_char {
         &self.country as _
     }
 
-    pub(crate) fn language_ptr_mut(&mut self) -> *mut i8 {
-        &self.language as *const i8 as _
+    pub(crate) fn language_ptr_mut(&mut self) -> *mut c_char {
+        &self.language as *const c_char as _
     }
 
-    pub(crate) fn country_ptr_mut(&mut self) -> *mut i8 {
-        &self.country as *const i8 as _
+    pub(crate) fn country_ptr_mut(&mut self) -> *mut c_char {
+        &self.country as *const c_char as _
     }
 }
 
@@ -94,20 +95,20 @@ fn locale() {
     assert_eq!([0i8; 3], l.country);
 
     let l = Locale::new("Ab");
-    assert_eq!(['A' as i8, 'b' as i8, 0], l.language);
+    assert_eq!(['A' as c_char, 'b' as c_char, 0], l.language);
     assert_eq!([0i8; 3], l.country);
 
     let l = Locale::new("Ab-X");
-    assert_eq!(['A' as i8, 'b' as i8, 0], l.language);
-    assert_eq!(['X' as i8, 0, 0], l.country);
+    assert_eq!(['A' as c_char, 'b' as c_char, 0], l.language);
+    assert_eq!(['X' as c_char, 0, 0], l.country);
 
     let l = Locale::new("overlong");
-    assert_eq!(['o' as i8, 'v' as i8, 0], l.language);
-    assert_eq!(['r' as i8, 'l' as i8, 0], l.country);
+    assert_eq!(['o' as c_char, 'v' as c_char, 0], l.language);
+    assert_eq!(['r' as c_char, 'l' as c_char, 0], l.country);
     unsafe {
-        assert_eq!('o' as i8, *l.language_ptr());
+        assert_eq!('o' as c_char, *l.language_ptr());
     }
     unsafe {
-        assert_eq!('r' as i8, *l.country_ptr());
+        assert_eq!('r' as c_char, *l.country_ptr());
     }
 }

@@ -71,7 +71,7 @@ impl MLURef {
             ffi::cmsMLUgetASCII(self.as_ptr(),
                 locale.language_ptr(),
                 locale.country_ptr(),
-                buf[..].as_ptr() as *mut i8, len);
+                buf[..].as_ptr() as *mut _, len);
             if let Some(0) = buf.pop() { // terminating zero
                 for c in &mut buf {
                     if *c > 127 {*c = b'?'}

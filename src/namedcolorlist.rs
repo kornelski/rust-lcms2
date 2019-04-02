@@ -1,6 +1,7 @@
 use super::*;
 use std::fmt;
 use std::ptr;
+use std::os::raw::c_char;
 use foreign_types::ForeignTypeRef;
 use std::ffi::{CStr, CString};
 
@@ -30,8 +31,8 @@ impl NamedColorList {
             Error::if_null(ffi::cmsAllocNamedColorList(ptr::null_mut(),
                 spot_colors as u32,
                 colorant_count as u32,
-                prefix.as_ptr(),
-                suffix.as_ptr()))
+                prefix.as_ptr() as _,
+                suffix.as_ptr() as _)) // char sign difference
         }
     }
 }
@@ -50,9 +51,9 @@ impl NamedColorListRef {
 
     /// Get color info
     fn get(&self, index: usize) -> Option<NamedColorInfo> {
-        let mut name = [0i8; 256];
-        let mut prefix = [0i8; 33];
-        let mut suffix = [0i8; 33];
+        let mut name = [0 as c_char; 256];
+        let mut prefix = [0 as c_char; 33];
+        let mut suffix = [0 as c_char; 33];
         let mut pcs = [0u16; 3];
         let mut colorant = [0u16; 16];
 
