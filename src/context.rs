@@ -11,7 +11,7 @@ use std::collections::HashMap;
 /// This context is used by default and you don't need to create it manually.
 #[doc(hidden)]
 pub struct GlobalContext {
-    _not_thread_safe: UnsafeCell<()>,
+    _not_thread_safe: UnsafeCell<YouMustUseThreadContextToShareBetweenThreads>,
 }
 
 #[doc(hidden)]
@@ -32,6 +32,9 @@ impl Context for GlobalContext {
         ptr::null_mut()
     }
 }
+
+#[doc(hidden)]
+struct YouMustUseThreadContextToShareBetweenThreads;
 
 unsafe impl Send for ThreadContext {}
 
@@ -70,7 +73,7 @@ pub struct ThreadContext {
 impl GlobalContext {
     pub fn new() -> Self {
         Self {
-            _not_thread_safe: UnsafeCell::new(()),
+            _not_thread_safe: UnsafeCell::new(YouMustUseThreadContextToShareBetweenThreads),
         }
     }
 
