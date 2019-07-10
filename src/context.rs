@@ -5,6 +5,8 @@ use std::ffi::CStr;
 use std::os::raw::c_void;
 use std::cell::UnsafeCell;
 use std::collections::HashMap;
+use std::panic::UnwindSafe;
+use std::panic::RefUnwindSafe;
 
 /// A special case for non-thread-aware functions.
 ///
@@ -13,6 +15,9 @@ use std::collections::HashMap;
 pub struct GlobalContext {
     _not_thread_safe: UnsafeCell<YouMustUseThreadContextToShareBetweenThreads>,
 }
+
+impl UnwindSafe for GlobalContext {}
+impl RefUnwindSafe for GlobalContext {}
 
 #[doc(hidden)]
 pub trait Context {

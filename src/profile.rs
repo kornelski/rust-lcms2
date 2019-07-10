@@ -530,3 +530,11 @@ fn bad_icc() {
     let err = Profile::new_icc(&[1, 2, 3]);
     assert!(err.is_err());
 }
+
+#[test]
+fn unwind_safety() {
+    let ref profile = Profile::new_xyz();
+    std::panic::catch_unwind(|| {
+        profile.clone()
+    }).unwrap();
+}
