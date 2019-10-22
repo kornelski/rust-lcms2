@@ -1,6 +1,6 @@
 use super::*;
 use std::ptr;
-use std::mem;
+use std::mem::MaybeUninit;
 
 /// CIE CAM02
 pub struct CIECAM02 {
@@ -28,18 +28,18 @@ impl CIECAM02 {
     /// Evaluates the CAM02 model in the forward direction
     pub fn forward(&mut self, input: &CIEXYZ) -> JCh {
         unsafe {
-            let mut out = mem::uninitialized();
-            ffi::cmsCIECAM02Forward(self.handle, input, &mut out);
-            out
+            let mut out = MaybeUninit::uninit();
+            ffi::cmsCIECAM02Forward(self.handle, input, out.as_mut_ptr());
+            out.assume_init()
         }
     }
 
     /// Evaluates the CAM02 model in the reverse direction
     pub fn reverse(&mut self, input: &JCh) -> CIEXYZ {
         unsafe {
-            let mut out = mem::uninitialized();
-            ffi::cmsCIECAM02Reverse(self.handle, input, &mut out);
-            out
+            let mut out = MaybeUninit::uninit();
+            ffi::cmsCIECAM02Reverse(self.handle, input, out.as_mut_ptr());
+            out.assume_init()
         }
     }
 }
