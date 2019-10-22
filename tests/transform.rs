@@ -1,4 +1,4 @@
-extern crate lcms2;
+
 use lcms2::*;
 
 const PROFILE: &'static [u8] = include_bytes!("tinysrgb.icc");

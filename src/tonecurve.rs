@@ -151,7 +151,7 @@ impl ToneCurveRef {
 }
 
 impl fmt::Debug for ToneCurveRef {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "ToneCurve({} entries, gamma ~{:.1})", self.estimated_entries().len(), self.estimated_gamma(1.).unwrap_or(0.))
     }
 }

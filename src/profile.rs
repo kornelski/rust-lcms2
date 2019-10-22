@@ -331,11 +331,11 @@ impl<Ctx: Context> Profile<Ctx> {
         unsafe { ffi::cmsIsTag(self.handle, sig) != 0 }
     }
 
-    pub fn read_tag(&self, sig: TagSignature) -> Tag {
+    pub fn read_tag(&self, sig: TagSignature) -> Tag<'_> {
         unsafe { Tag::new(sig, ffi::cmsReadTag(self.handle, sig) as *const u8) }
     }
 
-    pub fn write_tag(&mut self, sig: TagSignature, tag: Tag) -> bool {
+    pub fn write_tag(&mut self, sig: TagSignature, tag: Tag<'_>) -> bool {
         unsafe {
             ffi::cmsWriteTag(self.handle, sig, tag.data_for_signature(sig) as *const _) != 0
         }

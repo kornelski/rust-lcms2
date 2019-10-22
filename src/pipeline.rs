@@ -56,7 +56,7 @@ impl PipelineRef {
         }
     }
 
-    pub fn stages(&self) -> StagesIter {
+    pub fn stages(&self) -> StagesIter<'_> {
         StagesIter(self.first_stage())
     }
 
@@ -89,7 +89,7 @@ impl PipelineRef {
 }
 
 impl fmt::Debug for PipelineRef {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "Pipeline({}->{}ch, {} stages)", self.input_channels(), self.output_channels(), self.stage_count())
     }
 }

@@ -1,4 +1,4 @@
-extern crate lcms2;
+
 use lcms2::*;
 
 #[repr(C)]

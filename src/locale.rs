@@ -66,13 +66,13 @@ impl Default for Locale {
 }
 
 impl fmt::Debug for Locale {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         <Locale as fmt::Display>::fmt(self, f)
     }
 }
 
 impl fmt::Display for Locale {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         for &c in self.language.iter().take_while(|&&c| c != 0) {
             f.write_char(c as u8 as char)?;
         }

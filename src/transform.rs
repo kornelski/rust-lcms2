@@ -131,7 +131,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
             Err(Error::ObjectCreationError)
         } else {
             Ok(Transform {
-                handle: handle,
+                handle,
                 _from: Self::check_format::<InputPixelFormat>(in_format, true),
                 _to: Self::check_format::<OutputPixelFormat>(out_format, false),
                 _context_ref: PhantomData,

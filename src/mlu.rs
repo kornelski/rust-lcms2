@@ -146,7 +146,7 @@ impl MLURef {
 }
 
 impl fmt::Debug for MLURef {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let t = self.text(Locale::none());
         write!(f, "MLU({:?} {:?})", if let Ok(ref t) = t { &t } else { "None" }, self.tanslations())
     }
