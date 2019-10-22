@@ -6,16 +6,16 @@ keywords = ["icc", "profile", "color", "lcms"]
 include = ["src/**/*", "Cargo.toml", "README.md"]
 readme = "README.md"
 license = "MIT"
-homepage = "https://crates.rs/crates/lcms2"
+homepage = "https://lib.rs/crates/lcms2"
 documentation = "https://kornelski.github.io/rust-lcms2/lcms2/"
 repository = "https://github.com/kornelski/rust-lcms2.git"
 categories = ["multimedia::images", "api-bindings"]
-version = "5.1.4"
+version = "5.1.5"
 edition = "2018"
 
 [dependencies]
 foreign-types = "0.4.0"
-lcms2-sys = "3.1.1"
+lcms2-sys = "3.1.2"
 
 [features]
 static = ["lcms2-sys/static"]
