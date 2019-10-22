@@ -1,6 +1,17 @@
 use super::*;
 use foreign_types::ForeignTypeRef;
 
+unsafe fn cast<T>(ptr: *const u8) -> &'static T {
+    assert!(0 == ptr.align_offset(std::mem::align_of::<T>()), "Tag data pointer must be aligned");
+    &*(ptr as *const T)
+}
+
+/// from_ptr() methods require mut for no good reason
+unsafe fn aligned_mut<T>(ptr: *const u8) -> *mut T {
+    assert!(0 == ptr.align_offset(std::mem::align_of::<T>()), "Tag data pointer must be aligned");
+    ptr as *mut T
+}
+
 impl<'a> Tag<'a> {
     pub fn is_none(&self) -> bool {
         match *self {
@@ -106,7 +117,7 @@ impl<'a> Tag<'a> {
             LuminanceTag |
             MediaBlackPointTag |
             MediaWhitePointTag |
-            RedColorantTag => Tag::CIEXYZ(&*(data as *const _)),
+            RedColorantTag => Tag::CIEXYZ(cast(data)),
             CharTargetTag |
             CopyrightTag |
             DeviceMfgDescTag |
@@ -114,20 +125,20 @@ impl<'a> Tag<'a> {
             ProfileDescriptionTag |
             ProfileDescriptionMLTag |
             ScreeningDescTag |
-            ViewingCondDescTag => Tag::MLU(MLURef::from_ptr(data as *mut _)),
+            ViewingCondDescTag => Tag::MLU(MLURef::from_ptr(aligned_mut(data))),
             ChromaticityTag |
-            ChromaticAdaptationTag => Tag::CIExyYTRIPLE(&*(data as *const _)),
+            ChromaticAdaptationTag => Tag::CIExyYTRIPLE(cast(data)),
             ColorantTableTag |
             ColorantTableOutTag |
             CrdInfoTag |
-            NamedColor2Tag => Tag::NAMEDCOLORLIST(NamedColorListRef::from_ptr(data as *mut _)),
+            NamedColor2Tag => Tag::NAMEDCOLORLIST(NamedColorListRef::from_ptr(aligned_mut(data))),
             DataTag |
             Ps2CRD0Tag |
             Ps2CRD1Tag |
             Ps2CRD2Tag |
             Ps2CRD3Tag |
             Ps2CSATag |
-            Ps2RenderingIntentTag => Tag::ICCData(&*(data as *const _)),
+            Ps2RenderingIntentTag => Tag::ICCData(cast(data)),
             AToB0Tag |
             AToB1Tag |
             AToB2Tag |
@@ -145,27 +156,25 @@ impl<'a> Tag<'a> {
             GamutTag |
             Preview0Tag |
             Preview1Tag |
-            Preview2Tag => Tag::Pipeline(PipelineRef::from_ptr(data as *mut _)),
+            Preview2Tag => Tag::Pipeline(PipelineRef::from_ptr(aligned_mut(data))),
             BlueTRCTag |
             GrayTRCTag |
             GreenTRCTag |
-            RedTRCTag => Tag::ToneCurve(ToneCurveRef::from_ptr(data as *mut _)),
+            RedTRCTag => Tag::ToneCurve(ToneCurveRef::from_ptr(aligned_mut(data))),
             ColorimetricIntentImageStateTag  => {
-                Tag::ColorimetricIntentImageState(*(data as *const ffi::ColorimetricIntentImageState))
+                Tag::ColorimetricIntentImageState((data as *const ffi::ColorimetricIntentImageState).read_unaligned())
             },
             PerceptualRenderingIntentGamutTag |
             SaturationRenderingIntentGamutTag => {
-                Tag::Intent(*(data as *const ffi::Intent))
+                Tag::Intent((data as *const ffi::Intent).read_unaligned())
             },
-            TechnologyTag => Tag::Technology(*(data as *const ffi::TechnologySignature)),
-            MeasurementTag => Tag::ICCMeasurementConditions(&*(data as *const _)),
+            TechnologyTag => Tag::Technology((data as *const ffi::TechnologySignature).read_unaligned()),
+            MeasurementTag => Tag::ICCMeasurementConditions(cast(data)),
             ProfileSequenceDescTag |
-            ProfileSequenceIdTag => Tag::SEQ(&*(data as *const _)),
-            ScreeningTag => Tag::Screening(&*(data as *const _)),
-            UcrBgTag => Tag::UcrBg(&*(data as *const _)),
-            ViewingConditionsTag => {
-                Tag::ICCViewingConditions(&*(data as *const _))
-            }
+            ProfileSequenceIdTag => Tag::SEQ(cast(data)),
+            ScreeningTag => Tag::Screening(cast(data)),
+            UcrBgTag => Tag::UcrBg(cast(data)),
+            ViewingConditionsTag => Tag::ICCViewingConditions(cast(data)),
             _ => Tag::None,
         }
     }
