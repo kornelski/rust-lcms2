@@ -366,29 +366,29 @@ impl<Ctx: Context> Profile<Ctx> {
 
 /// Per-context functions that can be used with a `ThreadContext`
 impl<Ctx: Context> Profile<Ctx> {
-    pub fn new_icc_context(context: Ctx, data: &[u8]) -> LCMSResult<Self> {
+    pub fn new_icc_context(context: impl AsRef<Ctx>, data: &[u8]) -> LCMSResult<Self> {
         Self::new_handle(unsafe {
-            ffi::cmsOpenProfileFromMemTHR(context.as_ptr(), data.as_ptr() as *const c_void, data.len() as u32)
+            ffi::cmsOpenProfileFromMemTHR(context.as_ref().as_ptr(), data.as_ptr() as *const c_void, data.len() as u32)
         })
     }
 
-    pub fn new_file_context<P: AsRef<Path>>(context: Ctx, path: P) -> io::Result<Self> {
+    pub fn new_file_context<P: AsRef<Path>>(context: impl AsRef<Ctx>, path: P) -> io::Result<Self> {
         let mut buf = Vec::new();
         File::open(path)?.read_to_end(&mut buf)?;
         Self::new_icc_context(context, &buf).map_err(|_| io::ErrorKind::Other.into())
     }
 
-    pub fn new_srgb_context(context: Ctx) -> Self {
-        Self::new_handle(unsafe { ffi::cmsCreate_sRGBProfileTHR(context.as_ptr()) }).unwrap()
+    pub fn new_srgb_context(context: impl AsRef<Ctx>) -> Self {
+        Self::new_handle(unsafe { ffi::cmsCreate_sRGBProfileTHR(context.as_ref().as_ptr()) }).unwrap()
     }
 
-    pub fn new_rgb_context(context: Ctx, white_point: &CIExyY,
+    pub fn new_rgb_context(context: impl AsRef<Ctx>, white_point: &CIExyY,
                    primaries: &CIExyYTRIPLE,
                    transfer_function: &[&ToneCurve])
                    -> LCMSResult<Self> {
         assert_eq!(3, transfer_function.len());
         Self::new_handle(unsafe {
-            ffi::cmsCreateRGBProfileTHR(context.as_ptr(),
+            ffi::cmsCreateRGBProfileTHR(context.as_ref().as_ptr(),
                                      white_point,
                                      primaries,
                                      [transfer_function[0].as_ptr() as *const _,
@@ -398,15 +398,15 @@ impl<Ctx: Context> Profile<Ctx> {
         })
     }
 
-    pub fn new_gray_context(context: Ctx, white_point: &CIExyY, curve: &ToneCurve) -> LCMSResult<Self> {
-        Self::new_handle(unsafe { ffi::cmsCreateGrayProfileTHR(context.as_ptr(), white_point, curve.as_ptr()) })
+    pub fn new_gray_context(context: impl AsRef<Ctx>, white_point: &CIExyY, curve: &ToneCurve) -> LCMSResult<Self> {
+        Self::new_handle(unsafe { ffi::cmsCreateGrayProfileTHR(context.as_ref().as_ptr(), white_point, curve.as_ptr()) })
     }
 
     /// This is a devicelink operating in the target colorspace with as many transfer functions as components.
     /// Number of tone curves must be sufficient for the color space.
-    pub unsafe fn new_linearization_device_link_context(context: Ctx, color_space: ColorSpaceSignature, curves: &[ToneCurveRef]) -> LCMSResult<Self> {
+    pub unsafe fn new_linearization_device_link_context(context: impl AsRef<Ctx>, color_space: ColorSpaceSignature, curves: &[ToneCurveRef]) -> LCMSResult<Self> {
         let v: Vec<_> = curves.iter().map(|c| c.as_ptr() as *const _).collect();
-        Self::new_handle(ffi::cmsCreateLinearizationDeviceLinkTHR(context.as_ptr(), color_space, v.as_ptr()))
+        Self::new_handle(ffi::cmsCreateLinearizationDeviceLinkTHR(context.as_ref().as_ptr(), color_space, v.as_ptr()))
     }
 
     /// Creates an abstract devicelink operating in Lab for Bright/Contrast/Hue/Saturation and white point translation.
@@ -420,11 +420,11 @@ impl<Ctx: Context> Profile<Ctx> {
     /// TempSrc: Source white point temperature
     /// TempDest: Destination white point temperature.
     /// To prevent white point adjustment, set Temp to None
-    pub fn new_bchsw_abstract_context(context: Ctx, lut_points: usize, bright: f64, contrast: f64, hue: f64, saturation: f64,
+    pub fn new_bchsw_abstract_context(context: impl AsRef<Ctx>, lut_points: usize, bright: f64, contrast: f64, hue: f64, saturation: f64,
                                       temp_src_dst: Option<(u32, u32)>) -> LCMSResult<Self> {
         let (temp_src, temp_dest) = temp_src_dst.unwrap_or((0,0));
         Self::new_handle(unsafe {
-            ffi::cmsCreateBCHSWabstractProfileTHR(context.as_ptr(), lut_points as _, bright, contrast, hue, saturation, temp_src as _, temp_dest as _)
+            ffi::cmsCreateBCHSWabstractProfileTHR(context.as_ref().as_ptr(), lut_points as _, bright, contrast, hue, saturation, temp_src as _, temp_dest as _)
         })
     }
 
@@ -440,30 +440,30 @@ impl<Ctx: Context> Profile<Ctx> {
 
     /// This is a devicelink operating in CMYK for ink-limiting. Currently only cmsSigCmykData is supported.
     /// Limit: Amount of ink limiting in % (0..400%)
-    pub fn ink_limiting_context(context: Ctx, color_space: ColorSpaceSignature, limit: f64) -> LCMSResult<Self> {
-        Self::new_handle(unsafe { ffi::cmsCreateInkLimitingDeviceLinkTHR(context.as_ptr(), color_space, limit) })
+    pub fn ink_limiting_context(context: impl AsRef<Ctx>, color_space: ColorSpaceSignature, limit: f64) -> LCMSResult<Self> {
+        Self::new_handle(unsafe { ffi::cmsCreateInkLimitingDeviceLinkTHR(context.as_ref().as_ptr(), color_space, limit) })
     }
 
     /// Creates a XYZ  XYZ identity, marking it as v4 ICC profile.  WhitePoint used in Absolute colorimetric intent  is D50.
-    pub fn new_xyz_context(context: Ctx) -> Self {
-        Self::new_handle(unsafe { ffi::cmsCreateXYZProfileTHR(context.as_ptr()) }).unwrap()
+    pub fn new_xyz_context(context: impl AsRef<Ctx>) -> Self {
+        Self::new_handle(unsafe { ffi::cmsCreateXYZProfileTHR(context.as_ref().as_ptr()) }).unwrap()
     }
 
     /// Creates a fake NULL profile. This profile return 1 channel as always 0. Is useful only for gamut checking tricks.
-    pub fn new_null_context(context: Ctx) -> Self {
-        Self::new_handle(unsafe { ffi::cmsCreateNULLProfileTHR(context.as_ptr()) }).unwrap()
+    pub fn new_null_context(context: impl AsRef<Ctx>) -> Self {
+        Self::new_handle(unsafe { ffi::cmsCreateNULLProfileTHR(context.as_ref().as_ptr()) }).unwrap()
     }
 
     /// Creates a Lab  Lab identity, marking it as v2 ICC profile.
     ///
     /// Adjustments for accomodating PCS endoing shall be done by Little CMS when using this profile.
-    pub fn new_lab2_context(context: Ctx, white_point: &CIExyY) -> LCMSResult<Self> {
-        Self::new_handle(unsafe { ffi::cmsCreateLab2ProfileTHR(context.as_ptr(), white_point) })
+    pub fn new_lab2_context(context: impl AsRef<Ctx>, white_point: &CIExyY) -> LCMSResult<Self> {
+        Self::new_handle(unsafe { ffi::cmsCreateLab2ProfileTHR(context.as_ref().as_ptr(), white_point) })
     }
 
     /// Creates a Lab  Lab identity, marking it as v4 ICC profile.
-    pub fn new_lab4_context(context: Ctx, white_point: &CIExyY) -> LCMSResult<Self> {
-        Self::new_handle(unsafe { ffi::cmsCreateLab4ProfileTHR(context.as_ptr(), white_point) })
+    pub fn new_lab4_context(context: impl AsRef<Ctx>, white_point: &CIExyY) -> LCMSResult<Self> {
+        Self::new_handle(unsafe { ffi::cmsCreateLab4ProfileTHR(context.as_ref().as_ptr(), white_point) })
     }
 }
 

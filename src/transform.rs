@@ -119,7 +119,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
     // Same as `new()`, but allows specifying thread-safe context (enables `Send`)
     //
     // For `Sync`, see `new_flags_context` and `Flags::NO_CACHE`
-    pub fn new_context(context: Ctx, input: &Profile<Ctx>, in_format: PixelFormat,
+    pub fn new_context(context: impl AsRef<Ctx>, input: &Profile<Ctx>, in_format: PixelFormat,
                        output: &Profile<Ctx>, out_format: PixelFormat, intent: Intent) -> LCMSResult<Self> {
         Self::new_flags_context(context, input, in_format, output, out_format, intent, Flags::default())
     }
@@ -173,12 +173,12 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
         unsafe { ffi::cmsGetTransformOutputFormat(self.handle) as PixelFormat }
     }
 
-    pub fn new_flags_context(context: Ctx, input: &Profile<Ctx>, in_format: PixelFormat,
+    pub fn new_flags_context(context: impl AsRef<Ctx>, input: &Profile<Ctx>, in_format: PixelFormat,
                              output: &Profile<Ctx>, out_format: PixelFormat,
                              intent: Intent, flags: Flags<Fl>)
                              -> LCMSResult<Self> {
         Self::new_handle(unsafe {
-                             ffi::cmsCreateTransformTHR(context.as_ptr(),
+                             ffi::cmsCreateTransformTHR(context.as_ref().as_ptr(),
                                 input.handle, in_format,
                                 output.handle, out_format,
                                 intent, flags.bits())
@@ -186,25 +186,25 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
                          in_format, out_format)
     }
 
-    pub fn new_proofing_context(context: Ctx, input: &Profile<Ctx>, in_format: PixelFormat,
+    pub fn new_proofing_context(context: impl AsRef<Ctx>, input: &Profile<Ctx>, in_format: PixelFormat,
                         output: &Profile<Ctx>, out_format: PixelFormat,
                         proofing: &Profile<Ctx>, intent: Intent, proofng_intent: Intent,
                         flags: Flags<Fl>)
                         -> LCMSResult<Self> {
         Self::new_handle(unsafe {
-                             ffi::cmsCreateProofingTransformTHR(context.as_ptr(), input.handle, in_format,
+                             ffi::cmsCreateProofingTransformTHR(context.as_ref().as_ptr(), input.handle, in_format,
                                 output.handle, out_format,
                                 proofing.handle, intent, proofng_intent, flags.bits())
                          },
                          in_format, out_format)
     }
 
-    fn new_multiprofile_context(context: Ctx, profiles: &[&Profile],
+    fn new_multiprofile_context(context: impl AsRef<Ctx>, profiles: &[&Profile],
                                 in_format: PixelFormat, out_format: PixelFormat, intent: Intent, flags: Flags<Fl>) -> LCMSResult<Self> {
         let mut handles: Vec<_> = profiles.iter().map(|p| p.handle).collect();
         unsafe {
             Self::new_handle(
-                ffi::cmsCreateMultiprofileTransformTHR(context.as_ptr(), handles.as_mut_ptr(), handles.len() as u32, in_format, out_format, intent, flags.bits()),
+                ffi::cmsCreateMultiprofileTransformTHR(context.as_ref().as_ptr(), handles.as_mut_ptr(), handles.len() as u32, in_format, out_format, intent, flags.bits()),
                 in_format,
                 out_format,
             )

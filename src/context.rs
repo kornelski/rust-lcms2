@@ -29,6 +29,14 @@ pub trait Context {
     fn as_ptr(&self) -> ffi::Context;
 }
 
+impl AsRef<GlobalContext> for GlobalContext {
+    fn as_ref(&self) -> &Self { self }
+}
+
+impl AsRef<ThreadContext> for ThreadContext {
+    fn as_ref(&self) -> &Self { self }
+}
+
 impl<'a> Context for &'a GlobalContext {
     #[inline]
     fn as_ptr(&self) -> ffi::Context {
