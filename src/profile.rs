@@ -22,16 +22,19 @@ unsafe impl<'a, C: Send> Send for Profile<C> {}
 /// Using this transform you can color correct your bitmaps.
 impl Profile<GlobalContext> {
     /// Parse ICC profile from the in-memory array
+    #[inline]
     pub fn new_icc(data: &[u8]) -> LCMSResult<Self> {
         Self::new_icc_context(GlobalContext::new(), data)
     }
 
     /// Load ICC profile file from disk
+    #[inline]
     pub fn new_file<P: AsRef<Path>>(path: P) -> io::Result<Self> {
         Self::new_file_context(GlobalContext::new(), path)
     }
 
     /// Create an ICC virtual profile for sRGB space. sRGB is a standard RGB color space created cooperatively by HP and Microsoft in 1996 for use on monitors, printers, and the Internet.
+    #[inline]
     pub fn new_srgb() -> Self {
         Self::new_srgb_context(GlobalContext::new())
     }
@@ -48,6 +51,7 @@ impl Profile<GlobalContext> {
     ///   8. BlueTRCTag
     ///   9. Chromatic adaptation Tag
     ///   10. ChromaticityTag
+    #[inline]
     pub fn new_rgb(white_point: &CIExyY,
                    primaries: &CIExyYTRIPLE,
                    transfer_function: &[&ToneCurve])
@@ -60,16 +64,19 @@ impl Profile<GlobalContext> {
     ///   1. ProfileDescriptionTag
     ///   2. MediaWhitePointTag
     ///   3. GrayTRCTag
+    #[inline]
     pub fn new_gray(white_point: &CIExyY, curve: &ToneCurve) -> LCMSResult<Self> {
         Self::new_gray_context(GlobalContext::new(), white_point, curve)
     }
 
     /// Creates a XYZ  XYZ identity, marking it as v4 ICC profile.  WhitePoint used in Absolute colorimetric intent  is D50.
+    #[inline]
     pub fn new_xyz() -> Self {
         Self::new_handle(unsafe { ffi::cmsCreateXYZProfile() }).unwrap()
     }
 
     /// Creates a fake NULL profile. This profile return 1 channel as always 0. Is useful only for gamut checking tricks.
+    #[inline]
     pub fn new_null() -> Self {
         Self::new_handle(unsafe { ffi::cmsCreateNULLProfile() }).unwrap()
     }
@@ -77,6 +84,7 @@ impl Profile<GlobalContext> {
     /// Creates an empty profile object, ready to be populated by the programmer.
     ///
     /// WARNING: The obtained profile without adding any information is not directly useable.
+    #[inline]
     pub fn new_placeholder() -> Self {
         Self::new_handle(unsafe { ffi::cmsCreateProfilePlaceholder(ptr::null_mut()) }).unwrap()
     }
@@ -89,6 +97,7 @@ impl Profile<GlobalContext> {
 
     /// Generates a device-link profile from a given color transform. This profile can then be used by any other function accepting profile handle.
     /// Depending on the specified version number, the implementation of the devicelink may vary. Accepted versions are in range 1.0…4.3
+    #[inline]
     pub fn new_device_link<F, T>(transform: &Transform<F, T>, version: f64, flags: Flags) -> LCMSResult<Self> {
         Self::new_handle(unsafe { ffi::cmsTransform2DeviceLink(transform.handle, version, flags.bits()) })
     }
@@ -111,20 +120,24 @@ impl<Ctx: Context> Profile<Ctx> {
     }
 
     /// Gets the device class signature from profile header.
+    #[inline]
     pub fn device_class(&self) -> ProfileClassSignature {
         unsafe { ffi::cmsGetDeviceClass(self.handle) }
     }
 
     /// Sets the device class signature in profile header.
+    #[inline]
     pub fn set_device_class(&mut self, cls: ProfileClassSignature) {
         unsafe { ffi::cmsSetDeviceClass(self.handle, cls) }
     }
 
     /// Returns the profile ICC version in the same format as it is stored in the header.
+    #[inline]
     pub fn encoded_icc_version(&self) -> u32 {
         unsafe { ffi::cmsGetEncodedICCversion(self.handle) }
     }
 
+    #[inline]
     pub fn set_encoded_icc_version(&self, v: u32) {
         unsafe { ffi::cmsSetEncodedICCversion(self.handle, v) }
     }
@@ -136,6 +149,7 @@ impl<Ctx: Context> Profile<Ctx> {
     ///  * `Glossy`
     ///  * `Matte`
 
+    #[inline]
     pub fn header_attributes(&self) -> u64 {
         let mut flags = 0;
         unsafe {
@@ -145,12 +159,14 @@ impl<Ctx: Context> Profile<Ctx> {
     }
 
     /// Sets the attribute flags in the profile header.
+    #[inline]
     pub fn set_header_attributes(&mut self, flags: u64) {
         unsafe {
             ffi::cmsSetHeaderAttributes(self.handle, flags);
         }
     }
 
+    #[inline]
     pub fn header_creator(&self) -> u32 {
         unsafe { ffi::cmsGetHeaderCreator(self.handle) }
     }
@@ -159,11 +175,13 @@ impl<Ctx: Context> Profile<Ctx> {
     ///
     /// The profile flags field does contain flags to indicate various hints for the CMM such as distributed processing and caching options.
     /// The least-significant 16 bits are reserved for the ICC. Flags in bit positions 0 and 1 shall be used as indicated in Table 7 of LCMS PDF.
+    #[inline]
     pub fn header_flags(&self) -> u32 {
         unsafe { ffi::cmsGetHeaderFlags(self.handle) }
     }
 
     /// Sets header flags of given ICC profile object. Valid flags are defined in Table 7 of LCMS PDF.
+    #[inline]
     pub fn set_header_flags(&mut self, flags: u32) {
         unsafe { ffi::cmsSetHeaderFlags(self.handle, flags); }
     }
@@ -171,6 +189,7 @@ impl<Ctx: Context> Profile<Ctx> {
     /// Returns the manufacturer signature as described in the header.
     ///
     /// This funcionality is widely superseded by the manufaturer tag. Of use only in elder profiles.
+    #[inline]
     pub fn header_manufacturer(&self) -> u32 {
         unsafe { ffi::cmsGetHeaderManufacturer(self.handle) }
     }
@@ -179,6 +198,7 @@ impl<Ctx: Context> Profile<Ctx> {
     ///
     /// This funcionality is widely superseded by the manufaturer tag. Of use only in elder profiles.
     #[deprecated(note = "This funcionality is widely superseded by the manufaturer tag")]
+    #[inline]
     pub fn set_header_manufacturer(&mut self, m: u32) {
         unsafe { ffi::cmsSetHeaderManufacturer(self.handle, m) }
     }
@@ -186,6 +206,7 @@ impl<Ctx: Context> Profile<Ctx> {
     /// Returns the model signature as described in the header.
     ///
     /// This funcionality is widely superseded by the model tag. Of use only in elder profiles.
+    #[inline]
     pub fn header_model(&self) -> u32 {
         unsafe { ffi::cmsGetHeaderModel(self.handle) }
     }
@@ -194,6 +215,7 @@ impl<Ctx: Context> Profile<Ctx> {
     ///
     /// This funcionality is widely superseded by the model tag. Of use only in elder profiles.
     #[deprecated(note = "This funcionality is widely superseded by the model tag")]
+    #[inline]
     pub fn set_header_model(&mut self, model: u32) {
         unsafe {
             ffi::cmsSetHeaderModel(self.handle, model);
@@ -207,20 +229,24 @@ impl<Ctx: Context> Profile<Ctx> {
     /// In a sequence of more than two profiles, it applies to the combination of this profile and the next profile in the sequence and not to the entire sequence.
     /// Typically, the user or application will set the rendering intent dynamically at runtime or embedding time.
     /// Therefore, this flag may not have any meaning until the profile is used in some context, e.g. in a Devicelink or an embedded source profile.”
+    #[inline]
     pub fn header_rendering_intent(&self) -> Intent {
         unsafe { ffi::cmsGetHeaderRenderingIntent(self.handle) }
     }
 
+    #[inline]
     pub fn set_header_rendering_intent(&mut self, intent: Intent) {
         unsafe { ffi::cmsSetHeaderRenderingIntent(self.handle, intent) }
     }
 
     /// Gets the profile connection space used by the given profile, using the ICC convention.
+    #[inline]
     pub fn pcs(&self) -> ColorSpaceSignature {
         unsafe { ffi::cmsGetPCS(self.handle) }
     }
 
     /// Sets the profile connection space signature in profile header, using ICC convention.
+    #[inline]
     pub fn set_pcs(&mut self, pcs: ColorSpaceSignature) {
         unsafe { ffi::cmsSetPCS(self.handle, pcs) }
     }
@@ -259,23 +285,27 @@ impl<Ctx: Context> Profile<Ctx> {
     }
 
     /// Returns the profile ICC version. The version is decoded to readable floating point format.
+    #[inline]
     pub fn version(&self) -> f64 {
         unsafe { ffi::cmsGetProfileVersion(self.handle) }
     }
 
     /// Sets the ICC version in profile header. The version is given to this function as a float n.m
+    #[inline]
     pub fn set_version(&mut self, ver: f64) {
         unsafe {
             ffi::cmsSetProfileVersion(self.handle, ver);
         }
     }
 
+    #[inline]
     pub fn tag_signatures(&self) -> Vec<TagSignature> {
         unsafe {
             (0..ffi::cmsGetTagCount(self.handle)).map(|n| ffi::cmsGetTagSignature(self.handle, n as u32)).collect()
         }
     }
 
+    #[inline]
     pub fn detect_black_point(&self, intent: Intent) -> Option<CIEXYZ> {
         unsafe {
             let mut b = Default::default();
@@ -287,6 +317,7 @@ impl<Ctx: Context> Profile<Ctx> {
         }
     }
 
+    #[inline]
     pub fn detect_destination_black_point(&self, intent: Intent) -> Option<CIEXYZ> {
         unsafe {
             let mut b = Default::default();
@@ -298,11 +329,13 @@ impl<Ctx: Context> Profile<Ctx> {
         }
     }
 
+    #[inline]
     pub fn detect_tac(&self) -> f64 {
         unsafe { ffi::cmsDetectTAC(self.handle) }
     }
 
     /// Gets the color space used by the given profile, using the ICC convention.
+    #[inline]
     pub fn color_space(&self) -> ColorSpaceSignature {
         unsafe {
             let v = ffi::cmsGetColorSpace(self.handle);
@@ -311,30 +344,37 @@ impl<Ctx: Context> Profile<Ctx> {
     }
 
     /// Sets the profile connection space signature in profile header, using ICC convention.
+    #[inline]
     pub fn set_color_space(&mut self, sig: ColorSpaceSignature) {
         unsafe { ffi::cmsSetColorSpace(self.handle, sig) }
     }
 
+    #[inline]
     pub fn is_clut(&self, intent: Intent, used_direction: u32) -> bool {
         unsafe { ffi::cmsIsCLUT(self.handle, intent, used_direction) != 0 }
     }
 
+    #[inline]
     pub fn is_intent_supported(&self, intent: Intent, used_direction: u32) -> bool {
         unsafe { ffi::cmsIsIntentSupported(self.handle, intent, used_direction) != 0 }
     }
 
+    #[inline]
     pub fn is_matrix_shaper(&self) -> bool {
         unsafe { ffi::cmsIsMatrixShaper(self.handle) != 0 }
     }
 
+    #[inline]
     pub fn has_tag(&self, sig: TagSignature) -> bool {
         unsafe { ffi::cmsIsTag(self.handle, sig) != 0 }
     }
 
+    #[inline]
     pub fn read_tag(&self, sig: TagSignature) -> Tag<'_> {
         unsafe { Tag::new(sig, ffi::cmsReadTag(self.handle, sig) as *const u8) }
     }
 
+    #[inline]
     pub fn write_tag(&mut self, sig: TagSignature, tag: Tag<'_>) -> bool {
         unsafe {
             ffi::cmsWriteTag(self.handle, sig, tag.data_for_signature(sig) as *const _) != 0
@@ -342,6 +382,7 @@ impl<Ctx: Context> Profile<Ctx> {
     }
 
     /// Retrieves the Profile ID stored in the profile header.
+    #[inline]
     pub fn profile_id(&self) -> ffi::ProfileID {
         let mut id = ffi::ProfileID::default();
         unsafe {
@@ -351,12 +392,14 @@ impl<Ctx: Context> Profile<Ctx> {
     }
 
     /// Computes a MD5 checksum and stores it as Profile ID in the profile header.
+    #[inline]
     pub fn set_default_profile_id(&mut self) {
         unsafe {
             ffi::cmsMD5computeID(self.handle);
         }
     }
 
+    #[inline]
     pub fn set_profile_id(&mut self, id: ffi::ProfileID) {
         unsafe {
             ffi::cmsSetHeaderProfileID(self.handle, &id as *const ffi::ProfileID as *mut _);
@@ -366,22 +409,26 @@ impl<Ctx: Context> Profile<Ctx> {
 
 /// Per-context functions that can be used with a `ThreadContext`
 impl<Ctx: Context> Profile<Ctx> {
+    #[inline]
     pub fn new_icc_context(context: impl AsRef<Ctx>, data: &[u8]) -> LCMSResult<Self> {
         Self::new_handle(unsafe {
             ffi::cmsOpenProfileFromMemTHR(context.as_ref().as_ptr(), data.as_ptr() as *const c_void, data.len() as u32)
         })
     }
 
+    #[inline]
     pub fn new_file_context<P: AsRef<Path>>(context: impl AsRef<Ctx>, path: P) -> io::Result<Self> {
         let mut buf = Vec::new();
         File::open(path)?.read_to_end(&mut buf)?;
         Self::new_icc_context(context, &buf).map_err(|_| io::ErrorKind::Other.into())
     }
 
+    #[inline]
     pub fn new_srgb_context(context: impl AsRef<Ctx>) -> Self {
         Self::new_handle(unsafe { ffi::cmsCreate_sRGBProfileTHR(context.as_ref().as_ptr()) }).unwrap()
     }
 
+    #[inline]
     pub fn new_rgb_context(context: impl AsRef<Ctx>, white_point: &CIExyY,
                    primaries: &CIExyYTRIPLE,
                    transfer_function: &[&ToneCurve])
@@ -398,12 +445,14 @@ impl<Ctx: Context> Profile<Ctx> {
         })
     }
 
+    #[inline]
     pub fn new_gray_context(context: impl AsRef<Ctx>, white_point: &CIExyY, curve: &ToneCurve) -> LCMSResult<Self> {
         Self::new_handle(unsafe { ffi::cmsCreateGrayProfileTHR(context.as_ref().as_ptr(), white_point, curve.as_ptr()) })
     }
 
     /// This is a devicelink operating in the target colorspace with as many transfer functions as components.
     /// Number of tone curves must be sufficient for the color space.
+    #[inline]
     pub unsafe fn new_linearization_device_link_context(context: impl AsRef<Ctx>, color_space: ColorSpaceSignature, curves: &[ToneCurveRef]) -> LCMSResult<Self> {
         let v: Vec<_> = curves.iter().map(|c| c.as_ptr() as *const _).collect();
         Self::new_handle(ffi::cmsCreateLinearizationDeviceLinkTHR(context.as_ref().as_ptr(), color_space, v.as_ptr()))
@@ -420,6 +469,7 @@ impl<Ctx: Context> Profile<Ctx> {
     /// TempSrc: Source white point temperature
     /// TempDest: Destination white point temperature.
     /// To prevent white point adjustment, set Temp to None
+    #[inline]
     pub fn new_bchsw_abstract_context(context: impl AsRef<Ctx>, lut_points: usize, bright: f64, contrast: f64, hue: f64, saturation: f64,
                                       temp_src_dst: Option<(u32, u32)>) -> LCMSResult<Self> {
         let (temp_src, temp_dest) = temp_src_dst.unwrap_or((0,0));
@@ -428,6 +478,7 @@ impl<Ctx: Context> Profile<Ctx> {
         })
     }
 
+    #[inline]
     fn new_handle(handle: ffi::HPROFILE) -> LCMSResult<Self> {
         if handle.is_null() {
             return Err(Error::ObjectCreationError);
@@ -440,16 +491,19 @@ impl<Ctx: Context> Profile<Ctx> {
 
     /// This is a devicelink operating in CMYK for ink-limiting. Currently only cmsSigCmykData is supported.
     /// Limit: Amount of ink limiting in % (0..400%)
+    #[inline]
     pub fn ink_limiting_context(context: impl AsRef<Ctx>, color_space: ColorSpaceSignature, limit: f64) -> LCMSResult<Self> {
         Self::new_handle(unsafe { ffi::cmsCreateInkLimitingDeviceLinkTHR(context.as_ref().as_ptr(), color_space, limit) })
     }
 
     /// Creates a XYZ  XYZ identity, marking it as v4 ICC profile.  WhitePoint used in Absolute colorimetric intent  is D50.
+    #[inline]
     pub fn new_xyz_context(context: impl AsRef<Ctx>) -> Self {
         Self::new_handle(unsafe { ffi::cmsCreateXYZProfileTHR(context.as_ref().as_ptr()) }).unwrap()
     }
 
     /// Creates a fake NULL profile. This profile return 1 channel as always 0. Is useful only for gamut checking tricks.
+    #[inline]
     pub fn new_null_context(context: impl AsRef<Ctx>) -> Self {
         Self::new_handle(unsafe { ffi::cmsCreateNULLProfileTHR(context.as_ref().as_ptr()) }).unwrap()
     }
@@ -462,6 +516,7 @@ impl<Ctx: Context> Profile<Ctx> {
     }
 
     /// Creates a Lab  Lab identity, marking it as v4 ICC profile.
+    #[inline]
     pub fn new_lab4_context(context: impl AsRef<Ctx>, white_point: &CIExyY) -> LCMSResult<Self> {
         Self::new_handle(unsafe { ffi::cmsCreateLab4ProfileTHR(context.as_ref().as_ptr(), white_point) })
     }

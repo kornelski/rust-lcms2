@@ -10,6 +10,7 @@ pub enum Error {
 }
 
 impl Error {
+    #[inline]
     pub(crate) unsafe fn if_null<T>(handle: *mut <T as ForeignType>::CType) -> LCMSResult<T> where T: ForeignType {
         if !handle.is_null() {
             Ok(T::from_ptr(handle))

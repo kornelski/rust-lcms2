@@ -11,10 +11,12 @@ pub trait ColorSpaceSignatureExt: Sized + Copy {
 }
 
 impl ColorSpaceSignatureExt for ColorSpaceSignature {
+    #[inline]
     fn channels(self) -> u32 {
         unsafe { ffi::cmsChannelsOf(self) }
     }
 
+    #[inline]
     fn pixel_format(self) -> PixelFormat {
         unsafe { mem::transmute(ffi::_cmsLCMScolorSpace(self) as u32) }
     }
@@ -34,6 +36,7 @@ pub trait CIEXYZExt: Sized {
 }
 
 impl CIEXYZExt for CIEXYZ {
+    #[inline]
     fn adapt_to_illuminant(&self, source_white_point: &CIEXYZ, illuminant: &CIEXYZ) -> Option<CIEXYZ> {
         let mut res = CIEXYZ{X:0.,Y:0.,Z:0.};
         let ok = unsafe {
@@ -46,12 +49,14 @@ impl CIEXYZExt for CIEXYZ {
         }
     }
 
+    #[inline]
     fn to_lab(&self, white_point: &CIEXYZ) -> CIELab {
         let mut out = CIELab::default();
         unsafe { ffi::cmsXYZ2Lab(white_point, &mut out, self) }
         out
     }
 
+    #[inline]
     fn from_encoded(icc: &[u16; 3]) -> Self {
         let mut out = Self::default();
         unsafe {
@@ -68,6 +73,7 @@ pub trait CIExzYExt: Sized {
 }
 
 impl CIExzYExt for CIExyY {
+    #[inline]
     fn temp(&self) -> Option<f64> {
         let mut out = 0.;
         if 0 != unsafe { ffi::cmsTempFromWhitePoint(&mut out, self) } {
@@ -137,42 +143,51 @@ pub trait CIELabExt: Sized {
 }
 
 impl CIELabExt for CIELab {
+    #[inline]
     fn cie2000_delta_e(&self, other: &CIELab, kl: f64, kc: f64, kh: f64) -> f64 {
         unsafe { ffi::cmsCIE2000DeltaE(self, other, kl, kc, kh) }
     }
 
+    #[inline]
     fn cie94_delta_e(&self, other: &CIELab) -> f64 {
         unsafe { ffi::cmsCIE94DeltaE(self, other) }
     }
 
+    #[inline]
     fn bfd_delta_e(&self, other: &CIELab) -> f64 {
         unsafe { ffi::cmsBFDdeltaE(self, other) }
     }
 
+    #[inline]
     fn delta_e(&self, other: &CIELab) -> f64 {
         unsafe { ffi::cmsDeltaE(self, other) }
     }
 
+    #[inline]
     fn cmc_delta_e(&self, other: &CIELab, k: f64, c: f64) -> f64 {
         unsafe { ffi::cmsCMCdeltaE(self, other, k, c) }
     }
 
+    #[inline]
     fn desaturate(&mut self, amin: f64, amax: f64, bmin: f64, bmax: f64) -> bool {
         unsafe { 0 != ffi::cmsDesaturateLab(self, amax, amin, bmax, bmin) }
     }
 
+    #[inline]
     fn encoded(&self) -> [u16; 3] {
         let mut out = [0u16; 3];
         unsafe { ffi::cmsFloat2LabEncoded(out.as_mut_ptr(), self) }
         out
     }
 
+    #[inline]
     fn encoded_v2(&self) -> [u16; 3] {
         let mut out = [0u16; 3];
         unsafe { ffi::cmsFloat2LabEncodedV2(out.as_mut_ptr(), self) }
         out
     }
 
+    #[inline]
     fn from_encoded(icc: &[u16; 3]) -> Self {
         let mut out = Self::default();
         unsafe {
@@ -181,6 +196,7 @@ impl CIELabExt for CIELab {
         out
     }
 
+    #[inline]
     fn from_encoded_v2(icc: &[u16; 3]) -> Self {
         let mut out = Self::default();
         unsafe {
@@ -189,6 +205,7 @@ impl CIELabExt for CIELab {
         out
     }
 
+    #[inline]
     fn to_xyz(&self, white_point: &CIEXYZ) -> CIEXYZ {
         let mut out = CIEXYZ::default();
         unsafe { ffi::cmsLab2XYZ(white_point, &mut out, self) }

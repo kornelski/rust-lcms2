@@ -57,6 +57,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<
     ///  * Intent: Rendering intent
     ///
     ///  See documentation of these types for more detail.
+    #[inline]
     pub fn new(input: &Profile,
                in_format: PixelFormat,
                output: &Profile,
@@ -66,6 +67,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<
     }
 
     /// Non-thread-safe
+    #[inline]
     pub fn new_flags<Fl: CacheFlag>(input: &Profile,
                      in_format: PixelFormat,
                      output: &Profile,
@@ -85,6 +87,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<
     ///
     ///  * `FLAGS_GAMUTCHECK`: Color out of gamut are flagged to a fixed color defined by the function cmsSetAlarmCodes
     ///  * `FLAGS_SOFTPROOFING`: does emulate the Proofing device.
+    #[inline]
     pub fn new_proofing(input: &Profile, in_format: PixelFormat,
                         output: &Profile, out_format: PixelFormat,
                         proofing: &Profile, intent: Intent, proofng_intent: Intent,
@@ -97,12 +100,14 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<
     ///
     /// User passes in an array of handles to open profiles. The returned color transform do "smelt" all profiles in a single devicelink.
     /// Color spaces must be paired with the exception of Lab/XYZ, which can be interchanged.
+    #[inline]
     pub fn new_multiprofile(profiles: &[&Profile], in_format: PixelFormat, out_format: PixelFormat, intent: Intent, flags: Flags) -> LCMSResult<Self> {
         Self::new_multiprofile_context(GlobalContext::new(), profiles, in_format, out_format, intent, flags)
     }
 }
 
 impl<PixelFormat: Copy + Clone, Ctx: Context, C> Transform<PixelFormat, PixelFormat, Ctx, C> {
+    #[inline]
     pub fn transform_in_place(&self, srcdst: &mut [PixelFormat]) {
         let size = srcdst.len();
         assert!(size < std::u32::MAX as usize);
@@ -119,6 +124,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
     // Same as `new()`, but allows specifying thread-safe context (enables `Send`)
     //
     // For `Sync`, see `new_flags_context` and `Flags::NO_CACHE`
+    #[inline]
     pub fn new_context(context: impl AsRef<Ctx>, input: &Profile<Ctx>, in_format: PixelFormat,
                        output: &Profile<Ctx>, out_format: PixelFormat, intent: Intent) -> LCMSResult<Self> {
         Self::new_flags_context(context, input, in_format, output, out_format, intent, Flags::default())
@@ -126,6 +132,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
 }
 
 impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Context, Fl: CacheFlag> Transform<InputPixelFormat, OutputPixelFormat, Ctx, Fl> {
+    #[inline]
     fn new_handle(handle: ffi::HTRANSFORM, in_format: PixelFormat, out_format: PixelFormat) -> LCMSResult<Self> {
         if handle.is_null() {
             Err(Error::ObjectCreationError)
@@ -140,6 +147,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
         }
     }
 
+    #[inline]
     fn check_format<Z>(format: PixelFormat, input: bool) -> PhantomData<Z> {
         assert!(!format.planar(), "Planar not supported");
         assert_eq!(format.bytes_per_pixel(),
@@ -165,14 +173,17 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
         }
     }
 
+    #[inline]
     pub fn input_format(&self) -> PixelFormat {
         unsafe { ffi::cmsGetTransformInputFormat(self.handle) as PixelFormat }
     }
 
+    #[inline]
     pub fn output_format(&self) -> PixelFormat {
         unsafe { ffi::cmsGetTransformOutputFormat(self.handle) as PixelFormat }
     }
 
+    #[inline]
     pub fn new_flags_context(context: impl AsRef<Ctx>, input: &Profile<Ctx>, in_format: PixelFormat,
                              output: &Profile<Ctx>, out_format: PixelFormat,
                              intent: Intent, flags: Flags<Fl>)
@@ -186,6 +197,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
                          in_format, out_format)
     }
 
+    #[inline]
     pub fn new_proofing_context(context: impl AsRef<Ctx>, input: &Profile<Ctx>, in_format: PixelFormat,
                         output: &Profile<Ctx>, out_format: PixelFormat,
                         proofing: &Profile<Ctx>, intent: Intent, proofng_intent: Intent,
@@ -199,6 +211,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
                          in_format, out_format)
     }
 
+    #[inline]
     fn new_multiprofile_context(context: impl AsRef<Ctx>, profiles: &[&Profile],
                                 in_format: PixelFormat, out_format: PixelFormat, intent: Intent, flags: Flags<Fl>) -> LCMSResult<Self> {
         let mut handles: Vec<_> = profiles.iter().map(|p| p.handle).collect();
@@ -216,6 +229,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, C> Transfo
     /// Adaptation state for absolute colorimetric intent, on all but cmsCreateExtendedTransform.
     ///
     /// See `ThreadContext::adaptation_state()`
+    #[inline]
     pub fn global_adaptation_state() -> f64 {
         unsafe { ffi::cmsSetAdaptationState(-1.) }
     }

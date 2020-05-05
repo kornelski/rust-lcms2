@@ -89,6 +89,7 @@ impl Default for Flags {
     /// Default flags
     ///
     /// By default allows non-thread-safe cache, which improves performance, but limits transforms to use by one thread only.
+    #[inline]
     fn default() -> Self {
         Flags(0, AllowCache)
     }
