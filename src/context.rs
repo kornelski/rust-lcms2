@@ -1,3 +1,5 @@
+use std::rc::Rc;
+use std::sync::Arc;
 use super::*;
 use std::ptr;
 use std::mem;
@@ -18,6 +20,9 @@ pub struct GlobalContext {
 
 impl UnwindSafe for GlobalContext {}
 impl RefUnwindSafe for GlobalContext {}
+
+impl UnwindSafe for ThreadContext {}
+impl RefUnwindSafe for ThreadContext {}
 
 #[doc(hidden)]
 pub trait Context {
@@ -44,6 +49,20 @@ struct YouMustUseThreadContextToShareBetweenThreads;
 unsafe impl Send for ThreadContext {}
 
 impl<'a> Context for &'a ThreadContext {
+    #[inline]
+    fn as_ptr(&self) -> ffi::Context {
+        self.handle
+    }
+}
+
+impl<'a> Context for Arc<ThreadContext> {
+    #[inline]
+    fn as_ptr(&self) -> ffi::Context {
+        self.handle
+    }
+}
+
+impl<'a> Context for Rc<ThreadContext> {
     #[inline]
     fn as_ptr(&self) -> ffi::Context {
         self.handle
