@@ -13,7 +13,7 @@ foreign_type! {
     ///
     /// This is an owned version of `PipelineRef`.
     #[doc(hidden)]
-    pub type Pipeline {
+    pub unsafe type Pipeline {
         type CType = ffi::Pipeline;
         fn drop = ffi::cmsPipelineFree;
         fn clone = ffi::cmsPipelineDup;

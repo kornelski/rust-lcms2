@@ -11,7 +11,7 @@ use foreign_types::{ForeignType, ForeignTypeRef};
 foreign_type! {
     /// This represents owned Multi Localized Unicode type. Most methods are implemented on `MLURef`.
     /// This is a borrwed Multi Localized Unicode type. It holds Unicode strings associated with `Locale`.
-    pub type MLU {
+    pub unsafe type MLU {
         type CType = ffi::MLU;
         fn drop = ffi::cmsMLUfree;
     }

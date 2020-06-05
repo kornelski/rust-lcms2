@@ -10,11 +10,11 @@ homepage = "https://lib.rs/crates/lcms2"
 documentation = "https://kornelski.github.io/rust-lcms2/lcms2/"
 repository = "https://github.com/kornelski/rust-lcms2.git"
 categories = ["multimedia::images", "api-bindings"]
-version = "5.2.0"
+version = "5.3.0-alpha"
 edition = "2018"
 
 [dependencies]
-foreign-types = "0.4.0"
+foreign-types = "0.5"
 lcms2-sys = "3.1.2"
 
 [features]

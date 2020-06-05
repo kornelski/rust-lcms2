@@ -10,7 +10,7 @@ foreign_type! {
     /// The curve is stored in segments, where each segment can be sampled or specified by parameters. A 16.bit simplification of the *whole* curve is kept for optimization purposes. For float operation, each segment is evaluated separately. Plug-ins may be used to define new parametric schemes.
     ///
     /// Owned version of `ToneCurveRef`
-    pub type ToneCurve {
+    pub unsafe type ToneCurve {
         type CType = ffi::ToneCurve;
         fn drop = ffi::cmsFreeToneCurve;
         fn clone = ffi::cmsDupToneCurve;

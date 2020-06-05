@@ -17,7 +17,7 @@ pub struct NamedColorInfo {
 
 foreign_type! {
     /// Palette of colors with names
-    pub type NamedColorList {
+    pub unsafe type NamedColorList {
         type CType = ffi::NAMEDCOLORLIST;
         fn drop = ffi::cmsFreeNamedColorList;
     }

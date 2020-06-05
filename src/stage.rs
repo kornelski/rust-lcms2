@@ -14,7 +14,7 @@ foreign_type! {
     /// See the plug-in API for further details.
     ///
     /// This is an owned version of `Stage`.
-    pub type Stage {
+    pub unsafe type Stage {
         type CType = ffi::Stage;
         fn drop = ffi::cmsStageFree;
     }
