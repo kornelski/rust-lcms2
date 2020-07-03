@@ -99,7 +99,7 @@ impl Context for ThreadContext {
 /// When you see an error "expected reference, found struct `lcms2::GlobalContext`", it means you've mixed global and thread-context objects. They don't work together.
 /// For example, if you create a `Transform` with a context (calling `new_*_context()`), then it will only support `Profile` with a context as well.
 pub struct ThreadContext {
-    handle: ffi::Context,
+    handle: ffi::Context
 }
 
 impl GlobalContext {
@@ -187,7 +187,15 @@ impl ThreadContext {
         }
         tmp
     }
+
+    /// Sets a function to be called if there is an error.
+    pub fn set_error_logging_function(&mut self, handler: ffi::LogErrorHandlerFunction) {
+        unsafe {
+            ffi::cmsSetLogErrorHandlerTHR(self.handle, handler)
+        }
+    }
 }
+
 
 impl Clone for ThreadContext {
     fn clone(&self) -> Self {
