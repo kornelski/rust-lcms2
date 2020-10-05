@@ -381,6 +381,20 @@ impl<Ctx: Context> Profile<Ctx> {
         }
     }
 
+    #[inline]
+    pub fn remove_tag(&mut self, sig: TagSignature) -> bool {
+        unsafe {
+            ffi::cmsWriteTag(self.handle, sig, std::ptr::null()) != 0
+        }
+    }
+
+    #[inline]
+    pub fn link_tag(&mut self, sig: TagSignature, dst: TagSignature) -> bool {
+        unsafe {
+            ffi::cmsLinkTag(self.handle, sig, dst) != 0
+        }
+    }
+
     /// Retrieves the Profile ID stored in the profile header.
     #[inline]
     pub fn profile_id(&self) -> ffi::ProfileID {
