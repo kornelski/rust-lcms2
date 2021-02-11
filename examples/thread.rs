@@ -31,5 +31,6 @@ fn main() {
     let sync = Transform::new_flags_context(ThreadContext::new(), &profile, PixelFormat::RGB_8, &profile, PixelFormat::RGB_8, Intent::Saturation, Flags::NO_CACHE).unwrap();
     let out = [0u8; 3];
     sync.transform_pixels(&[[1u8,2,3]], &mut [out]);
-    let _: Box<dyn Sync> = Box::new(sync);
+    let tr: Box<dyn std::fmt::Debug + Sync> = Box::new(sync);
+    eprintln!("{:#?}", tr);
 }

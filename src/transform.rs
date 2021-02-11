@@ -2,6 +2,7 @@ use super::*;
 use crate::context::Context;
 use std::os::raw::c_void;
 use std::marker::PhantomData;
+use std::fmt;
 
 /// Conversion between two ICC profiles.
 ///
@@ -174,16 +175,6 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
     }
 
     #[inline]
-    pub fn input_format(&self) -> PixelFormat {
-        unsafe { ffi::cmsGetTransformInputFormat(self.handle) as PixelFormat }
-    }
-
-    #[inline]
-    pub fn output_format(&self) -> PixelFormat {
-        unsafe { ffi::cmsGetTransformOutputFormat(self.handle) as PixelFormat }
-    }
-
-    #[inline]
     pub fn new_flags_context(context: impl AsRef<Ctx>, input: &Profile<Ctx>, in_format: PixelFormat,
                              output: &Profile<Ctx>, out_format: PixelFormat,
                              intent: Intent, flags: Flags<Fl>)
@@ -225,7 +216,19 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
     }
 }
 
-impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, C> Transform<InputPixelFormat, OutputPixelFormat, GlobalContext, C> {
+impl<F, T, C, L> Transform<F, T, C, L> {
+    #[inline]
+    pub fn input_format(&self) -> PixelFormat {
+        unsafe { ffi::cmsGetTransformInputFormat(self.handle) as PixelFormat }
+    }
+
+    #[inline]
+    pub fn output_format(&self) -> PixelFormat {
+        unsafe { ffi::cmsGetTransformOutputFormat(self.handle) as PixelFormat }
+    }
+}
+
+impl<F, T, L> Transform<F, T, GlobalContext, L> {
     /// Adaptation state for absolute colorimetric intent, on all but cmsCreateExtendedTransform.
     ///
     /// See `ThreadContext::adaptation_state()`
@@ -276,3 +279,18 @@ impl<F, T, C, L> Drop for Transform<F, T, C, L> {
     }
 }
 
+
+impl<F, T, C, L> fmt::Debug for Transform<F, T, C, L> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let mut s = f.debug_struct(&format!(
+            "Transform<{}, {}, {}, {}>",
+            std::any::type_name::<F>(),
+            std::any::type_name::<T>(),
+            std::any::type_name::<C>(),
+            std::any::type_name::<L>(),
+        ));
+        s.field("input_format", &self.input_format());
+        s.field("output_format", &self.output_format());
+        s.finish()
+    }
+}

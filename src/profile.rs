@@ -1,5 +1,6 @@
 use super::*;
 use crate::context::Context;
+use std::fmt;
 use std::path::Path;
 use std::ptr;
 use std::io;
@@ -580,6 +581,18 @@ fn tags_write() {
     });
 }
 
+impl fmt::Debug for Profile {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let mut s = f.debug_struct("Profile");
+        let l = Locale::none();
+        s.field("Description", &self.info(InfoType::Description, l));
+        s.field("Manufacturer", &self.info(InfoType::Manufacturer, l));
+        s.field("Model", &self.info(InfoType::Model, l));
+        s.field("Copyright", &self.info(InfoType::Copyright, l));
+        s.finish()
+    }
+}
+
 #[test]
 fn setters() {
     let mut p = Profile::new_placeholder();
@@ -592,6 +605,7 @@ fn setters() {
 fn icc() {
     let prof = Profile::new_xyz();
     assert!(prof.icc().unwrap().len() > 300);
+    assert!(format!("{:?}", prof).contains("XYZ identity"));
 }
 
 #[test]

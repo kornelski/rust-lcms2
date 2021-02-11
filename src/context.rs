@@ -1,6 +1,7 @@
 use std::rc::Rc;
 use std::sync::Arc;
 use super::*;
+use std::fmt;
 use std::ptr;
 use std::mem;
 use std::ffi::CStr;
@@ -212,12 +213,24 @@ impl Drop for ThreadContext {
 impl Default for GlobalContext {
     fn default() -> Self {
         Self::new()
-        }
+    }
 }
 
 impl Default for ThreadContext {
     fn default() -> Self {
         Self::new()
+    }
+}
+
+impl fmt::Debug for ThreadContext {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.write_str("ThreadContext")
+    }
+}
+
+impl fmt::Debug for GlobalContext {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.write_str("GlobalContext")
     }
 }
 
