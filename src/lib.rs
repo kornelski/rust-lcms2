@@ -59,6 +59,7 @@ pub use crate::ffi::ProfileClassSignature;
 pub use crate::ffi::ViewingConditions;
 
 #[derive(Debug)]
+#[non_exhaustive]
 /// Value of a tag in an ICC profile
 pub enum Tag<'a> {
     CIExyYTRIPLE(&'a ffi::CIExyYTRIPLE),
@@ -69,7 +70,7 @@ pub enum Tag<'a> {
     /// Unicode string
     MLU(&'a mlu::MLURef),
     /// A palette
-    NAMEDCOLORLIST(&'a NamedColorListRef),
+    NamedColorList(&'a NamedColorListRef),
     Pipeline(&'a PipelineRef),
     Screening(&'a ffi::Screening),
     SEQ(&'a ffi::SEQ),

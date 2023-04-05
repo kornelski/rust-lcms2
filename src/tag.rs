@@ -45,10 +45,10 @@ impl<'a> Tag<'a> {
             (ChromaticAdaptationTag, &Tag::CIExyYTRIPLE(data)) => {
                 data as *const _ as *const u8
             },
-            (ColorantTableTag, &Tag::NAMEDCOLORLIST(data)) |
-            (ColorantTableOutTag, &Tag::NAMEDCOLORLIST(data)) |
-            (CrdInfoTag, &Tag::NAMEDCOLORLIST(data)) |
-            (NamedColor2Tag, &Tag::NAMEDCOLORLIST(data)) => data as *const _ as *const u8,
+            (ColorantTableTag, &Tag::NamedColorList(data)) |
+            (ColorantTableOutTag, &Tag::NamedColorList(data)) |
+            (CrdInfoTag, &Tag::NamedColorList(data)) |
+            (NamedColor2Tag, &Tag::NamedColorList(data)) => data as *const _ as *const u8,
             (DataTag, &Tag::ICCData(data)) |
             (Ps2CRD0Tag, &Tag::ICCData(data)) |
             (Ps2CRD1Tag, &Tag::ICCData(data)) |
@@ -132,7 +132,7 @@ impl<'a> Tag<'a> {
             ColorantTableTag |
             ColorantTableOutTag |
             CrdInfoTag |
-            NamedColor2Tag => Tag::NAMEDCOLORLIST(NamedColorListRef::from_ptr(aligned_mut(data))),
+            NamedColor2Tag => Tag::NamedColorList(NamedColorListRef::from_ptr(aligned_mut(data))),
             DataTag |
             Ps2CRD0Tag |
             Ps2CRD1Tag |
