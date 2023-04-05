@@ -56,9 +56,7 @@ impl ToneCurve {
     /// Always use 10-parameter slice for plug-in types.
     ///
     /// If `curve_type` is negative, then the curve is analytically inverted.
-    /// To set negative values, use casts like `-1_i16 as u16`.
-    pub fn new_parametric(curve_type: u16, params: &[f64]) -> LCMSResult<Self> {
-        let curve_type = curve_type as i16;
+    pub fn new_parametric(curve_type: i16, params: &[f64]) -> LCMSResult<Self> {
         let params_min_len = match curve_type.abs() {
             1 => 1,
             2 => 3,
