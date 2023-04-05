@@ -78,6 +78,7 @@ pub enum Tag<'a> {
     Technology(ffi::TechnologySignature),
     ToneCurve(&'a ToneCurveRef),
     UcrBg(&'a ffi::UcrBg),
+    VcgtCurves([&'a ToneCurveRef; 3]),
     /// Unknown format or missing data
     None,
 }
