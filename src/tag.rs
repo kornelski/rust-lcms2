@@ -99,6 +99,7 @@ impl<'a> Tag<'a> {
             },
             (ScreeningTag, &Tag::Screening(data)) => data as *const _ as *const u8,
             (UcrBgTag, &Tag::UcrBg(data)) => data as *const _ as *const u8,
+            (VcgtTag, &Tag::VcgtCurves(arr)) => arr[0].as_ptr() as *const _,
             (ViewingConditionsTag, &Tag::ICCViewingConditions(data)) => {
                 data as *const _ as *const u8
             },
@@ -174,6 +175,11 @@ impl<'a> Tag<'a> {
             ProfileSequenceIdTag => Tag::SEQ(cast(data)),
             ScreeningTag => Tag::Screening(cast(data)),
             UcrBgTag => Tag::UcrBg(cast(data)),
+            VcgtTag => Tag::VcgtCurves([
+                ToneCurveRef::from_ptr(aligned_mut(data)),
+                ToneCurveRef::from_ptr(*(aligned_mut::<*mut ffi::ToneCurve>(data).offset(1))),
+                ToneCurveRef::from_ptr(*(aligned_mut::<*mut ffi::ToneCurve>(data).offset(2))),
+            ]),
             ViewingConditionsTag => Tag::ICCViewingConditions(cast(data)),
             _ => Tag::None,
         }
