@@ -1,6 +1,6 @@
-use super::*;
 use crate::eval::FloatOrU16;
-use crate::stage::*;
+use crate::stage::{StageRef, StagesIter};
+use crate::*;
 use foreign_types::ForeignTypeRef;
 use std::fmt;
 use std::ptr;
@@ -38,36 +38,50 @@ impl PipelineRef {
         unsafe { ffi::cmsPipelineCat(self.as_ptr(), append.as_ptr()) != 0 }
     }
 
+    #[must_use]
     pub fn stage_count(&self) -> usize {
         unsafe { ffi::cmsPipelineStageCount(self.as_ptr()) as usize }
     }
 
+    #[must_use]
     pub fn first_stage(&self) -> Option<&StageRef> {
         unsafe {
             let f = ffi::cmsPipelineGetPtrToFirstStage(self.as_ptr());
-            if !f.is_null() {Some(ForeignTypeRef::from_ptr(f))} else {None}
+            if !f.is_null() {
+                Some(ForeignTypeRef::from_ptr(f))
+            } else {
+                None
+            }
         }
     }
 
+    #[must_use]
     pub fn last_stage(&self) -> Option<&StageRef> {
         unsafe {
             let f = ffi::cmsPipelineGetPtrToLastStage(self.as_ptr());
-            if !f.is_null() {Some(ForeignTypeRef::from_ptr(f))} else {None}
+            if !f.is_null() {
+                Some(ForeignTypeRef::from_ptr(f))
+            } else {
+                None
+            }
         }
     }
 
+    #[must_use]
     pub fn stages(&self) -> StagesIter<'_> {
         StagesIter(self.first_stage())
     }
 
     pub fn set_8bit(&mut self, on: bool) -> bool {
-        unsafe { ffi::cmsPipelineSetSaveAs8bitsFlag(self.as_ptr(), on as i32) != 0 }
+        unsafe { ffi::cmsPipelineSetSaveAs8bitsFlag(self.as_ptr(), i32::from(on)) != 0 }
     }
 
+    #[must_use]
     pub fn input_channels(&self) -> usize {
         unsafe { ffi::cmsPipelineInputChannels(self.as_ptr()) as usize }
     }
 
+    #[must_use]
     pub fn output_channels(&self) -> usize {
         unsafe { ffi::cmsPipelineOutputChannels(self.as_ptr()) as usize }
     }

@@ -1,4 +1,4 @@
-use super::*;
+use crate::ffi;
 
 pub trait FloatOrU16: Sized + Copy {
     unsafe fn eval_tone_curve(self, handle: *const ffi::ToneCurve) -> Self;

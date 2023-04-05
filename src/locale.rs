@@ -12,6 +12,7 @@ pub struct Locale {
 
 impl Locale {
     /// A string in format: 2-letter language name, separator, 2-letter country name, e.g. "en_US"
+    #[must_use]
     pub fn new(locale_name: &str) -> Self {
         let (language_str, country_str) = locale_name.split_at(cmp::min(locale_name.len(), 3));
 
@@ -29,6 +30,7 @@ impl Locale {
     }
 
     /// Default/unspecified/any locale
+    #[must_use]
     pub fn none() -> Self {
         Locale {
             language: [0; 3],
@@ -45,11 +47,11 @@ impl Locale {
     }
 
     pub(crate) fn language_ptr_mut(&mut self) -> *mut c_char {
-        &self.language as *const c_char as _
+        std::ptr::addr_of!(self.language) as _
     }
 
     pub(crate) fn country_ptr_mut(&mut self) -> *mut c_char {
-        &self.country as *const c_char as _
+        std::ptr::addr_of!(self.country) as _
     }
 }
 

@@ -1,5 +1,5 @@
-use super::*;
 use crate::ffi::wchar_t;
+use crate::*;
 use foreign_types::{ForeignType, ForeignTypeRef};
 use std::char::{decode_utf16, REPLACEMENT_CHARACTER};
 use std::ffi::CString;
@@ -21,6 +21,7 @@ impl MLU {
     /// Allocates an empty multilocalized unicode object.
     #[track_caller]
     #[inline]
+    #[must_use]
     pub fn new(items: usize) -> Self {
         unsafe {
             let handle = ffi::cmsMLUalloc(ptr::null_mut(), items as u32);
@@ -135,6 +136,7 @@ impl MLURef {
     }
 
     /// Obtains the translations stored in a given multilocalized unicode object.
+    #[must_use]
     pub fn tanslations(&self) -> Vec<Locale> {
         let count = unsafe { ffi::cmsMLUtranslationsCount(self.as_ptr()) };
         let mut out = Vec::with_capacity(count as usize);
@@ -180,7 +182,7 @@ impl fmt::Debug for MLURef {
         write!(
             f,
             "MLU({:?} {:?})",
-            if let Ok(ref t) = t { &t } else { "None" },
+            if let Ok(ref t) = t { t } else { "None" },
             self.tanslations()
         )
     }

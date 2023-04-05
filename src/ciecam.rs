@@ -1,4 +1,4 @@
-use super::*;
+use crate::*;
 use std::mem::MaybeUninit;
 use std::ptr;
 
@@ -12,10 +12,10 @@ impl CIECAM02 {
     ///
     /// Such object may be used as a color appearance model and evaluated in forward and reverse directions.
     /// Viewing conditions structure is detailed in Table 43. The surround member has to be one of the values enumerated in Table 44.
-    /// Degree of chromatic adaptation (d), can be specified in 0...1.0 range, or the model can be instructed to calculate it by using D_CALCULATE constant (-1).
+    /// Degree of chromatic adaptation (d), can be specified in 0...1.0 range, or the model can be instructed to calculate it by using `D_CALCULATE` constant (-1).
     ///
     ///  Viewing conditions.
-    /// Please note those are CAM model viewing conditions, and not the ICC tag viewing conditions, which I'm naming cmsICCViewingConditions to make differences evident. Unfortunately, the tag cannot deal with surround La, Yb and D value so is basically useless to store CAM02 viewing conditions.
+    /// Please note those are CAM model viewing conditions, and not the ICC tag viewing conditions, which I'm naming `cmsICCViewingConditions` to make differences evident. Unfortunately, the tag cannot deal with surround La, Yb and D value so is basically useless to store CAM02 viewing conditions.
     pub fn new(conditions: ViewingConditions) -> LCMSResult<Self> {
         let handle = unsafe { ffi::cmsCIECAM02Init(ptr::null_mut(), &conditions) };
         if !handle.is_null() {

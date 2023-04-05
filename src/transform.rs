@@ -1,5 +1,5 @@
-use super::*;
 use crate::context::Context;
+use crate::*;
 use std::fmt;
 use std::marker::PhantomData;
 use std::os::raw::c_void;
@@ -52,9 +52,9 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<
     /// Basic, non-tread-safe version.
     ///
     ///  * Input: Handle to a profile object capable to work in input direction
-    ///  * InputFormat: A bit-field format specifier
+    ///  * `InputFormat`: A bit-field format specifier
     ///  * Output: Handle to a profile object capable to work in output direction
-    ///  * OutputFormat: A bit-field format specifier
+    ///  * `OutputFormat`: A bit-field format specifier
     ///  * Intent: Rendering intent
     ///
     ///  See documentation of these types for more detail.
@@ -86,7 +86,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<
     ///
     /// To enable proofing and gamut check you need to include following flags:
     ///
-    ///  * `FLAGS_GAMUTCHECK`: Color out of gamut are flagged to a fixed color defined by the function cmsSetAlarmCodes
+    ///  * `FLAGS_GAMUTCHECK`: Color out of gamut are flagged to a fixed color defined by the function `cmsSetAlarmCodes`
     ///  * `FLAGS_SOFTPROOFING`: does emulate the Proofing device.
     #[inline]
     pub fn new_proofing(input: &Profile, in_format: PixelFormat,
@@ -114,7 +114,7 @@ impl<PixelFormat: Copy + Clone, Ctx: Context, C> Transform<PixelFormat, PixelFor
         assert!(size < std::u32::MAX as usize);
         unsafe {
             ffi::cmsDoTransform(self.handle,
-                                srcdst.as_ptr() as *const c_void,
+                                srcdst.as_ptr().cast::<c_void>(),
                                 srcdst.as_ptr() as *mut c_void,
                                 size as u32);
         }
@@ -168,7 +168,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
         assert!(size < std::u32::MAX as usize);
         unsafe {
             ffi::cmsDoTransform(self.handle,
-                                src.as_ptr() as *const c_void,
+                                src.as_ptr().cast::<c_void>(),
                                 dst.as_ptr() as *mut c_void,
                                 size as u32);
         }
@@ -218,26 +218,29 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
 
 impl<F, T, C, L> Transform<F, T, C, L> {
     #[inline]
+    #[must_use]
     pub fn input_format(&self) -> PixelFormat {
         unsafe { ffi::cmsGetTransformInputFormat(self.handle) as PixelFormat }
     }
 
     #[inline]
+    #[must_use]
     pub fn output_format(&self) -> PixelFormat {
         unsafe { ffi::cmsGetTransformOutputFormat(self.handle) as PixelFormat }
     }
 }
 
 impl<F, T, L> Transform<F, T, GlobalContext, L> {
-    /// Adaptation state for absolute colorimetric intent, on all but cmsCreateExtendedTransform.
+    /// Adaptation state for absolute colorimetric intent, on all but `cmsCreateExtendedTransform`.
     ///
     /// See `ThreadContext::adaptation_state()`
     #[inline]
+    #[must_use]
     pub fn global_adaptation_state() -> f64 {
         unsafe { ffi::cmsSetAdaptationState(-1.) }
     }
 
-    /// Sets adaptation state for absolute colorimetric intent, on all but cmsCreateExtendedTransform.
+    /// Sets adaptation state for absolute colorimetric intent, on all but `cmsCreateExtendedTransform`.
     /// Little CMS can handle incomplete adaptation states.
     ///
     /// See `ThreadContext::set_adaptation_state()`
@@ -251,7 +254,7 @@ impl<F, T, L> Transform<F, T, GlobalContext, L> {
     }
 
     /// Sets the global codes used to mark out-out-gamut on Proofing transforms. Values are meant to be encoded in 16 bits.
-    /// AlarmCodes: Array [16] of codes. ALL 16 VALUES MUST BE SPECIFIED, set to zero unused channels.
+    /// `AlarmCodes`: Array [16] of codes. ALL 16 VALUES MUST BE SPECIFIED, set to zero unused channels.
     ///
     /// See `ThreadContext::set_alarm_codes()`
     #[deprecated(note = "Use `ThreadContext::set_alarm_codes()`")]
@@ -262,6 +265,7 @@ impl<F, T, L> Transform<F, T, GlobalContext, L> {
     /// Gets the current global codes used to mark out-out-gamut on Proofing transforms. Values are meant to be encoded in 16 bits.
     ///
     /// See `ThreadContext::alarm_codes()`
+    #[must_use]
     pub fn global_alarm_codes() -> [u16; ffi::MAXCHANNELS] {
         let mut tmp = [0u16; ffi::MAXCHANNELS];
         unsafe {

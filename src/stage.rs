@@ -1,6 +1,6 @@
-use super::*;
 use crate::context::Context;
 use crate::eval::FloatOrU16;
+use crate::*;
 use foreign_types::ForeignTypeRef;
 use std::fmt;
 use std::ptr;
@@ -24,7 +24,7 @@ impl Stage {
     /// Creates an empty (identity) stage that does no operation.
     ///
     /// May be needed in order to save the pipeline as AToB/BToA tags in ICC profiles.
-    pub fn new_identity(channels: u32) -> Stage {
+    #[must_use] pub fn new_identity(channels: u32) -> Stage {
         unsafe {Error::if_null(
             ffi::cmsStageAllocIdentity(GlobalContext::new().as_ptr(), channels)
         )}.unwrap()
@@ -33,9 +33,13 @@ impl Stage {
     /// Creates a stage that contains nChannels tone curves, one per channel.
     pub fn new_tone_curves(curves: &[&ToneCurveRef]) -> LCMSResult<Stage> {
         let ptrs: Vec<_> = curves.iter().map(|c| c.as_ptr() as *const _).collect();
-        unsafe {Error::if_null(
-            ffi::cmsStageAllocToneCurves(GlobalContext::new().as_ptr(), ptrs.len() as u32, ptrs.as_ptr())
-        )}
+        unsafe {
+            Error::if_null(ffi::cmsStageAllocToneCurves(
+                GlobalContext::new().as_ptr(),
+                ptrs.len() as u32,
+                ptrs.as_ptr(),
+            ))
+        }
     }
 
     /// Creates a stage that contains a matrix plus an optional offset.
@@ -51,16 +55,21 @@ impl Stage {
                 return Err(Error::MissingData);
             }
         }
-        unsafe {Error::if_null(
-            ffi::cmsStageAllocMatrix(GlobalContext::new().as_ptr(), rows as u32, cols as u32, matrix2d.as_ptr(),
-                offsets.map(|p|p.as_ptr()).unwrap_or(ptr::null()))
-        )}
+        unsafe {
+            Error::if_null(ffi::cmsStageAllocMatrix(
+                GlobalContext::new().as_ptr(),
+                rows as u32,
+                cols as u32,
+                matrix2d.as_ptr(),
+                offsets.map(|p| p.as_ptr()).unwrap_or(ptr::null()),
+            ))
+        }
     }
 
     /// Creates a stage that contains a float or 16 bits multidimensional lookup table (CLUT).
     ///
     /// Each dimension has same resolution. The CLUT can be initialized by specifying values in Table parameter.
-    /// The recommended way is to set Table to None and use sample_clut with a callback, because this way the implementation is independent of the selected number of grid points.
+    /// The recommended way is to set Table to None and use `sample_clut` with a callback, because this way the implementation is independent of the selected number of grid points.
     pub fn new_clut<Value: FloatOrU16>(grid_point_nodes: usize, input_channels: u32, output_channels: u32, table: Option<&[Value]>) -> LCMSResult<Self> {
         if let Some(table) = table {
             if table.len() < grid_point_nodes {
@@ -75,14 +84,17 @@ impl Stage {
 }
 
 impl StageRef {
+    #[must_use]
     pub fn input_channels(&self) -> usize {
         unsafe { ffi::cmsStageInputChannels(self.as_ptr()) as usize }
     }
 
+    #[must_use]
     pub fn output_channels(&self) -> usize {
         unsafe { ffi::cmsStageOutputChannels(self.as_ptr()) as usize }
     }
 
+    #[must_use]
     pub fn stage_type(&self) -> ffi::StageSignature {
         unsafe { ffi::cmsStageType(self.as_ptr()) }
     }

@@ -1,4 +1,3 @@
-
 use lcms2::*;
 
 #[repr(C)]

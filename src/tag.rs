@@ -1,4 +1,4 @@
-use super::*;
+use crate::*;
 use foreign_types::ForeignTypeRef;
 
 unsafe fn cast<T>(ptr: *const u8) -> &'static T {
@@ -6,14 +6,14 @@ unsafe fn cast<T>(ptr: *const u8) -> &'static T {
     &*(ptr as *const T)
 }
 
-/// from_ptr() methods require mut for no good reason
+/// `from_ptr()` methods require mut for no good reason
 unsafe fn aligned_mut<T>(ptr: *const u8) -> *mut T {
     assert!(0 == ptr.align_offset(std::mem::align_of::<T>()), "Tag data pointer must be aligned");
     ptr as *mut T
 }
 
 impl<'a> Tag<'a> {
-    pub fn is_none(&self) -> bool {
+    #[must_use] pub fn is_none(&self) -> bool {
         match *self {
             Tag::None => true,
             _ => false,
@@ -163,13 +163,13 @@ impl<'a> Tag<'a> {
             GreenTRCTag |
             RedTRCTag => Tag::ToneCurve(ToneCurveRef::from_ptr(aligned_mut(data))),
             ColorimetricIntentImageStateTag  => {
-                Tag::ColorimetricIntentImageState((data as *const ffi::ColorimetricIntentImageState).read_unaligned())
+                Tag::ColorimetricIntentImageState(data.cast::<ffi::ColorimetricIntentImageState>().read_unaligned())
             },
             PerceptualRenderingIntentGamutTag |
             SaturationRenderingIntentGamutTag => {
-                Tag::Intent((data as *const ffi::Intent).read_unaligned())
+                Tag::Intent(data.cast::<ffi::Intent>().read_unaligned())
             },
-            TechnologyTag => Tag::Technology((data as *const ffi::TechnologySignature).read_unaligned()),
+            TechnologyTag => Tag::Technology(data.cast::<ffi::TechnologySignature>().read_unaligned()),
             MeasurementTag => Tag::ICCMeasurementConditions(cast(data)),
             ProfileSequenceDescTag |
             ProfileSequenceIdTag => Tag::SEQ(cast(data)),

@@ -85,10 +85,9 @@ pub enum Tag<'a> {
 }
 
 /// LCMS version
+#[must_use]
 pub fn version() -> u32 {
-    unsafe {
-        ffi::cmsGetEncodedCMMversion() as u32
-    }
+    unsafe { ffi::cmsGetEncodedCMMversion() as u32 }
 }
 
 /// Temperature <-> Chromaticity (Black body)
@@ -99,7 +98,7 @@ pub fn version() -> u32 {
 /// Higher color temperatures (5,000 K or more) are cool (bluish white) colors, and lower color temperatures (2,700–3,000 K) warm (yellowish white through red) colors.
 ///
 /// See `CIExzYExt::temp()`
-pub fn white_point_from_temp(temp: f64) -> Option<CIExyY> {
+#[must_use] pub fn white_point_from_temp(temp: f64) -> Option<CIExyY> {
     let mut res = CIExyY{x:0.,y:0.,Y:0.};
     let ok = unsafe {
         ffi::cmsWhitePointFromTemp(&mut res, temp) != 0

@@ -1,5 +1,5 @@
-use super::*;
 use crate::eval::FloatOrU16;
+use crate::*;
 use foreign_types::{ForeignType, ForeignTypeRef};
 use std::fmt;
 use std::ptr;
@@ -19,6 +19,7 @@ foreign_type! {
 
 impl ToneCurve {
     /// Simplified wrapper to `new_parametric`. Builds a parametric curve of type 1.
+    #[must_use]
     pub fn new(gamma: f64) -> Self {
         unsafe { Self::from_ptr(ffi::cmsBuildGamma(ptr::null_mut(), gamma)) }
     }
@@ -26,19 +27,31 @@ impl ToneCurve {
     /// Builds a tone curve based on a table of 16-bit values. Tone curves built with this function are restricted to 0…1.0 domain.
     #[track_caller]
     #[inline]
+    #[must_use]
     pub fn new_tabulated(values: &[u16]) -> Self {
         assert!(values.len() < std::i32::MAX as usize);
-        unsafe { Self::new_handle(ffi::cmsBuildTabulatedToneCurve16(ptr::null_mut(), values.len() as _, values.as_ptr())) }
+        unsafe {
+            Self::new_handle(ffi::cmsBuildTabulatedToneCurve16(
+                ptr::null_mut(),
+                values.len() as _,
+                values.as_ptr(),
+            ))
+        }
     }
 
     /// Builds a tone curve based on a table of floating point  values. Tone curves built with this function are **not** restricted to 0…1.0 domain.
     #[track_caller]
     #[inline]
+    #[must_use]
     pub fn new_tabulated_float(values: &[f32]) -> Self {
         assert!(values.len() < std::i32::MAX as usize);
-        unsafe { Self::new_handle(
-            ffi::cmsBuildTabulatedToneCurveFloat(ptr::null_mut(), values.len() as u32, values.as_ptr())
-        )}
+        unsafe {
+            Self::new_handle(ffi::cmsBuildTabulatedToneCurveFloat(
+                ptr::null_mut(),
+                values.len() as u32,
+                values.as_ptr(),
+            ))
+        }
     }
 
     /// See Table 52 in LCMS documentation for descriptino of the types.
@@ -89,49 +102,62 @@ impl ToneCurve {
 impl ToneCurveRef {
     /// Creates a tone curve that is the inverse  of given tone curve.
     #[inline]
+    #[must_use]
     pub fn reversed(&self) -> ToneCurve {
         unsafe { ToneCurve::from_ptr(ffi::cmsReverseToneCurve(self.as_ptr())) }
     }
 
-    /// Creates a tone curve that is the inverse  of given tone curve. In the case it couldn’t be analytically reversed, a tablulated curve of nResultSamples is created.
+    /// Creates a tone curve that is the inverse  of given tone curve. In the case it couldn’t be analytically reversed, a tablulated curve of `nResultSamples` is created.
     #[inline]
+    #[must_use]
     pub fn reversed_samples(&self, samples: usize) -> ToneCurve {
         unsafe { ToneCurve::from_ptr(ffi::cmsReverseToneCurveEx(samples as _, self.as_ptr())) }
     }
 
     /// Composites two tone curves in the form Y^-1(X(t))
     /// (self is X, the argument is Y)
+    #[must_use]
     pub fn join(&self, y: &ToneCurveRef, points: usize) -> ToneCurve {
         unsafe {
-            ToneCurve::from_ptr(ffi::cmsJoinToneCurve(ptr::null_mut(), self.as_ptr(), y.as_ptr(), points as u32))
+            ToneCurve::from_ptr(ffi::cmsJoinToneCurve(
+                ptr::null_mut(),
+                self.as_ptr(),
+                y.as_ptr(),
+                points as u32,
+            ))
         }
     }
 
     /// Returns TRUE if the tone curve contains more than one segment, FALSE if it has only one segment.
     #[inline]
+    #[must_use]
     pub fn is_multisegment(&self) -> bool {
         unsafe { ffi::cmsIsToneCurveMultisegment(self.as_ptr()) != 0 }
     }
 
     /// Returns an estimation of cube being an identity (1:1) in the [0..1] domain. Does not take unbounded parts into account. This is just a coarse approximation, with no mathematical validity.
     #[inline]
+    #[must_use]
     pub fn is_linear(&self) -> bool {
         unsafe { ffi::cmsIsToneCurveLinear(self.as_ptr()) != 0 }
     }
 
     /// Returns an estimation of monotonicity of curve in the [0..1] domain. Does not take unbounded parts into account. This is just a coarse approximation, with no mathematical validity.
     #[inline]
+    #[must_use]
     pub fn is_monotonic(&self) -> bool {
         unsafe { ffi::cmsIsToneCurveMonotonic(self.as_ptr()) != 0 }
     }
 
     /// Does not take unbounded parts into account.
     #[inline]
+    #[must_use]
     pub fn is_descending(&self) -> bool {
         unsafe { ffi::cmsIsToneCurveDescending(self.as_ptr()) != 0 }
     }
 
     #[inline]
+    #[must_use]
     pub fn parametric_type(&self) -> i32 {
         unsafe { ffi::cmsGetToneCurveParametricType(self.as_ptr()) }
     }
@@ -139,7 +165,7 @@ impl ToneCurveRef {
     /// Estimates the apparent gamma of the tone curve by using least squares fitting.
     /// Precision: The maximum standard deviation allowed on the residuals, 0.01 is a fair value, set it to a big number to fit any curve, mo matter how good is the fit.
     #[inline]
-    pub fn estimated_gamma(&self, precision: f64) -> Option<f64> {
+    #[must_use] pub fn estimated_gamma(&self, precision: f64) -> Option<f64> {
         let g = unsafe { ffi::cmsEstimateGamma(self.as_ptr(), precision) };
         if g <= -1.0 { None } else { Some(g) }
     }
@@ -151,6 +177,7 @@ impl ToneCurveRef {
     }
 
     /// Tone curves do maintain a shadow low-resolution tabulated representation of the curve. This function returns a pointer to this table.
+    #[must_use]
     pub fn estimated_entries(&self) -> &[u16] {
         unsafe {
             let len = ffi::cmsGetToneCurveEstimatedTableEntries(self.as_ptr()) as usize;
@@ -183,7 +210,7 @@ fn tones() {
 
     let g = ToneCurve::new(1./2.2);
     let r: &ToneCurveRef = &g;
-    let mut z: ToneCurve = r.to_owned().clone();
+    let mut z: ToneCurve = r.to_owned();
     assert!(g.estimated_gamma(0.1).is_some());
     assert_eq!(1., g.eval(1.));
     assert_eq!(0, g.eval(0u16));

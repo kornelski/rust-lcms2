@@ -1,4 +1,4 @@
-use super::*;
+use crate::*;
 use std::cell::UnsafeCell;
 use std::collections::HashMap;
 use std::ffi::CStr;
@@ -104,6 +104,7 @@ pub struct ThreadContext {
 }
 
 impl GlobalContext {
+    #[must_use]
     pub fn new() -> Self {
         Self {
             _not_thread_safe: UnsafeCell::new(YouMustUseThreadContextToShareBetweenThreads),
@@ -120,10 +121,9 @@ impl GlobalContext {
 impl ThreadContext {
     #[track_caller]
     #[inline]
+    #[must_use]
     pub fn new() -> Self {
-        unsafe {
-            Self::new_handle(ffi::cmsCreateContext(ptr::null_mut(), ptr::null_mut()))
-        }
+        unsafe { Self::new_handle(ffi::cmsCreateContext(ptr::null_mut(), ptr::null_mut())) }
     }
 
     #[track_caller]
@@ -133,10 +133,9 @@ impl ThreadContext {
         Self { handle }
     }
 
+    #[must_use]
     pub fn user_data(&self) -> *mut c_void {
-        unsafe {
-            ffi::cmsGetContextUserData(self.handle)
-        }
+        unsafe { ffi::cmsGetContextUserData(self.handle) }
     }
 
     pub unsafe fn install_plugin(&mut self, plugin: *mut c_void) -> bool {
@@ -151,6 +150,7 @@ impl ThreadContext {
 
     #[track_caller]
     #[inline]
+    #[must_use]
     pub fn supported_intents(&self) -> HashMap<Intent, &CStr> {
         let mut codes = [Intent::PreserveKOnlySaturation; 32];
         let mut descs = [ptr::null_mut(); 32];
@@ -164,12 +164,13 @@ impl ThreadContext {
         }).collect()
     }
 
-    /// Adaptation state for absolute colorimetric intent, on all but cmsCreateExtendedTransform.
+    /// Adaptation state for absolute colorimetric intent, on all but `cmsCreateExtendedTransform`.
+    #[must_use]
     pub fn adaptation_state(&self) -> f64 {
         unsafe { ffi::cmsSetAdaptationStateTHR(self.handle, -1.) }
     }
 
-    /// Sets adaptation state for absolute colorimetric intent in the given context.  Adaptation state applies on all but cmsCreateExtendedTransformTHR().
+    /// Sets adaptation state for absolute colorimetric intent in the given context.  Adaptation state applies on all but `cmsCreateExtendedTransformTHR`().
     /// Little CMS can handle incomplete adaptation states.
     ///
     /// Degree on adaptation 0=Not adapted, 1=Complete adaptation,  in-between=Partial adaptation.
@@ -181,12 +182,13 @@ impl ThreadContext {
 
     /// Sets the codes used to mark out-out-gamut on Proofing transforms for a given context. Values are meant to be encoded in 16 bits.
     ///
-    /// AlarmCodes: Array [16] of codes. ALL 16 VALUES MUST BE SPECIFIED, set to zero unused channels.
+    /// `AlarmCodes`: Array [16] of codes. ALL 16 VALUES MUST BE SPECIFIED, set to zero unused channels.
     pub fn set_alarm_codes(&mut self, codes: [u16; ffi::MAXCHANNELS]) {
         unsafe { ffi::cmsSetAlarmCodesTHR(self.handle, codes.as_ptr()) }
     }
 
     /// Gets the current codes used to mark out-out-gamut on Proofing transforms for the given context. Values are meant to be encoded in 16 bits.
+    #[must_use]
     pub fn alarm_codes(&self) -> [u16; ffi::MAXCHANNELS] {
         let mut tmp = [0u16; ffi::MAXCHANNELS];
         unsafe {

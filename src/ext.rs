@@ -1,4 +1,4 @@
-use super::*;
+use crate::{ffi, CIELab, CIExyY, ColorSpaceSignature, PixelFormat, CIEXYZ};
 use std::mem;
 
 pub trait ColorSpaceSignatureExt: Sized + Copy {
@@ -215,5 +215,5 @@ impl CIELabExt for CIELab {
 
 #[test]
 fn temp() {
-    assert!(white_point_from_temp(4000.).is_some());
+    assert!(crate::white_point_from_temp(4000.).is_some());
 }

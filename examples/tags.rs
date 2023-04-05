@@ -1,4 +1,3 @@
-
 use lcms2::{InfoType, Locale, Profile, Tag};
 
 use std::env;

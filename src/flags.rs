@@ -50,7 +50,7 @@ impl Flags {
     /// Prevent negative numbers in floating point transforms
     pub const NO_NEGATIVES: Flags = Flags(ffi::FLAGS_NONEGATIVES, AllowCache);
 
-    /// Alpha channels are copied on cmsDoTransform()
+    /// Alpha channels are copied on `cmsDoTransform()`
     pub const COPY_ALPHA: Flags = Flags(ffi::FLAGS_COPY_ALPHA, AllowCache);
 
     /// CRD special

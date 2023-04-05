@@ -1,4 +1,4 @@
-use super::*;
+use crate::*;
 use foreign_types::ForeignTypeRef;
 use std::ffi::{CStr, CString};
 use std::fmt;
@@ -28,11 +28,13 @@ impl NamedColorList {
         let prefix = CString::new(prefix).unwrap();
         let suffix = CString::new(suffix).unwrap();
         unsafe {
-            Error::if_null(ffi::cmsAllocNamedColorList(ptr::null_mut(),
+            Error::if_null(ffi::cmsAllocNamedColorList(
+                ptr::null_mut(),
                 spot_colors as u32,
                 colorant_count as u32,
-                prefix.as_ptr() as _,
-                suffix.as_ptr() as _)) // char sign difference
+                prefix.as_ptr().cast(),
+                suffix.as_ptr().cast(),
+            )) // char sign difference
         }
     }
 }
@@ -59,13 +61,15 @@ impl NamedColorListRef {
         let mut colorant = [0u16; 16];
 
         let ok = unsafe {
-            0 != ffi::cmsNamedColorInfo(self.as_ptr(),
+            0 != ffi::cmsNamedColorInfo(
+                self.as_ptr(),
                 index as u32,
                 name.as_mut_ptr(),
                 prefix.as_mut_ptr(),
                 suffix.as_mut_ptr(),
                 pcs.as_mut_ptr(),
-                colorant.as_mut_ptr())
+                colorant.as_mut_ptr(),
+            )
         };
         if ok {
             Some(unsafe {NamedColorInfo {

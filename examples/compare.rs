@@ -1,4 +1,3 @@
-
 use lcms2::{Intent, PixelFormat, Profile, Transform};
 
 use std::env;
