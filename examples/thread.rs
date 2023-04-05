@@ -32,5 +32,5 @@ fn main() {
     let out = [0u8; 3];
     sync.transform_pixels(&[[1u8,2,3]], &mut [out]);
     let tr: Box<dyn std::fmt::Debug + Sync> = Box::new(sync);
-    eprintln!("{:#?}", tr);
+    eprintln!("{tr:#?}");
 }

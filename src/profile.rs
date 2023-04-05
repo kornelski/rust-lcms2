@@ -1,14 +1,14 @@
 use super::*;
 use crate::context::Context;
+use foreign_types::ForeignTypeRef;
+use std::default::Default;
 use std::fmt;
-use std::path::Path;
-use std::ptr;
+use std::fs::File;
 use std::io;
 use std::io::Read;
-use std::fs::File;
 use std::os::raw::c_void;
-use std::default::Default;
-use foreign_types::ForeignTypeRef;
+use std::path::Path;
+use std::ptr;
 
 /// An ICC color profile
 pub struct Profile<Context = GlobalContext> {
@@ -548,7 +548,6 @@ impl<Context> Drop for Profile<Context> {
         }
     }
 }
-
 
 #[test]
 fn tags_read() {

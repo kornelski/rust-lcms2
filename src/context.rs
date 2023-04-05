@@ -1,15 +1,15 @@
-use std::rc::Rc;
-use std::sync::Arc;
 use super::*;
-use std::fmt;
-use std::ptr;
-use std::mem;
-use std::ffi::CStr;
-use std::os::raw::c_void;
 use std::cell::UnsafeCell;
 use std::collections::HashMap;
-use std::panic::UnwindSafe;
+use std::ffi::CStr;
+use std::fmt;
+use std::mem;
+use std::os::raw::c_void;
 use std::panic::RefUnwindSafe;
+use std::panic::UnwindSafe;
+use std::ptr;
+use std::rc::Rc;
+use std::sync::Arc;
 
 /// A special case for non-thread-aware functions.
 ///
@@ -100,7 +100,7 @@ impl Context for ThreadContext {
 /// When you see an error "expected reference, found struct `lcms2::GlobalContext`", it means you've mixed global and thread-context objects. They don't work together.
 /// For example, if you create a `Transform` with a context (calling `new_*_context()`), then it will only support `Profile` with a context as well.
 pub struct ThreadContext {
-    handle: ffi::Context
+    handle: ffi::Context,
 }
 
 impl GlobalContext {
@@ -202,7 +202,6 @@ impl ThreadContext {
         }
     }
 }
-
 
 impl Clone for ThreadContext {
     fn clone(&self) -> Self {

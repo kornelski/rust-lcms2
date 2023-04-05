@@ -1,9 +1,9 @@
 use super::*;
-use std::fmt;
-use std::ptr;
-use std::os::raw::c_char;
 use foreign_types::ForeignTypeRef;
 use std::ffi::{CStr, CString};
+use std::fmt;
+use std::os::raw::c_char;
+use std::ptr;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 /// Color in the palette

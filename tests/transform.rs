@@ -1,7 +1,6 @@
-
 use lcms2::*;
 
-const PROFILE: &'static [u8] = include_bytes!("tinysrgb.icc");
+const PROFILE: &[u8] = include_bytes!("tinysrgb.icc");
 
 #[derive(Copy, Clone, PartialEq, Eq, Debug)]
 struct RGB16 {
@@ -34,8 +33,8 @@ fn gray() {
     tr.transform_in_place(&mut [0u32; 1]);
 }
 
-const GRAY_PROFILE: &'static [u8] = include_bytes!("gray18.icc");
-const SGRAY_PROFILE: &'static [u8] = include_bytes!("sGray.icc");
+const GRAY_PROFILE: &[u8] = include_bytes!("gray18.icc");
+const SGRAY_PROFILE: &[u8] = include_bytes!("sGray.icc");
 
 #[test]
 fn transform_gray_to_rgb() {

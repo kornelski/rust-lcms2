@@ -1,8 +1,8 @@
 use super::*;
-use std::fmt;
-use std::ptr;
 use crate::eval::FloatOrU16;
 use foreign_types::{ForeignType, ForeignTypeRef};
+use std::fmt;
+use std::ptr;
 
 foreign_type! {
     /// Tone curves are powerful constructs that can contain curves specified in diverse ways.

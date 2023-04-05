@@ -1,8 +1,8 @@
 use super::*;
 use crate::context::Context;
-use std::os::raw::c_void;
-use std::marker::PhantomData;
 use std::fmt;
+use std::marker::PhantomData;
+use std::os::raw::c_void;
 
 /// Conversion between two ICC profiles.
 ///
@@ -278,7 +278,6 @@ impl<F, T, C, L> Drop for Transform<F, T, C, L> {
         }
     }
 }
-
 
 impl<F, T, C, L> fmt::Debug for Transform<F, T, C, L> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

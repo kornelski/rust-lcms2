@@ -1,9 +1,9 @@
 use super::*;
+use crate::context::Context;
 use crate::eval::FloatOrU16;
+use foreign_types::ForeignTypeRef;
 use std::fmt;
 use std::ptr;
-use foreign_types::ForeignTypeRef;
-use crate::context::Context;
 
 foreign_type! {
     /// Stage functions

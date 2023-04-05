@@ -1,6 +1,6 @@
 use super::*;
-use std::ptr;
 use std::mem::MaybeUninit;
+use std::ptr;
 
 /// CIE CAM02
 pub struct CIECAM02 {

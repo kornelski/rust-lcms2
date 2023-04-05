@@ -1,9 +1,9 @@
 use super::*;
-use std::fmt;
-use crate::stage::*;
-use std::ptr;
 use crate::eval::FloatOrU16;
+use crate::stage::*;
 use foreign_types::ForeignTypeRef;
+use std::fmt;
+use std::ptr;
 
 foreign_type! {
     /// Pipelines are a convenient way to model complex operations on image data.

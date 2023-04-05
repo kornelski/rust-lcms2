@@ -1,7 +1,7 @@
-use std::os::raw::c_char;
 use std::cmp;
 use std::fmt;
 use std::fmt::Write;
+use std::os::raw::c_char;
 
 /// Language code from ISO-639/2 and region code from ISO-3166.
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd)]

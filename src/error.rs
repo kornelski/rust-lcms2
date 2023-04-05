@@ -1,6 +1,6 @@
+use foreign_types::ForeignType;
 use std::error::Error as StdError;
 use std::fmt;
-use foreign_types::ForeignType;
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub enum Error {
