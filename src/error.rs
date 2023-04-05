@@ -24,6 +24,7 @@ impl Error {
 pub type LCMSResult<T> = Result<T, Error>;
 
 impl fmt::Display for Error {
+    #[cold]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(match *self {
             Error::ObjectCreationError => "Could not create the object.\nThe reason is not known, but it's usually caused by wrong input parameters.",

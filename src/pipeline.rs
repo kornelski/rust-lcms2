@@ -89,6 +89,7 @@ impl PipelineRef {
 }
 
 impl fmt::Debug for PipelineRef {
+    #[cold]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "Pipeline({}->{}ch, {} stages)", self.input_channels(), self.output_channels(), self.stage_count())
     }

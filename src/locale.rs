@@ -66,6 +66,7 @@ impl Default for Locale {
 }
 
 impl fmt::Debug for Locale {
+    #[cold]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         <Locale as fmt::Display>::fmt(self, f)
     }

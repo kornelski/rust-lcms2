@@ -39,6 +39,7 @@ impl NamedColorList {
 
 impl NamedColorListRef {
     /// Number of colors in the palette
+    #[inline]
     fn len(&self) -> usize {
         unsafe { ffi::cmsNamedColorCount(self.as_ptr()) as usize }
     }
@@ -93,6 +94,7 @@ impl NamedColorListRef {
 }
 
 impl<'a> fmt::Debug for NamedColorListRef {
+    #[cold]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         if let Some(c) = self.get(0) {
             write!(f, "NamedColorList({} colors: {}{}{}, etc.)", self.len(), c.prefix, c.name, c.suffix)

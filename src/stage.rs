@@ -109,6 +109,7 @@ impl<'a> Iterator for StagesIter<'a> {
 }
 
 impl fmt::Debug for StageRef {
+    #[cold]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "Stage({:?})", self.stage_type())
     }

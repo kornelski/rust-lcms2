@@ -586,6 +586,7 @@ fn tags_write() {
 }
 
 impl fmt::Debug for Profile {
+    #[cold]
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let mut s = f.debug_struct("Profile");
         let l = Locale::none();

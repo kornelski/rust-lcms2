@@ -90,14 +90,16 @@ impl ToneCurve {
 
 impl ToneCurveRef {
     /// Creates a tone curve that is the inverse  of given tone curve.
+    #[inline]
     pub fn reversed(&self) -> ToneCurve {
         unsafe { ToneCurve::from_ptr(ffi::cmsReverseToneCurve(self.as_ptr())) }
     }
 
     /// Creates a tone curve that is the inverse  of given tone curve. In the case it couldn’t be analytically reversed, a tablulated curve of nResultSamples is created.
+    #[inline]
     pub fn reversed_samples(&self, samples: usize) -> ToneCurve {
         unsafe { ToneCurve::from_ptr(ffi::cmsReverseToneCurveEx(samples as _, self.as_ptr())) }
-        }
+    }
 
     /// Composites two tone curves in the form Y^-1(X(t))
     /// (self is X, the argument is Y)
@@ -108,37 +110,44 @@ impl ToneCurveRef {
     }
 
     /// Returns TRUE if the tone curve contains more than one segment, FALSE if it has only one segment.
+    #[inline]
     pub fn is_multisegment(&self) -> bool {
         unsafe { ffi::cmsIsToneCurveMultisegment(self.as_ptr()) != 0 }
     }
 
     /// Returns an estimation of cube being an identity (1:1) in the [0..1] domain. Does not take unbounded parts into account. This is just a coarse approximation, with no mathematical validity.
+    #[inline]
     pub fn is_linear(&self) -> bool {
         unsafe { ffi::cmsIsToneCurveLinear(self.as_ptr()) != 0 }
     }
 
     /// Returns an estimation of monotonicity of curve in the [0..1] domain. Does not take unbounded parts into account. This is just a coarse approximation, with no mathematical validity.
+    #[inline]
     pub fn is_monotonic(&self) -> bool {
         unsafe { ffi::cmsIsToneCurveMonotonic(self.as_ptr()) != 0 }
     }
 
     /// Does not take unbounded parts into account.
+    #[inline]
     pub fn is_descending(&self) -> bool {
         unsafe { ffi::cmsIsToneCurveDescending(self.as_ptr()) != 0 }
     }
 
+    #[inline]
     pub fn parametric_type(&self) -> i32 {
         unsafe { ffi::cmsGetToneCurveParametricType(self.as_ptr()) }
     }
 
     /// Estimates the apparent gamma of the tone curve by using least squares fitting.
     /// Precision: The maximum standard deviation allowed on the residuals, 0.01 is a fair value, set it to a big number to fit any curve, mo matter how good is the fit.
+    #[inline]
     pub fn estimated_gamma(&self, precision: f64) -> Option<f64> {
         let g = unsafe { ffi::cmsEstimateGamma(self.as_ptr(), precision) };
         if g <= -1.0 { None } else { Some(g) }
     }
 
     /// Smoothes tone curve according to the lambda parameter. From: Eilers, P.H.C. (1994) Smoothing and interpolation with finite differences. in: Graphic Gems IV, Heckbert, P.S. (ed.), Academic press.
+    #[inline]
     pub fn smooth(&mut self, lambda: f64) -> bool {
         unsafe { ffi::cmsSmoothToneCurve(self.as_ptr(), lambda) != 0 }
     }
@@ -155,12 +164,14 @@ impl ToneCurveRef {
     /// Evaluates the given number (u16 or f32) across the given tone curve.
     ///
     /// This function is significantly faster for u16, since it uses a pre-computed 16-bit lookup table.
+    #[inline]
     pub fn eval<ToneCurveValue: FloatOrU16>(&self, v: ToneCurveValue) -> ToneCurveValue {
         unsafe { v.eval_tone_curve(self.as_ptr()) }
     }
 }
 
 impl fmt::Debug for ToneCurveRef {
+    #[cold]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "ToneCurve({} entries, gamma ~{:.1})", self.estimated_entries().len(), self.estimated_gamma(1.).unwrap_or(0.))
     }

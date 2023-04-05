@@ -229,12 +229,14 @@ impl Default for ThreadContext {
 }
 
 impl fmt::Debug for ThreadContext {
+    #[cold]
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.write_str("ThreadContext")
     }
 }
 
 impl fmt::Debug for GlobalContext {
+    #[cold]
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.write_str("GlobalContext")
     }

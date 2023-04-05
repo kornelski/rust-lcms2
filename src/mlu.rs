@@ -19,6 +19,8 @@ foreign_type! {
 
 impl MLU {
     /// Allocates an empty multilocalized unicode object.
+    #[track_caller]
+    #[inline]
     pub fn new(items: usize) -> Self {
         unsafe {
             let handle = ffi::cmsMLUalloc(ptr::null_mut(), items as u32);
@@ -146,6 +148,7 @@ impl MLURef {
 }
 
 impl fmt::Debug for MLURef {
+    #[cold]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let t = self.text(Locale::none());
         write!(f, "MLU({:?} {:?})", if let Ok(ref t) = t { &t } else { "None" }, self.tanslations())
