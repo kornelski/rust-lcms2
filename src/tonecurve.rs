@@ -24,12 +24,16 @@ impl ToneCurve {
     }
 
     /// Builds a tone curve based on a table of 16-bit values. Tone curves built with this function are restricted to 0…1.0 domain.
+    #[track_caller]
+    #[inline]
     pub fn new_tabulated(values: &[u16]) -> Self {
         assert!(values.len() < std::i32::MAX as usize);
         unsafe { Self::new_handle(ffi::cmsBuildTabulatedToneCurve16(ptr::null_mut(), values.len() as _, values.as_ptr())) }
     }
 
     /// Builds a tone curve based on a table of floating point  values. Tone curves built with this function are **not** restricted to 0…1.0 domain.
+    #[track_caller]
+    #[inline]
     pub fn new_tabulated_float(values: &[f32]) -> Self {
         assert!(values.len() < std::i32::MAX as usize);
         unsafe { Self::new_handle(
@@ -76,6 +80,8 @@ impl ToneCurve {
         }
     }
 
+    #[track_caller]
+    #[inline]
     unsafe fn new_handle(handle: *mut ffi::ToneCurve) -> Self {
         assert!(!handle.is_null());
         Self::from_ptr(handle)

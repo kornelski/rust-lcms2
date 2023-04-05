@@ -426,6 +426,9 @@ impl<Ctx: Context> Profile<Ctx> {
 impl<Ctx: Context> Profile<Ctx> {
     #[inline]
     pub fn new_icc_context(context: impl AsRef<Ctx>, data: &[u8]) -> LCMSResult<Self> {
+        if data.is_empty() {
+            return Err(Error::MissingData);
+        }
         Self::new_handle(unsafe {
             ffi::cmsOpenProfileFromMemTHR(context.as_ref().as_ptr(), data.as_ptr() as *const c_void, data.len() as u32)
         })
@@ -444,6 +447,7 @@ impl<Ctx: Context> Profile<Ctx> {
     }
 
     #[inline]
+    #[track_caller]
     pub fn new_rgb_context(context: impl AsRef<Ctx>, white_point: &CIExyY,
                    primaries: &CIExyYTRIPLE,
                    transfer_function: &[&ToneCurve])

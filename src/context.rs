@@ -118,12 +118,16 @@ impl GlobalContext {
 }
 
 impl ThreadContext {
+    #[track_caller]
+    #[inline]
     pub fn new() -> Self {
         unsafe {
             Self::new_handle(ffi::cmsCreateContext(ptr::null_mut(), ptr::null_mut()))
         }
     }
 
+    #[track_caller]
+    #[inline]
     unsafe fn new_handle(handle: ffi::Context) -> Self {
         assert!(!handle.is_null());
         Self { handle }
@@ -145,6 +149,8 @@ impl ThreadContext {
         }
     }
 
+    #[track_caller]
+    #[inline]
     pub fn supported_intents(&self) -> HashMap<Intent, &CStr> {
         let mut codes = [Intent::PreserveKOnlySaturation; 32];
         let mut descs = [ptr::null_mut(); 32];
