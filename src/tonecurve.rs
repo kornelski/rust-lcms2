@@ -49,9 +49,11 @@ impl ToneCurve {
     ///  8. See PDF
     ///  108. (108) S-Shaped sigmoidal
     ///
+    /// Negative curve types will return the inverse curve of the corresponding positive type.
+    /// 
     /// Always use 10-parameter slice for plug-in types.
-    pub fn new_parametric(curve_type: u16, params: &[f64]) -> LCMSResult<Self> {
-        let params_min_len = match curve_type {
+    pub fn new_parametric(curve_type: i16, params: &[f64]) -> LCMSResult<Self> {
+        let params_min_len = match curve_type.abs() {
             1 => 1,
             2 => 3,
             3 => 4,
