@@ -203,7 +203,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
     }
 
     #[inline]
-    fn new_multiprofile_context(context: impl AsRef<Ctx>, profiles: &[&Profile],
+    pub fn new_multiprofile_context(context: impl AsRef<Ctx>, profiles: &[&Profile<Ctx>],
                                 in_format: PixelFormat, out_format: PixelFormat, intent: Intent, flags: Flags<Fl>) -> LCMSResult<Self> {
         let mut handles: Vec<_> = profiles.iter().map(|p| p.handle).collect();
         unsafe {
