@@ -107,3 +107,19 @@ pub fn version() -> u32 {
     };
     if ok { Some(res) } else { None }
 }
+
+pub fn xyY2XYZ(xyY: &CIExyY) -> CIEXYZ {
+    let mut xyz = CIEXYZ::default();
+    unsafe {
+        crate::ffi::cmsxyY2XYZ(std::ptr::addr_of_mut!(xyz), std::ptr::addr_of!(*xyY))
+    }
+    xyz
+}
+
+pub fn XYZ2xyY(xyz: &CIEXYZ) -> CIExyY {
+    let mut xyY = CIExyY::default();
+    unsafe {
+        crate::ffi::cmsXYZ2xyY(std::ptr::addr_of_mut!(xyY), std::ptr::addr_of!(*xyz))
+    }
+    xyY
+}
