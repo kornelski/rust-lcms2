@@ -103,6 +103,9 @@ impl<'a> Tag<'a> {
             (ViewingConditionsTag, &Tag::ICCViewingConditions(data)) => {
                 data as *const _ as *const u8
             },
+            (CicpTag, &Tag::VideoSignal(data)) => {
+                data as *const _ as *const u8
+            },
             (sig, _) => panic!("Signature type {:?} does not support this tag data type", sig),
         }
     }

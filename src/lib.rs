@@ -57,6 +57,7 @@ pub use crate::ffi::Intent;
 pub use crate::ffi::ColorSpaceSignature;
 pub use crate::ffi::ProfileClassSignature;
 pub use crate::ffi::ViewingConditions;
+pub use crate::ffi::VideoSignalType;
 
 #[derive(Debug)]
 #[non_exhaustive]
@@ -80,6 +81,7 @@ pub enum Tag<'a> {
     ToneCurve(&'a ToneCurveRef),
     UcrBg(&'a ffi::UcrBg),
     VcgtCurves([&'a ToneCurveRef; 3]),
+    VideoSignal(&'a ffi::VideoSignalType),
     /// Unknown format or missing data
     None,
 }
