@@ -454,6 +454,14 @@ impl<Ctx: Context> Profile<Ctx> {
             ffi::cmsSetHeaderProfileID(self.handle, &id as *const ffi::ProfileID as *mut _);
         }
     }
+
+    pub fn save_profile_to_file(&mut self, path: &str) {
+        unsafe {
+            let path_c_str = std::ffi::CString::new(path).expect("path cannot be converted to a null-terminated C string");
+            let ret = ffi::cmsSaveProfileToFile(self.handle, path_c_str.as_ptr());
+            if ret == 0 { panic!() }
+        }
+    }
 }
 
 /// Per-context functions that can be used with a `ThreadContext`
