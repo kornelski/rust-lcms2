@@ -1,16 +1,18 @@
-use crate::context::Context;
 use crate::*;
+use crate::context::Context;
 use foreign_types::ForeignTypeRef;
 use std::default::Default;
 use std::fmt;
 use std::fs::File;
-use std::io;
 use std::io::Read;
+use std::io;
+use std::mem::MaybeUninit;
 use std::os::raw::c_void;
 use std::path::Path;
 use std::ptr;
 
 /// An ICC color profile
+#[repr(transparent)]
 pub struct Profile<Context = GlobalContext> {
     pub(crate) handle: ffi::HPROFILE,
     _context_ref: PhantomData<Context>,
@@ -433,11 +435,12 @@ impl<Ctx: Context> Profile<Ctx> {
     #[inline]
     #[must_use]
     pub fn profile_id(&self) -> ffi::ProfileID {
-        let mut id = ffi::ProfileID::default();
         unsafe {
-            ffi::cmsGetHeaderProfileID(self.handle, &mut id as *mut ffi::ProfileID as *mut _);
+            debug_assert_eq!(16, std::mem::size_of::<ffi::ProfileID>());
+            let mut id = MaybeUninit::<ffi::ProfileID>::uninit();
+            ffi::cmsGetHeaderProfileID(self.handle, id.as_mut_ptr().cast());
+            id.assume_init()
         }
-        id
     }
 
     /// Computes a MD5 checksum and stores it as Profile ID in the profile header.

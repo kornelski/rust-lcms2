@@ -35,6 +35,7 @@ use std::os::raw::c_void;
 ///  * Transform is `Send` if you create it with `ThreadContext` (use `new_*_context()` functions).
 ///  * Transform is `Sync` if you create it without cache. Set flags to `Flags::NO_CACHE`.
 ///
+#[repr(transparent)]
 pub struct Transform<InputPixelFormat, OutputPixelFormat, Context = GlobalContext, Flags = AllowCache> {
     pub(crate) handle: ffi::HTRANSFORM,
     _from: PhantomData<InputPixelFormat>,

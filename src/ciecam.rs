@@ -3,6 +3,7 @@ use std::mem::MaybeUninit;
 use std::ptr;
 
 /// CIE CAM02
+#[repr(transparent)]
 pub struct CIECAM02 {
     handle: ffi::HANDLE,
 }

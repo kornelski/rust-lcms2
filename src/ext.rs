@@ -1,5 +1,5 @@
 use crate::{ffi, CIELab, CIExyY, ColorSpaceSignature, PixelFormat, CIEXYZ};
-use std::mem;
+use std::mem::MaybeUninit;
 
 pub trait ColorSpaceSignatureExt: Sized + Copy {
     /// Returns channel count for a given color space.
@@ -18,7 +18,7 @@ impl ColorSpaceSignatureExt for ColorSpaceSignature {
 
     #[inline]
     fn pixel_format(self) -> PixelFormat {
-        unsafe { mem::transmute(ffi::_cmsLCMScolorSpace(self) as u32) }
+        PixelFormat(unsafe { ffi::_cmsLCMScolorSpace(self) } as u32)
     }
 }
 
@@ -38,31 +38,33 @@ pub trait CIEXYZExt: Sized {
 impl CIEXYZExt for CIEXYZ {
     #[inline]
     fn adapt_to_illuminant(&self, source_white_point: &CIEXYZ, illuminant: &CIEXYZ) -> Option<CIEXYZ> {
-        let mut res = CIEXYZ{X:0.,Y:0.,Z:0.};
-        let ok = unsafe {
-            ffi::cmsAdaptToIlluminant(&mut res, source_white_point, illuminant, self) != 0
-        };
-        if ok {
-            Some(res)
-        } else {
-            None
+        unsafe {
+            let mut res = MaybeUninit::<CIEXYZ>::uninit();
+            let ok = ffi::cmsAdaptToIlluminant(res.as_mut_ptr(), source_white_point, illuminant, self) != 0;
+            if ok {
+                Some(res.assume_init())
+            } else {
+                None
+            }
         }
     }
 
     #[inline]
     fn to_lab(&self, white_point: &CIEXYZ) -> CIELab {
-        let mut out = CIELab::default();
-        unsafe { ffi::cmsXYZ2Lab(white_point, &mut out, self) }
-        out
+        unsafe {
+            let mut out = MaybeUninit::<CIELab>::uninit();
+            ffi::cmsXYZ2Lab(white_point, out.as_mut_ptr(), self);
+            out.assume_init()
+        }
     }
 
     #[inline]
     fn from_encoded(icc: &[u16; 3]) -> Self {
-        let mut out = Self::default();
         unsafe {
-            ffi::cmsXYZEncoded2Float(&mut out, icc.as_ptr());
+            let mut out = MaybeUninit::<Self>::uninit();
+            ffi::cmsXYZEncoded2Float(out.as_mut_ptr(), icc.as_ptr());
+            out.assume_init()
         }
-        out
     }
 }
 
@@ -189,27 +191,29 @@ impl CIELabExt for CIELab {
 
     #[inline]
     fn from_encoded(icc: &[u16; 3]) -> Self {
-        let mut out = Self::default();
         unsafe {
-            ffi::cmsLabEncoded2Float(&mut out, icc.as_ptr());
+            let mut out = MaybeUninit::<Self>::uninit();
+            ffi::cmsLabEncoded2Float(out.as_mut_ptr(), icc.as_ptr());
+            out.assume_init()
         }
-        out
     }
 
     #[inline]
     fn from_encoded_v2(icc: &[u16; 3]) -> Self {
-        let mut out = Self::default();
         unsafe {
-            ffi::cmsLabEncoded2FloatV2(&mut out, icc.as_ptr());
+            let mut out = MaybeUninit::<Self>::uninit();
+            ffi::cmsLabEncoded2FloatV2(out.as_mut_ptr(), icc.as_ptr());
+            out.assume_init()
         }
-        out
     }
 
     #[inline]
     fn to_xyz(&self, white_point: &CIEXYZ) -> CIEXYZ {
-        let mut out = CIEXYZ::default();
-        unsafe { ffi::cmsLab2XYZ(white_point, &mut out, self) }
-        out
+        unsafe {
+            let mut out = MaybeUninit::<CIEXYZ>::uninit();
+            ffi::cmsLab2XYZ(white_point, out.as_mut_ptr(), self);
+            out.assume_init()
+        }
     }
 }
 
