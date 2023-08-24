@@ -25,8 +25,8 @@ foreign_type! {
 
 impl NamedColorList {
     pub fn new(spot_colors: usize, colorant_count: usize, prefix: &str, suffix: &str) -> LCMSResult<Self> {
-        let prefix = CString::new(prefix).unwrap();
-        let suffix = CString::new(suffix).unwrap();
+        let prefix = CString::new(prefix).map_err(|_| Error::InvalidString)?;
+        let suffix = CString::new(suffix).map_err(|_| Error::InvalidString)?;
         unsafe {
             Error::if_null(ffi::cmsAllocNamedColorList(
                 ptr::null_mut(),
@@ -90,7 +90,7 @@ impl NamedColorListRef {
 
     /// Push a color at the end of the palette
     fn append(&mut self, color_name: &str, mut pcs: [u16; 3], mut colorant: [u16; ffi::MAXCHANNELS]) -> bool {
-        let s = CString::new(color_name).unwrap();
+        let Ok(s) = CString::new(color_name) else { return false };
         unsafe {
             0 != ffi::cmsAppendNamedColor(self.as_ptr(), s.as_ptr(), pcs.as_mut_ptr(), colorant.as_mut_ptr())
         }

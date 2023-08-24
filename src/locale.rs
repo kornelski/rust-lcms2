@@ -31,6 +31,7 @@ impl Locale {
 
     /// Default/unspecified/any locale
     #[must_use]
+    #[inline]
     pub fn none() -> Self {
         Locale {
             language: [0; 3],
