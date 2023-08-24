@@ -40,7 +40,7 @@ if b"ICC_PROFILE\0" == &app2_marker_data[0..12] {
 
 There's more in the `examples` directory.
 
-This crate requires Rust 1.33 or later. It's up to date with LCMS 2.10, and should work with 2.6 to 2.11.
+This crate requires Rust 1.64 or later. It's up to date with LCMS 2.15, and should work with a wide range of versions.
 
 ## Threads
 
