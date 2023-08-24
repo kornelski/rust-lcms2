@@ -57,6 +57,7 @@ pub use crate::ffi::Intent;
 pub use crate::ffi::ColorSpaceSignature;
 pub use crate::ffi::ProfileClassSignature;
 pub use crate::ffi::ViewingConditions;
+pub use crate::ffi::VideoSignalType;
 
 #[derive(Debug)]
 #[non_exhaustive]
@@ -80,6 +81,7 @@ pub enum Tag<'a> {
     ToneCurve(&'a ToneCurveRef),
     UcrBg(&'a ffi::UcrBg),
     VcgtCurves([&'a ToneCurveRef; 3]),
+    VideoSignal(&'a ffi::VideoSignalType),
     /// Unknown format or missing data
     None,
 }
@@ -104,4 +106,20 @@ pub fn version() -> u32 {
         ffi::cmsWhitePointFromTemp(&mut res, temp) != 0
     };
     if ok { Some(res) } else { None }
+}
+
+pub fn xyY2XYZ(xyY: &CIExyY) -> CIEXYZ {
+    let mut xyz = CIEXYZ::default();
+    unsafe {
+        crate::ffi::cmsxyY2XYZ(std::ptr::addr_of_mut!(xyz), std::ptr::addr_of!(*xyY))
+    }
+    xyz
+}
+
+pub fn XYZ2xyY(xyz: &CIEXYZ) -> CIExyY {
+    let mut xyY = CIExyY::default();
+    unsafe {
+        crate::ffi::cmsXYZ2xyY(std::ptr::addr_of_mut!(xyY), std::ptr::addr_of!(*xyz))
+    }
+    xyY
 }
