@@ -108,18 +108,20 @@ pub fn version() -> u32 {
     if ok { Some(res) } else { None }
 }
 
+#[allow(non_snake_case)]
 pub fn xyY2XYZ(xyY: &CIExyY) -> CIEXYZ {
     let mut xyz = CIEXYZ::default();
     unsafe {
-        crate::ffi::cmsxyY2XYZ(std::ptr::addr_of_mut!(xyz), std::ptr::addr_of!(*xyY))
+        crate::ffi::cmsxyY2XYZ(&mut xyz, xyY)
     }
     xyz
 }
 
+#[allow(non_snake_case)]
 pub fn XYZ2xyY(xyz: &CIEXYZ) -> CIExyY {
     let mut xyY = CIExyY::default();
     unsafe {
-        crate::ffi::cmsXYZ2xyY(std::ptr::addr_of_mut!(xyY), std::ptr::addr_of!(*xyz))
+        crate::ffi::cmsXYZ2xyY(&mut xyY, xyz)
     }
     xyY
 }
