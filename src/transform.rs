@@ -138,31 +138,35 @@ impl<InputPixelFormat: Copy + Pod, OutputPixelFormat: Copy + Pod, Ctx: Context> 
 
 impl<InputPixelFormat: Copy + Pod, OutputPixelFormat: Copy + Pod, Ctx: Context, Fl: CacheFlag> Transform<InputPixelFormat, OutputPixelFormat, Ctx, Fl> {
     #[inline]
-    fn new_handle(handle: ffi::HTRANSFORM, in_format: PixelFormat, out_format: PixelFormat) -> LCMSResult<Self> {
+    unsafe fn new_handle(handle: ffi::HTRANSFORM) -> LCMSResult<Self> {
         if handle.is_null() {
             Err(Error::ObjectCreationError)
         } else {
             Ok(Transform {
                 handle,
-                _from: Self::check_format::<InputPixelFormat>(in_format, true),
-                _to: Self::check_format::<OutputPixelFormat>(out_format, false),
+                _from: PhantomData,
+                _to: PhantomData,
                 _context_ref: PhantomData,
                 _flags_ref: PhantomData,
             })
         }
     }
 
-    #[inline]
-    fn check_format<Z>(format: PixelFormat, input: bool) -> PhantomData<Z> {
-        assert!(!format.planar(), "Planar not supported");
+    #[track_caller]
+    fn check_formats(in_format: PixelFormat, out_format: PixelFormat) {
+        Self::check_format::<InputPixelFormat>(in_format, true);
+        Self::check_format::<OutputPixelFormat>(out_format, false);
+    }
+
+    #[track_caller]
+    fn check_format<P: Copy + Pod>(format: PixelFormat, input: bool) {
+        let io = if input {"input"} else {"output"};
+        assert!(!format.planar(), "Planar {format:?} {io} format not supported");
         assert_eq!(format.bytes_per_pixel(),
-                   std::mem::size_of::<Z>(),
-                   "PixelFormat {:?} has {} bytes per pixel, but the {} format has {}",
-                   format,
+                   std::mem::size_of::<P>(),
+                   "{format:?} has {} bytes per pixel, but the {io} format has {}",
                    format.bytes_per_pixel(),
-                   if input {"input"} else {"output"},
-                   std::mem::size_of::<Z>());
-        PhantomData
+                   std::mem::size_of::<P>());
     }
 
     /// This function translates bitmaps according of parameters setup when creating the color transform.
@@ -203,42 +207,45 @@ impl<InputPixelFormat: Copy + Pod, OutputPixelFormat: Copy + Pod, Ctx: Context, 
     }
 
     #[inline]
+    #[track_caller]
     pub fn new_flags_context(context: impl AsRef<Ctx>, input: &Profile<Ctx>, in_format: PixelFormat,
                              output: &Profile<Ctx>, out_format: PixelFormat,
                              intent: Intent, flags: Flags<Fl>)
                              -> LCMSResult<Self> {
-        Self::new_handle(unsafe {
-                             ffi::cmsCreateTransformTHR(context.as_ref().as_ptr(),
-                                input.handle, in_format,
-                                output.handle, out_format,
-                                intent, flags.bits())
-                         },
-                         in_format, out_format)
+        Self::check_formats(in_format, out_format);
+        unsafe {
+            Self::new_handle(ffi::cmsCreateTransformTHR(context.as_ref().as_ptr(),
+                input.handle, in_format,
+                output.handle, out_format,
+                intent, flags.bits()))
+        }
+
     }
 
     #[inline]
+    #[track_caller]
     pub fn new_proofing_context(context: impl AsRef<Ctx>, input: &Profile<Ctx>, in_format: PixelFormat,
                         output: &Profile<Ctx>, out_format: PixelFormat,
                         proofing: &Profile<Ctx>, intent: Intent, proofng_intent: Intent,
                         flags: Flags<Fl>)
                         -> LCMSResult<Self> {
-        Self::new_handle(unsafe {
-                             ffi::cmsCreateProofingTransformTHR(context.as_ref().as_ptr(), input.handle, in_format,
-                                output.handle, out_format,
-                                proofing.handle, intent, proofng_intent, flags.bits())
-                         },
-                         in_format, out_format)
+        Self::check_formats(in_format, out_format);
+        unsafe {
+            Self::new_handle(ffi::cmsCreateProofingTransformTHR(context.as_ref().as_ptr(), input.handle, in_format,
+                output.handle, out_format,
+                proofing.handle, intent, proofng_intent, flags.bits()))
+        }
     }
 
     #[inline]
+    #[track_caller]
     pub fn new_multiprofile_context(context: impl AsRef<Ctx>, profiles: &[&Profile<Ctx>],
                                 in_format: PixelFormat, out_format: PixelFormat, intent: Intent, flags: Flags<Fl>) -> LCMSResult<Self> {
+        Self::check_formats(in_format, out_format);
         let mut handles: Vec<_> = profiles.iter().map(|p| p.handle).collect();
         unsafe {
             Self::new_handle(
                 ffi::cmsCreateMultiprofileTransformTHR(context.as_ref().as_ptr(), handles.as_mut_ptr(), handles.len() as u32, in_format, out_format, intent, flags.bits()),
-                in_format,
-                out_format,
             )
         }
     }
