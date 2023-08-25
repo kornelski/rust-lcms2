@@ -1,7 +1,6 @@
 //! See [Little CMS full documentation](https://kornelski.github.io/rust-lcms2-sys/) for more in-depth information about LCMS functions.
 //!
 //! The main types you need to use in this crate are `Profile` and `Transform`
-#![allow(dead_code)]
 #![doc(html_logo_url = "https://kornelski.github.io/rust-lcms2/lcms_logo.png")]
 #![doc(html_root_url = "https://kornelski.github.io/rust-lcms2")]
 

@@ -47,13 +47,13 @@ impl NamedColorListRef {
     }
 
     /// Find color by name
-    fn index_of(&self, color_name: &str) -> usize {
+    pub fn index_of(&self, color_name: &str) -> usize {
         let s = CString::new(color_name).unwrap();
         unsafe { ffi::cmsNamedColorIndex(self.as_ptr(), s.as_ptr()) as usize }
     }
 
     /// Get color info
-    fn get(&self, index: usize) -> Option<NamedColorInfo> {
+    pub fn get(&self, index: usize) -> Option<NamedColorInfo> {
         let mut name = [0 as c_char; 256];
         let mut prefix = [0 as c_char; 33];
         let mut suffix = [0 as c_char; 33];
@@ -84,12 +84,12 @@ impl NamedColorListRef {
         }
     }
 
-    fn colors(&self) -> Vec<NamedColorInfo> {
+    pub fn colors(&self) -> Vec<NamedColorInfo> {
         (0..self.len()).filter_map(|i| self.get(i)).collect()
     }
 
     /// Push a color at the end of the palette
-    fn append(&mut self, color_name: &str, mut pcs: [u16; 3], mut colorant: [u16; ffi::MAXCHANNELS]) -> bool {
+    pub fn append(&mut self, color_name: &str, mut pcs: [u16; 3], mut colorant: [u16; ffi::MAXCHANNELS]) -> bool {
         let Ok(s) = CString::new(color_name) else { return false };
         unsafe {
             0 != ffi::cmsAppendNamedColor(self.as_ptr(), s.as_ptr(), pcs.as_mut_ptr(), colorant.as_mut_ptr())
