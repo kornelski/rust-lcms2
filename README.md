@@ -44,6 +44,6 @@ This crate requires Rust 1.64 or later. It's up to date with LCMS 2.15, and shou
 
 ## Threads
 
-In LCMS all functions are in 2 flavors: global and `*THR()` functions. In this crate this is represented by having functions with `GlobalContext` and `ThreadContext`. Create profiles, transforms, etc. using `*_context()` constructors to give them their private coontext, which makes them sendable between threads (i.e. they're `Send`).
+In LCMS all functions are in 2 flavors: global and `*THR()` functions. In this crate this is represented by having functions with `GlobalContext` and `ThreadContext`. Create profiles, transforms, etc. using `*_context()` constructors to give them their private context, which makes them sendable between threads (i.e. they're `Send`).
 
 By default `Transform` does not implement `Sync`, because LCMS2 has a thread-unsafe cache in the transform. You can set `Flags::NO_CACHE` to make it safe (this is checked at compile time).
