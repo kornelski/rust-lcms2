@@ -1,4 +1,5 @@
-use crate::{ffi, CIELab, CIExyY, ColorSpaceSignature, PixelFormat, CIEXYZ};
+use crate::{ffi, CIELab, CIExyY, ColorSpaceSignature, CIEXYZ};
+use ffi::PixelType;
 use std::mem::MaybeUninit;
 
 pub trait ColorSpaceSignatureExt: Sized + Copy {
@@ -7,7 +8,7 @@ pub trait ColorSpaceSignatureExt: Sized + Copy {
     /// Returns 3 on error (sic).
     fn channels(self) -> u32;
     /// Converts from ICC color space notation (LCMS PDF Table 10) to Little CMS color space notation (LCMS PDF Table 36).
-    fn pixel_format(self) -> PixelFormat;
+    fn pixel_type(self) -> PixelType;
 }
 
 impl ColorSpaceSignatureExt for ColorSpaceSignature {
@@ -17,8 +18,8 @@ impl ColorSpaceSignatureExt for ColorSpaceSignature {
     }
 
     #[inline]
-    fn pixel_format(self) -> PixelFormat {
-        PixelFormat(unsafe { ffi::_cmsLCMScolorSpace(self) } as u32)
+    fn pixel_type(self) -> PixelType {
+        PixelType(unsafe { ffi::_cmsLCMScolorSpace(self) } as u32)
     }
 }
 
