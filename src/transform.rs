@@ -1,7 +1,8 @@
-use crate::context::Context;
 use crate::*;
+use crate::context::Context;
 use std::fmt;
 use std::marker::PhantomData;
+use std::mem::MaybeUninit;
 use std::os::raw::c_void;
 
 /// Conversion between two ICC profiles.
@@ -109,14 +110,16 @@ impl<InputPixelFormat: Copy + Pod, OutputPixelFormat: Copy + Pod> Transform<Inpu
 }
 
 impl<PixelFormat: Copy + Pod, Ctx: Context, C> Transform<PixelFormat, PixelFormat, Ctx, C> {
+    /// Read pixels and write them back to the same slice. Input and output pixel types must be identical.
+    ///
+    /// This processes up to `u32::MAX` pixels.
     #[inline]
     pub fn transform_in_place(&self, srcdst: &mut [PixelFormat]) {
-        let size = srcdst.len();
-        assert!(size < std::u32::MAX as usize);
+        let size = srcdst.len().min(u32::MAX as usize);
         unsafe {
             ffi::cmsDoTransform(self.handle,
                                 srcdst.as_ptr().cast::<c_void>(),
-                                srcdst.as_ptr() as *mut c_void,
+                                srcdst.as_mut_ptr().cast::<c_void>(),
                                 size as u32);
         }
     }
@@ -163,15 +166,39 @@ impl<InputPixelFormat: Copy + Pod, OutputPixelFormat: Copy + Pod, Ctx: Context, 
     }
 
     /// This function translates bitmaps according of parameters setup when creating the color transform.
+    ///
+    /// If slices differ in length, the smaller amount of pixels is processed.
+    /// This processes up to `u32::MAX` pixels.
+    #[inline]
     pub fn transform_pixels(&self, src: &[InputPixelFormat], dst: &mut [OutputPixelFormat]) {
-        let size = src.len();
-        assert_eq!(size, dst.len());
-        assert!(size < std::u32::MAX as usize);
+        let size = src.len().min(dst.len()).min(u32::MAX as usize);
         unsafe {
             ffi::cmsDoTransform(self.handle,
                                 src.as_ptr().cast::<c_void>(),
-                                dst.as_ptr() as *mut c_void,
+                                dst.as_mut_ptr().cast::<c_void>(),
                                 size as u32);
+        }
+    }
+
+    /// This function translates bitmaps according of parameters setup when creating the color transform.
+    ///
+    /// It allows destination to be uninitailized, and returns the same slice, initialized.
+    ///
+    /// # Panics
+    ///
+    /// If the source slice is shorter than the destination, or larger than `u32::MAX`.
+    #[inline]
+    #[track_caller]
+    pub fn transform_pixels_uninit<'dst>(&self, src: &[InputPixelFormat], dst: &'dst mut [MaybeUninit<OutputPixelFormat>]) -> &'dst mut [OutputPixelFormat] {
+        let size = src.len().min(dst.len()).min(u32::MAX as usize);
+        assert!(size >= dst.len());
+        unsafe {
+            ffi::cmsDoTransform(self.handle,
+                                src.as_ptr().cast::<c_void>(),
+                                dst.as_mut_ptr().cast::<c_void>(),
+                                size as u32);
+            // assume_init for slices is currently still unstable
+            std::mem::transmute::<&'dst mut [MaybeUninit<OutputPixelFormat>], &'dst mut [OutputPixelFormat]>(dst)
         }
     }
 
