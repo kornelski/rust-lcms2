@@ -31,10 +31,12 @@ pub trait Context {
 }
 
 impl AsRef<GlobalContext> for GlobalContext {
+    #[inline]
     fn as_ref(&self) -> &Self { self }
 }
 
 impl AsRef<ThreadContext> for ThreadContext {
+    #[inline]
     fn as_ref(&self) -> &Self { self }
 }
 
@@ -183,13 +185,15 @@ impl ThreadContext {
 
     /// Sets the codes used to mark out-out-gamut on Proofing transforms for a given context. Values are meant to be encoded in 16 bits.
     ///
-    /// `AlarmCodes`: Array [16] of codes. ALL 16 VALUES MUST BE SPECIFIED, set to zero unused channels.
+    /// `AlarmCodes`: `Array [16]` of codes. ALL 16 VALUES MUST BE SPECIFIED, set to zero unused channels.
+    #[inline]
     pub fn set_alarm_codes(&mut self, codes: [u16; ffi::MAXCHANNELS]) {
         unsafe { ffi::cmsSetAlarmCodesTHR(self.handle, codes.as_ptr()) }
     }
 
     /// Gets the current codes used to mark out-out-gamut on Proofing transforms for the given context. Values are meant to be encoded in 16 bits.
     #[must_use]
+    #[inline]
     pub fn alarm_codes(&self) -> [u16; ffi::MAXCHANNELS] {
         let mut tmp = [0u16; ffi::MAXCHANNELS];
         unsafe {
@@ -207,6 +211,7 @@ impl ThreadContext {
 }
 
 impl Clone for ThreadContext {
+    #[inline]
     fn clone(&self) -> Self {
         unsafe { Self::new_handle(ffi::cmsDupContext(self.handle, ptr::null_mut())) }
     }
@@ -219,12 +224,14 @@ impl Drop for ThreadContext {
 }
 
 impl Default for GlobalContext {
+    #[inline]
     fn default() -> Self {
         Self::new()
     }
 }
 
 impl Default for ThreadContext {
+    #[inline]
     fn default() -> Self {
         Self::new()
     }
