@@ -26,6 +26,11 @@ mod tonecurve;
 mod error;
 use std::marker::PhantomData;
 
+/// `Transform` requires pixel types to implement these traits.
+///
+/// This is necesary to prevent unsafe writes to abitrary types with pointers or padding.
+pub use bytemuck::{Pod, Zeroable};
+
 pub use crate::profile::*;
 pub use crate::error::*;
 pub use crate::ciecam::*;

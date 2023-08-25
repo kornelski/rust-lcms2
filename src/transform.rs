@@ -47,7 +47,7 @@ pub struct Transform<InputPixelFormat, OutputPixelFormat, Context = GlobalContex
 unsafe impl<'a, F, T, C: Send, Z> Send for Transform<F, T, C, Z> {}
 unsafe impl<'a, F, T, C: Send> Sync for Transform<F, T, C, DisallowCache> {}
 
-impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<InputPixelFormat, OutputPixelFormat, GlobalContext, AllowCache> {
+impl<InputPixelFormat: Copy + Pod, OutputPixelFormat: Copy + Pod> Transform<InputPixelFormat, OutputPixelFormat, GlobalContext, AllowCache> {
     /// Creates a color transform for translating bitmaps.
     ///
     /// Basic, non-tread-safe version.
@@ -108,7 +108,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone> Transform<
     }
 }
 
-impl<PixelFormat: Copy + Clone, Ctx: Context, C> Transform<PixelFormat, PixelFormat, Ctx, C> {
+impl<PixelFormat: Copy + Pod, Ctx: Context, C> Transform<PixelFormat, PixelFormat, Ctx, C> {
     #[inline]
     pub fn transform_in_place(&self, srcdst: &mut [PixelFormat]) {
         let size = srcdst.len();
@@ -122,7 +122,7 @@ impl<PixelFormat: Copy + Clone, Ctx: Context, C> Transform<PixelFormat, PixelFor
     }
 }
 
-impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Context> Transform<InputPixelFormat, OutputPixelFormat, Ctx, AllowCache> {
+impl<InputPixelFormat: Copy + Pod, OutputPixelFormat: Copy + Pod, Ctx: Context> Transform<InputPixelFormat, OutputPixelFormat, Ctx, AllowCache> {
     // Same as `new()`, but allows specifying thread-safe context (enables `Send`)
     //
     // For `Sync`, see `new_flags_context` and `Flags::NO_CACHE`
@@ -133,7 +133,7 @@ impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Conte
     }
 }
 
-impl<InputPixelFormat: Copy + Clone, OutputPixelFormat: Copy + Clone, Ctx: Context, Fl: CacheFlag> Transform<InputPixelFormat, OutputPixelFormat, Ctx, Fl> {
+impl<InputPixelFormat: Copy + Pod, OutputPixelFormat: Copy + Pod, Ctx: Context, Fl: CacheFlag> Transform<InputPixelFormat, OutputPixelFormat, Ctx, Fl> {
     #[inline]
     fn new_handle(handle: ffi::HTRANSFORM, in_format: PixelFormat, out_format: PixelFormat) -> LCMSResult<Self> {
         if handle.is_null() {

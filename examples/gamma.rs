@@ -10,6 +10,11 @@ struct RGBA {
     r: u16, g: u16, b: u16, a:u16
 }
 
+unsafe impl Pod for RGBA {}
+unsafe impl Zeroable for RGBA {}
+unsafe impl Pod for RGB {}
+unsafe impl Zeroable for RGB {}
+
 fn main() {
     // Standard profiles are built-in
     let srgb_profile = Profile::new_srgb();

@@ -3,11 +3,15 @@ use lcms2::*;
 const PROFILE: &[u8] = include_bytes!("tinysrgb.icc");
 
 #[derive(Copy, Clone, PartialEq, Eq, Debug)]
+#[repr(C)]
 struct RGB16 {
     r: u16,
     g: u16,
     b: u16,
 }
+
+unsafe impl Pod for RGB16 {}
+unsafe impl Zeroable for RGB16 {}
 
 #[test]
 #[should_panic]
@@ -45,12 +49,12 @@ fn transform_gray_to_rgb() {
     let srgb = Profile::new_srgb();
 
     let tr = Transform::new(&gray, PixelFormat::GRAY_8, &srgb, PixelFormat::RGB_8, Intent::Perceptual).unwrap();
-    let mut dest = vec![(0u8,0u8,0u8); 3];
+    let mut dest = vec![[0u8,0u8,0u8]; 3];
     tr.transform_pixels(&[0u8,100u8,255u8], &mut dest);
     assert_eq!(&dest, &[
-        (0,0,0),
-        (119,119,119),
-        (255,255,255),
+        [0,0,0],
+        [119,119,119],
+        [255,255,255],
     ]);
 }
 
@@ -114,6 +118,6 @@ fn context() {
         &in_p, PixelFormat::RGB_8,
         &out_p, PixelFormat::RGB_8,
         &proof, Intent::Perceptual, Intent::Perceptual, Flags::default()).unwrap();
-    let tmp = (0u8,0u8,0u8);
+    let tmp = [0u8,0u8,0u8];
     t.transform_in_place(&mut [tmp]);
 }

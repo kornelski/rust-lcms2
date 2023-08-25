@@ -47,3 +47,15 @@ This crate requires Rust 1.64 or later. It's up to date with LCMS 2.15, and shou
 In LCMS all functions are in 2 flavors: global and `*THR()` functions. In this crate this is represented by having functions with `GlobalContext` and `ThreadContext`. Create profiles, transforms, etc. using `*_context()` constructors to give them their private context, which makes them sendable between threads (i.e. they're `Send`).
 
 By default `Transform` does not implement `Sync`, because LCMS2 has a thread-unsafe cache in the transform. You can set `Flags::NO_CACHE` to make it safe (this is checked at compile time).
+
+## Upgrading from v5
+
+If you're using a custom RGB type with `Transform`, implement [`bytemuck::Pod`](//lib.rs/crates/bytemuck) and `Zeroable` for it. Make sure you use arrays or `#[repr(C)]` struct types for pixels. Rust tuples have a technically undefined layout, and can't be used as as a pixel format.
+
+```
+unsafe impl Pod for RGB {}
+unsafe impl Zeroable for RGB {}
+```
+
+You don't need to do this if you use the [`rgb` crate](//lib.rs/crates/rgb).
+
