@@ -109,18 +109,18 @@ impl<InputPixelFormat: Copy + Pod, OutputPixelFormat: Copy + Pod> Transform<Inpu
     }
 }
 
-impl<PixelFormat: Copy + Pod, Ctx: Context, C> Transform<PixelFormat, PixelFormat, Ctx, C> {
+impl<PixelFormat: Copy + Pod, Ctx: Context, Fl: CacheFlag> Transform<PixelFormat, PixelFormat, Ctx, Fl> {
     /// Read pixels and write them back to the same slice. Input and output pixel types must be identical.
     ///
     /// This processes up to `u32::MAX` pixels.
     #[inline]
     pub fn transform_in_place(&self, srcdst: &mut [PixelFormat]) {
-        let size = srcdst.len().min(u32::MAX as usize);
+        let num_pixels = self.num_pixels(srcdst.len(), srcdst.len());
         unsafe {
             ffi::cmsDoTransform(self.handle,
                                 srcdst.as_ptr().cast::<c_void>(),
                                 srcdst.as_mut_ptr().cast::<c_void>(),
-                                size as u32);
+                                num_pixels);
         }
     }
 }
@@ -169,18 +169,35 @@ impl<InputPixelFormat: Copy + Pod, OutputPixelFormat: Copy + Pod, Ctx: Context, 
                    std::mem::size_of::<P>());
     }
 
+    /// Description of the input pixel format this transform has been created for
+    #[inline]
+    pub fn input_pixel_format(&self) -> PixelFormat {
+        unsafe { ffi::cmsGetTransformInputFormat(self.handle) }
+    }
+
+    /// Description of the output pixel format this transform has been created for
+    #[inline]
+    pub fn output_pixel_format(&self) -> PixelFormat {
+        unsafe { ffi::cmsGetTransformOutputFormat(self.handle) }
+    }
+
+    #[inline]
+    fn num_pixels(&self, src_len: usize, dst_len: usize) -> u32 {
+        src_len.min(dst_len).min(u32::MAX as usize) as u32
+    }
+
     /// This function translates bitmaps according of parameters setup when creating the color transform.
     ///
     /// If slices differ in length, the smaller amount of pixels is processed.
     /// This processes up to `u32::MAX` pixels.
     #[inline]
     pub fn transform_pixels(&self, src: &[InputPixelFormat], dst: &mut [OutputPixelFormat]) {
-        let size = src.len().min(dst.len()).min(u32::MAX as usize);
+        let num_pixels = self.num_pixels(src.len(), dst.len());
         unsafe {
             ffi::cmsDoTransform(self.handle,
                                 src.as_ptr().cast::<c_void>(),
                                 dst.as_mut_ptr().cast::<c_void>(),
-                                size as u32);
+                                num_pixels);
         }
     }
 
@@ -194,13 +211,13 @@ impl<InputPixelFormat: Copy + Pod, OutputPixelFormat: Copy + Pod, Ctx: Context, 
     #[inline]
     #[track_caller]
     pub fn transform_pixels_uninit<'dst>(&self, src: &[InputPixelFormat], dst: &'dst mut [MaybeUninit<OutputPixelFormat>]) -> &'dst mut [OutputPixelFormat] {
-        let size = src.len().min(dst.len()).min(u32::MAX as usize);
-        assert!(size >= dst.len());
+        let num_pixels = self.num_pixels(src.len(), dst.len());
+        assert_eq!(num_pixels as usize, dst.len());
         unsafe {
             ffi::cmsDoTransform(self.handle,
                                 src.as_ptr().cast::<c_void>(),
                                 dst.as_mut_ptr().cast::<c_void>(),
-                                size as u32);
+                                num_pixels);
             // assume_init for slices is currently still unstable
             std::mem::transmute::<&'dst mut [MaybeUninit<OutputPixelFormat>], &'dst mut [OutputPixelFormat]>(dst)
         }
