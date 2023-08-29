@@ -1,8 +1,9 @@
 # [Little CMS](http://www.littlecms.com) wrapper for [Rust](https://www.rust-lang.org/)
 
-Convert and apply color profiles with a safe abstraction layer for the LCMS library.
+Convert and apply color profiles with a safe abstraction layer for the LCMS library. LCMS2 is a mature, fully-featured color management engine. These bindings have been stable for years, and used in production at scale.
 
-See [API reference](https://docs.rs/lcms2/) for Rust functions and the [LCMS2 documentation HTML](https://kornelski.github.io/rust-lcms2-sys/)/[PDF](http://www.littlecms.com/LittleCMS2.8%20API.pdf) for more background information about the functions.
+See [the API reference](https://docs.rs/lcms2/) for the Rust functions, and the LCMS2 documentation [in HTML](https://kornelski.github.io/rust-lcms2-sys/)/[or the original PDF](https://www.littlecms.com/LittleCMS2.15%20API.pdf) for more background information about the functions.
+
 
 ```rust
 use lcms2::*;
@@ -50,12 +51,12 @@ By default `Transform` does not implement `Sync`, because LCMS2 has a thread-uns
 
 ## Upgrading from v5
 
-If you're using a custom RGB type with `Transform`, implement [`bytemuck::Pod`](//lib.rs/crates/bytemuck) and `Zeroable` for it. Make sure you use arrays or `#[repr(C)]` struct types for pixels. Rust tuples have a technically undefined layout, and can't be used as as a pixel format.
+If you're using a custom RGB type with `Transform`, implement [`bytemuck::Pod`](https://lib.rs/crates/bytemuck) and `Zeroable` for it. Make sure you use arrays or `#[repr(C)]` struct types for pixels. Rust tuples have a technically undefined layout, and can't be used as as a pixel format.
 
 ```
 unsafe impl Pod for RGB {}
 unsafe impl Zeroable for RGB {}
 ```
 
-You don't need to do this if you use the [`rgb` crate](//lib.rs/crates/rgb).
+You don't need to do this if you use the [`rgb` crate](https://lib.rs/crates/rgb).
 
