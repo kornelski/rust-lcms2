@@ -91,16 +91,16 @@ impl fmt::Display for Locale {
 #[test]
 fn locale() {
     let l = Locale::new("");
-    assert_eq!([0i8; 3], l.language);
-    assert_eq!([0i8; 3], l.country);
+    assert_eq!([0 as c_char; 3], l.language);
+    assert_eq!([0 as c_char; 3], l.country);
 
     let l = Locale::none();
-    assert_eq!([0i8; 3], l.language);
-    assert_eq!([0i8; 3], l.country);
+    assert_eq!([0 as c_char; 3], l.language);
+    assert_eq!([0 as c_char; 3], l.country);
 
     let l = Locale::new("Ab");
     assert_eq!(['A' as c_char, 'b' as c_char, 0], l.language);
-    assert_eq!([0i8; 3], l.country);
+    assert_eq!([0 as c_char; 3], l.country);
 
     let l = Locale::new("Ab-X");
     assert_eq!(['A' as c_char, 'b' as c_char, 0], l.language);
