@@ -664,6 +664,6 @@ fn bad_icc() {
 fn unwind_safety() {
     let profile = &Profile::new_xyz();
     std::panic::catch_unwind(|| {
-        profile.clone()
+        let _p = profile;
     }).unwrap();
 }
