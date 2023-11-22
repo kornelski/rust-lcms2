@@ -1,6 +1,6 @@
 [package]
 name = "lcms2"
-version = "6.0.0"
+version = "6.0.1"
 authors = ["Kornel Lesiński <kornel@geekhood.net>"]
 description = "ICC color profile handling. Rusty wrapper for Little CMS"
 keywords = ["icc", "profile", "color", "lcms"]
@@ -16,7 +16,7 @@ edition = "2021"
 [dependencies]
 bytemuck = "1.13.1"
 foreign-types = "0.5"
-lcms2-sys = { path = "./sys", version = "4.0.3" }
+lcms2-sys = { path = "./sys", version = "4.0.4" }
 
 [features]
 static = ["lcms2-sys/static"]
