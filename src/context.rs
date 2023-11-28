@@ -154,16 +154,31 @@ impl ThreadContext {
     #[track_caller]
     #[inline]
     #[must_use]
-    pub fn supported_intents(&self) -> HashMap<Intent, &CStr> {
-        let mut codes = [Intent::PreserveKOnlySaturation; 32];
+    pub fn supported_intents(&self) -> HashMap<Intent, &'static CStr> {
+        let mut codes = [0u32; 32];
         let mut descs = [ptr::null_mut(); 32];
         let len = unsafe {
-            assert_eq!(mem::size_of::<Intent>(), mem::size_of::<u32>());
-            ffi::cmsGetSupportedIntentsTHR(self.handle, 32, &mut codes as *mut _ as *mut u32, descs.as_mut_ptr())
+            debug_assert_eq!(mem::size_of::<Intent>(), mem::size_of::<u32>());
+            ffi::cmsGetSupportedIntentsTHR(self.handle, 32, codes.as_mut_ptr(), descs.as_mut_ptr())
         };
-        assert!(len <= 32);
-        codes.iter().zip(descs.iter()).take(len as usize).map(|(&code,&desc)|{
-            (code, unsafe {CStr::from_ptr(desc)})
+        debug_assert!(len <= 32);
+        codes.iter().zip(descs.iter()).take(len as usize).filter_map(|(&code, &desc)|{
+            use Intent::*;
+            let code = match code {
+                c if c == Perceptual as u32 => Perceptual,
+                c if c == RelativeColorimetric as u32 => RelativeColorimetric,
+                c if c == Saturation as u32 => Saturation,
+                c if c == AbsoluteColorimetric as u32 => AbsoluteColorimetric,
+
+                c if c == PreserveKOnlyPerceptual as u32 => PreserveKOnlyPerceptual,
+                c if c == PreserveKOnlyRelativeColorimetric as u32 => PreserveKOnlyRelativeColorimetric,
+                c if c == PreserveKOnlySaturation as u32 => PreserveKOnlySaturation,
+                c if c == PreserveKPlanePerceptual as u32 => PreserveKPlanePerceptual,
+                c if c == PreserveKPlaneRelativeColorimetric as u32 => PreserveKPlaneRelativeColorimetric,
+                c if c == PreserveKPlaneSaturation as u32 => PreserveKPlaneSaturation,
+                _ => return None,
+            };
+            Some((code, unsafe { CStr::from_ptr(desc) }))
         }).collect()
     }
 
