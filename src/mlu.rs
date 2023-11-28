@@ -36,7 +36,7 @@ impl MLURef {
         let Ok(cstr) = CString::new(text) else { return false };
         unsafe {
             ffi::cmsMLUsetASCII(
-                self.as_ptr(),
+                self as *mut _ as *mut _,
                 locale.language_ptr(),
                 locale.country_ptr(),
                 cstr.as_ptr(),
@@ -54,7 +54,7 @@ impl MLURef {
 
         unsafe {
             ffi::cmsMLUsetWide(
-                self.as_ptr(),
+                self as *mut _ as *mut _,
                 locale.language_ptr(),
                 locale.country_ptr(),
                 chars[..].as_ptr(),

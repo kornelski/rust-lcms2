@@ -35,7 +35,7 @@ impl PipelineRef {
         if append.input_channels() != self.output_channels() {
             return false;
         }
-        unsafe { ffi::cmsPipelineCat(self.as_ptr(), append.as_ptr()) != 0 }
+        unsafe { ffi::cmsPipelineCat(self as *mut _ as *mut _, append.as_ptr()) != 0 }
     }
 
     #[must_use]
@@ -73,7 +73,7 @@ impl PipelineRef {
     }
 
     pub fn set_8bit(&mut self, on: bool) -> bool {
-        unsafe { ffi::cmsPipelineSetSaveAs8bitsFlag(self.as_ptr(), i32::from(on)) != 0 }
+        unsafe { ffi::cmsPipelineSetSaveAs8bitsFlag(self as *mut _ as *mut _, i32::from(on)) != 0 }
     }
 
     #[must_use]

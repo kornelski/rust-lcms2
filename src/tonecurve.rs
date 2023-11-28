@@ -173,7 +173,7 @@ impl ToneCurveRef {
     /// Smoothes tone curve according to the lambda parameter. From: Eilers, P.H.C. (1994) Smoothing and interpolation with finite differences. in: Graphic Gems IV, Heckbert, P.S. (ed.), Academic press.
     #[inline]
     pub fn smooth(&mut self, lambda: f64) -> bool {
-        unsafe { ffi::cmsSmoothToneCurve(self.as_ptr(), lambda) != 0 }
+        unsafe { ffi::cmsSmoothToneCurve(self as *mut _ as *mut _, lambda) != 0 }
     }
 
     /// Tone curves do maintain a shadow low-resolution tabulated representation of the curve. This function returns a pointer to this table.
