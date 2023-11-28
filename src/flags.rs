@@ -80,7 +80,7 @@ impl<T: CacheFlag> Flags<T> {
         Flags(self.0, AllowCache)
     }
 
-    pub fn has<F: CacheFlag>(&mut self, flag: Flags<F>) -> bool {
+    pub fn has<F: CacheFlag>(&self, flag: Flags<F>) -> bool {
         0 != (self.0 & flag.0)
     }
 }
