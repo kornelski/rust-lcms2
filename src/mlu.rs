@@ -82,7 +82,7 @@ impl MLURef {
                 self.as_ptr(),
                 locale.language_ptr(),
                 locale.country_ptr(),
-                buf[..].as_ptr() as *mut _,
+                buf[..].as_mut_ptr() as *mut _,
                 len,
             );
             if let Some(0) = buf.pop() { // terminating zero
@@ -114,7 +114,7 @@ impl MLURef {
                 self.as_ptr(),
                 locale.language_ptr(),
                 locale.country_ptr(),
-                buf[..].as_ptr() as *mut wchar_t,
+                buf[..].as_mut_ptr() as *mut wchar_t,
                 len_bytes,
             );
             if let Some(0) = buf.pop() { // terminating zero
