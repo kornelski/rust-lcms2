@@ -1,11 +1,11 @@
-use crate::*;
 use crate::context::Context;
+use crate::*;
 use foreign_types::ForeignTypeRef;
 use std::default::Default;
 use std::fmt;
 use std::fs::File;
-use std::io::Read;
 use std::io;
+use std::io::Read;
 use std::mem::MaybeUninit;
 use std::os::raw::c_void;
 use std::path::Path;
@@ -275,7 +275,8 @@ impl<Ctx: Context> Profile<Ctx> {
         unsafe { ffi::cmsSetPCS(self.handle, pcs) }
     }
 
-    #[must_use] pub fn info(&self, info: InfoType, locale: Locale) -> Option<String> {
+    #[must_use]
+    pub fn info(&self, info: InfoType, locale: Locale) -> Option<String> {
         let size = unsafe {
             ffi::cmsGetProfileInfo(self.handle,
                                    info,
@@ -337,7 +338,7 @@ impl<Ctx: Context> Profile<Ctx> {
     #[must_use]
     pub fn detect_black_point(&self, intent: Intent) -> Option<CIEXYZ> {
         unsafe {
-            let mut b = Default::default();
+            let mut b = CIEXYZ::default();
             if ffi::cmsDetectBlackPoint(&mut b, self.handle, intent, 0) != 0 {
                 Some(b)
             } else {
@@ -350,7 +351,7 @@ impl<Ctx: Context> Profile<Ctx> {
     #[must_use]
     pub fn detect_destination_black_point(&self, intent: Intent) -> Option<CIEXYZ> {
         unsafe {
-            let mut b = Default::default();
+            let mut b = CIEXYZ::default();
             if ffi::cmsDetectDestinationBlackPoint(&mut b, self.handle, intent, 0) != 0 {
                 Some(b)
             } else {
@@ -412,23 +413,17 @@ impl<Ctx: Context> Profile<Ctx> {
 
     #[inline]
     pub fn write_tag(&mut self, sig: TagSignature, tag: Tag<'_>) -> bool {
-        unsafe {
-            ffi::cmsWriteTag(self.handle, sig, tag.data_for_signature(sig).cast()) != 0
-        }
+        unsafe { ffi::cmsWriteTag(self.handle, sig, tag.data_for_signature(sig).cast()) != 0 }
     }
 
     #[inline]
     pub fn remove_tag(&mut self, sig: TagSignature) -> bool {
-        unsafe {
-            ffi::cmsWriteTag(self.handle, sig, std::ptr::null()) != 0
-        }
+        unsafe { ffi::cmsWriteTag(self.handle, sig, std::ptr::null()) != 0 }
     }
 
     #[inline]
     pub fn link_tag(&mut self, sig: TagSignature, dst: TagSignature) -> bool {
-        unsafe {
-            ffi::cmsLinkTag(self.handle, sig, dst) != 0
-        }
+        unsafe { ffi::cmsLinkTag(self.handle, sig, dst) != 0 }
     }
 
     /// Retrieves the Profile ID stored in the profile header.
@@ -454,7 +449,7 @@ impl<Ctx: Context> Profile<Ctx> {
     #[inline]
     pub fn set_profile_id(&mut self, id: ffi::ProfileID) {
         unsafe {
-            ffi::cmsSetHeaderProfileID(self.handle, &id as *const ffi::ProfileID as *mut _);
+            ffi::cmsSetHeaderProfileID(self.handle, std::ptr::addr_of!(id) as *mut _);
         }
     }
 
@@ -499,9 +494,9 @@ impl<Ctx: Context> Profile<Ctx> {
             ffi::cmsCreateRGBProfileTHR(context.as_ref().as_ptr(),
                                      white_point,
                                      primaries,
-                                     [transfer_function[0].as_ptr() as *const _,
-                                      transfer_function[1].as_ptr() as *const _,
-                                      transfer_function[2].as_ptr() as *const _]
+                                     [transfer_function[0].as_ptr().cast_const(),
+                                      transfer_function[1].as_ptr().cast_const(),
+                                      transfer_function[2].as_ptr().cast_const()]
                                          .as_ptr())
         })
     }
@@ -515,7 +510,7 @@ impl<Ctx: Context> Profile<Ctx> {
     /// Number of tone curves must be sufficient for the color space.
     #[inline]
     pub unsafe fn new_linearization_device_link_context(context: impl AsRef<Ctx>, color_space: ColorSpaceSignature, curves: &[ToneCurveRef]) -> LCMSResult<Self> {
-        let v: Vec<_> = curves.iter().map(|c| c.as_ptr() as *const _).collect();
+        let v: Vec<_> = curves.iter().map(|c| c.as_ptr().cast_const()).collect();
         Self::new_handle(ffi::cmsCreateLinearizationDeviceLinkTHR(context.as_ref().as_ptr(), color_space, v.as_ptr()))
     }
 

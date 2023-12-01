@@ -1,7 +1,7 @@
 use crate::context::Context;
 use crate::eval::FloatOrU16;
-use crate::*;
-use foreign_types::ForeignTypeRef;
+use crate::{ffi, Error, GlobalContext, LCMSResult, ToneCurveRef};
+use foreign_types::{foreign_type, ForeignTypeRef};
 use std::fmt;
 use std::ptr;
 
@@ -32,7 +32,7 @@ impl Stage {
 
     /// Creates a stage that contains nChannels tone curves, one per channel.
     pub fn new_tone_curves(curves: &[&ToneCurveRef]) -> LCMSResult<Stage> {
-        let ptrs: Vec<_> = curves.iter().map(|c| c.as_ptr() as *const _).collect();
+        let ptrs: Vec<_> = curves.iter().map(|c| c.as_ptr().cast_const()).collect();
         unsafe {
             Error::if_null(ffi::cmsStageAllocToneCurves(
                 GlobalContext::new().as_ptr(),

@@ -1,7 +1,7 @@
 use crate::eval::FloatOrU16;
 use crate::stage::{StageRef, StagesIter};
-use crate::*;
-use foreign_types::ForeignTypeRef;
+use crate::{ffi, Error, LCMSResult};
+use foreign_types::{foreign_type, ForeignTypeRef};
 use std::fmt;
 use std::ptr;
 
@@ -35,7 +35,7 @@ impl PipelineRef {
         if append.input_channels() != self.output_channels() {
             return false;
         }
-        unsafe { ffi::cmsPipelineCat(self as *mut _ as *mut _, append.as_ptr()) != 0 }
+        unsafe { ffi::cmsPipelineCat((self as *mut Self).cast(), append.as_ptr()) != 0 }
     }
 
     #[must_use]
@@ -73,7 +73,7 @@ impl PipelineRef {
     }
 
     pub fn set_8bit(&mut self, on: bool) -> bool {
-        unsafe { ffi::cmsPipelineSetSaveAs8bitsFlag(self as *mut _ as *mut _, i32::from(on)) != 0 }
+        unsafe { ffi::cmsPipelineSetSaveAs8bitsFlag((self as *mut Self).cast(), i32::from(on)) != 0 }
     }
 
     #[must_use]

@@ -1,5 +1,5 @@
-use crate::*;
-use foreign_types::ForeignTypeRef;
+use crate::{ffi, Error, LCMSResult};
+use foreign_types::{foreign_type, ForeignTypeRef};
 use std::ffi::{CStr, CString};
 use std::fmt;
 use std::os::raw::c_char;
@@ -47,12 +47,14 @@ impl NamedColorListRef {
     }
 
     /// Find color by name
+    #[must_use]
     pub fn index_of(&self, color_name: &str) -> usize {
         let s = CString::new(color_name).unwrap();
-        unsafe { ffi::cmsNamedColorIndex(self.as_ptr(), s.as_ptr()) as usize }
+        unsafe { ffi::cmsNamedColorIndex(self.as_ptr(), s.as_ptr()).try_into().unwrap() }
     }
 
     /// Get color info
+    #[must_use]
     pub fn get(&self, index: usize) -> Option<NamedColorInfo> {
         let mut name = [0 as c_char; 256];
         let mut prefix = [0 as c_char; 33];
@@ -84,6 +86,7 @@ impl NamedColorListRef {
         }
     }
 
+    #[must_use]
     pub fn colors(&self) -> Vec<NamedColorInfo> {
         (0..self.len()).filter_map(|i| self.get(i)).collect()
     }

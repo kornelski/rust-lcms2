@@ -1,5 +1,5 @@
-use crate::*;
 use crate::context::Context;
+use crate::*;
 use std::fmt;
 use std::marker::PhantomData;
 use std::mem::MaybeUninit;
@@ -45,8 +45,8 @@ pub struct Transform<InputPixelFormat, OutputPixelFormat, Context = GlobalContex
     _flags_ref: PhantomData<Flags>,
 }
 
-unsafe impl<'a, F, T, C: Send, Z> Send for Transform<F, T, C, Z> {}
-unsafe impl<'a, F, T, C: Send> Sync for Transform<F, T, C, DisallowCache> {}
+unsafe impl<F, T, C: Send, Z> Send for Transform<F, T, C, Z> {}
+unsafe impl<F, T, C: Send> Sync for Transform<F, T, C, DisallowCache> {}
 
 impl<InputPixelFormat: Copy + Pod, OutputPixelFormat: Copy + Pod> Transform<InputPixelFormat, OutputPixelFormat, GlobalContext, AllowCache> {
     /// Creates a color transform for translating bitmaps.
@@ -189,13 +189,13 @@ impl<InputPixelFormat: Copy + Pod, OutputPixelFormat: Copy + Pod, Ctx: Context, 
 
     /// Description of the input pixel format this transform has been created for
     #[inline]
-    pub fn input_pixel_format(&self) -> PixelFormat {
+    #[must_use] pub fn input_pixel_format(&self) -> PixelFormat {
         unsafe { ffi::cmsGetTransformInputFormat(self.handle) }
     }
 
     /// Description of the output pixel format this transform has been created for
     #[inline]
-    pub fn output_pixel_format(&self) -> PixelFormat {
+    #[must_use] pub fn output_pixel_format(&self) -> PixelFormat {
         unsafe { ffi::cmsGetTransformOutputFormat(self.handle) }
     }
 

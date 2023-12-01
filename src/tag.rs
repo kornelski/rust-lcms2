@@ -3,7 +3,7 @@ use foreign_types::ForeignTypeRef;
 
 unsafe fn cast<T>(ptr: *const u8) -> &'static T {
     assert!(0 == ptr.align_offset(std::mem::align_of::<T>()), "Tag data pointer must be aligned");
-    &*(ptr as *const T)
+    &*ptr.cast::<T>()
 }
 
 /// `from_ptr()` methods require mut for no good reason
@@ -13,13 +13,15 @@ unsafe fn aligned_mut<T>(ptr: *const u8) -> *mut T {
 }
 
 impl<'a> Tag<'a> {
-    #[must_use] pub fn is_none(&self) -> bool {
+    #[must_use]
+    pub fn is_none(&self) -> bool {
         match *self {
             Tag::None => true,
             _ => false,
         }
     }
 
+    #[must_use]
     pub unsafe fn data_for_signature(&self, sig: TagSignature) -> *const u8 {
         use crate::TagSignature::*;
         match (sig, self) {
@@ -106,11 +108,11 @@ impl<'a> Tag<'a> {
             (CicpTag, &Tag::VideoSignal(data)) => {
                 data as *const _ as *const u8
             },
-            (sig, _) => panic!("Signature type {:?} does not support this tag data type", sig),
+            (sig, _) => panic!("Signature type {sig:?} does not support this tag data type"),
         }
     }
 
-    pub unsafe fn new(sig: TagSignature, data: *const u8) -> Self {
+    #[must_use] pub unsafe fn new(sig: TagSignature, data: *const u8) -> Self {
         if data.is_null() {
             return Tag::None;
         }

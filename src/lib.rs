@@ -3,27 +3,39 @@
 //! The main types you need to use in this crate are `Profile` and `Transform`
 #![doc(html_logo_url = "https://kornelski.github.io/rust-lcms2/lcms_logo.png")]
 #![doc(html_root_url = "https://kornelski.github.io/rust-lcms2")]
+#![allow(clippy::cast_possible_truncation)]
+#![allow(clippy::cast_possible_wrap)]
+#![allow(clippy::doc_markdown)]
+#![allow(clippy::enum_glob_use)]
+#![allow(clippy::if_not_else)]
+#![allow(clippy::map_unwrap_or)]
+#![allow(clippy::missing_errors_doc)]
+#![allow(clippy::missing_panics_doc)]
+#![allow(clippy::missing_safety_doc)]
+#![allow(clippy::module_name_repetitions)]
+#![allow(clippy::redundant_closure_for_method_calls)]
+#![allow(clippy::too_many_arguments)]
+#![allow(clippy::unreadable_literal)]
+#![allow(clippy::upper_case_acronyms)]
+#![allow(clippy::wildcard_imports)]
 
-extern crate lcms2_sys as ffi;
+use lcms2_sys as ffi;
 
-#[macro_use]
-extern crate foreign_types;
-
-mod profile;
-mod tag;
 mod ciecam;
 mod context;
-mod mlu;
-mod namedcolorlist;
-mod pipeline;
+mod error;
 mod eval;
 mod ext;
 mod flags;
 mod locale;
+mod mlu;
+mod namedcolorlist;
+mod pipeline;
+mod profile;
 mod stage;
-mod transform;
+mod tag;
 mod tonecurve;
-mod error;
+mod transform;
 use std::marker::PhantomData;
 
 /// `Transform` requires pixel types to implement these traits.
@@ -31,37 +43,37 @@ use std::marker::PhantomData;
 /// This is necesary to prevent unsafe writes to abitrary types with pointers or padding.
 pub use bytemuck::{Pod, Zeroable};
 
-pub use crate::profile::*;
-pub use crate::error::*;
 pub use crate::ciecam::*;
 pub use crate::context::{GlobalContext, ThreadContext};
-pub use crate::mlu::*;
+pub use crate::error::*;
 pub use crate::ext::*;
 pub use crate::flags::*;
 pub use crate::locale::*;
-pub use crate::pipeline::*;
-pub use crate::stage::*;
-pub use crate::transform::*;
-pub use crate::tonecurve::*;
+pub use crate::mlu::*;
 pub use crate::namedcolorlist::*;
+pub use crate::pipeline::*;
+pub use crate::profile::*;
+pub use crate::stage::*;
+pub use crate::tonecurve::*;
+pub use crate::transform::*;
 
-pub use crate::ffi::CIEXYZ;
 pub use crate::ffi::CIELab;
-#[doc(hidden)]
+/// Part of [`CIExyYTRIPLE`]
+pub use crate::ffi::CIExyY;
+/// For [`Profile::new_rgb`]
 pub use crate::ffi::CIExyYTRIPLE;
 #[doc(hidden)]
-pub use crate::ffi::CIExyY;
-#[doc(hidden)]
 pub use crate::ffi::JCh;
+pub use crate::ffi::CIEXYZ;
 
-pub use crate::ffi::PixelFormat;
-pub use crate::ffi::InfoType;
-pub use crate::ffi::TagSignature;
-pub use crate::ffi::Intent;
 pub use crate::ffi::ColorSpaceSignature;
+pub use crate::ffi::InfoType;
+pub use crate::ffi::Intent;
+pub use crate::ffi::PixelFormat;
 pub use crate::ffi::ProfileClassSignature;
-pub use crate::ffi::ViewingConditions;
+pub use crate::ffi::TagSignature;
 pub use crate::ffi::VideoSignalType;
+pub use crate::ffi::ViewingConditions;
 
 #[derive(Debug)]
 #[non_exhaustive]
@@ -113,19 +125,21 @@ pub fn version() -> u32 {
 }
 
 #[allow(non_snake_case)]
+#[must_use]
 pub fn xyY2XYZ(xyY: &CIExyY) -> CIEXYZ {
     let mut xyz = CIEXYZ::default();
     unsafe {
-        crate::ffi::cmsxyY2XYZ(&mut xyz, xyY)
+        crate::ffi::cmsxyY2XYZ(&mut xyz, xyY);
     }
     xyz
 }
 
 #[allow(non_snake_case)]
+#[must_use]
 pub fn XYZ2xyY(xyz: &CIEXYZ) -> CIExyY {
     let mut xyY = CIExyY::default();
     unsafe {
-        crate::ffi::cmsXYZ2xyY(&mut xyY, xyz)
+        crate::ffi::cmsXYZ2xyY(&mut xyY, xyz);
     }
     xyY
 }

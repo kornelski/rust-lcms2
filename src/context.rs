@@ -1,4 +1,4 @@
-use crate::*;
+use crate::{ffi, Intent};
 use std::cell::UnsafeCell;
 use std::collections::HashMap;
 use std::ffi::CStr;
@@ -220,7 +220,7 @@ impl ThreadContext {
     /// Sets a function to be called if there is an error.
     pub fn set_error_logging_function(&mut self, handler: ffi::LogErrorHandlerFunction) {
         unsafe {
-            ffi::cmsSetLogErrorHandlerTHR(self.handle, handler)
+            ffi::cmsSetLogErrorHandlerTHR(self.handle, handler);
         }
     }
 }
@@ -271,7 +271,7 @@ fn context() {
     let mut c = ThreadContext::new();
     assert!(c.user_data().is_null());
     c.unregister_plugins();
-    assert!(Profile::new_icc_context(&c, &[]).is_err());
+    assert!(crate::Profile::new_icc_context(&c, &[]).is_err());
 
     assert!(c.supported_intents().contains_key(&Intent::RelativeColorimetric));
 

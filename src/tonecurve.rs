@@ -1,6 +1,6 @@
 use crate::eval::FloatOrU16;
-use crate::*;
-use foreign_types::{ForeignType, ForeignTypeRef};
+use crate::{ffi, Error, LCMSResult};
+use foreign_types::{foreign_type, ForeignType, ForeignTypeRef};
 use std::fmt;
 use std::ptr;
 
@@ -165,7 +165,8 @@ impl ToneCurveRef {
     /// Estimates the apparent gamma of the tone curve by using least squares fitting.
     /// Precision: The maximum standard deviation allowed on the residuals, 0.01 is a fair value, set it to a big number to fit any curve, mo matter how good is the fit.
     #[inline]
-    #[must_use] pub fn estimated_gamma(&self, precision: f64) -> Option<f64> {
+    #[must_use]
+    pub fn estimated_gamma(&self, precision: f64) -> Option<f64> {
         let g = unsafe { ffi::cmsEstimateGamma(self.as_ptr(), precision) };
         if g <= -1.0 { None } else { Some(g) }
     }
@@ -173,7 +174,7 @@ impl ToneCurveRef {
     /// Smoothes tone curve according to the lambda parameter. From: Eilers, P.H.C. (1994) Smoothing and interpolation with finite differences. in: Graphic Gems IV, Heckbert, P.S. (ed.), Academic press.
     #[inline]
     pub fn smooth(&mut self, lambda: f64) -> bool {
-        unsafe { ffi::cmsSmoothToneCurve(self as *mut _ as *mut _, lambda) != 0 }
+        unsafe { ffi::cmsSmoothToneCurve((self as *mut Self).cast(), lambda) != 0 }
     }
 
     /// Tone curves do maintain a shadow low-resolution tabulated representation of the curve. This function returns a pointer to this table.
@@ -208,7 +209,7 @@ fn tones() {
     let _ = ToneCurve::new(1230.);
     let _ = ToneCurve::new(-10.);
 
-    let g = ToneCurve::new(1./2.2);
+    let g = ToneCurve::new(1. / 2.2);
     let r: &ToneCurveRef = &g;
     let mut z: ToneCurve = r.to_owned();
     assert!(g.estimated_gamma(0.1).is_some());

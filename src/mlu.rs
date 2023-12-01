@@ -1,6 +1,6 @@
 use crate::ffi::wchar_t;
-use crate::*;
-use foreign_types::{ForeignType, ForeignTypeRef};
+use crate::{ffi, Error, LCMSResult, Locale};
+use foreign_types::{foreign_type, ForeignType, ForeignTypeRef};
 use std::char::{decode_utf16, REPLACEMENT_CHARACTER};
 use std::ffi::CString;
 use std::fmt;
@@ -36,7 +36,7 @@ impl MLURef {
         let Ok(cstr) = CString::new(text) else { return false };
         unsafe {
             ffi::cmsMLUsetASCII(
-                self as *mut _ as *mut _,
+                (self as *mut Self).cast(),
                 locale.language_ptr(),
                 locale.country_ptr(),
                 cstr.as_ptr(),
@@ -54,7 +54,7 @@ impl MLURef {
 
         unsafe {
             ffi::cmsMLUsetWide(
-                self as *mut _ as *mut _,
+                (self as *mut Self).cast(),
                 locale.language_ptr(),
                 locale.country_ptr(),
                 chars[..].as_ptr(),
@@ -82,7 +82,7 @@ impl MLURef {
                 self.as_ptr(),
                 locale.language_ptr(),
                 locale.country_ptr(),
-                buf[..].as_mut_ptr() as *mut _,
+                buf[..].as_mut_ptr().cast(),
                 len,
             );
             if let Some(0) = buf.pop() { // terminating zero
@@ -114,7 +114,7 @@ impl MLURef {
                 self.as_ptr(),
                 locale.language_ptr(),
                 locale.country_ptr(),
-                buf[..].as_mut_ptr() as *mut wchar_t,
+                buf[..].as_mut_ptr().cast::<wchar_t>(),
                 len_bytes,
             );
             if let Some(0) = buf.pop() { // terminating zero
