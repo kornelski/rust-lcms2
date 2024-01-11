@@ -31,7 +31,7 @@ impl<'a> Tag<'a> {
             (LuminanceTag, &Tag::CIEXYZ(data)) |
             (MediaBlackPointTag, &Tag::CIEXYZ(data)) |
             (MediaWhitePointTag, &Tag::CIEXYZ(data)) => {
-                data as *const _ as *const u8
+                data as *const ffi::CIEXYZ as *const u8
             },
             (ViewingCondDescTag, &Tag::MLU(data)) |
             (CharTargetTag, &Tag::MLU(data)) |
@@ -45,19 +45,19 @@ impl<'a> Tag<'a> {
             },
             (ChromaticityTag, &Tag::CIExyYTRIPLE(data)) |
             (ChromaticAdaptationTag, &Tag::CIExyYTRIPLE(data)) => {
-                data as *const _ as *const u8
+                data as *const ffi::CIExyYTRIPLE as *const u8
             },
             (ColorantTableTag, &Tag::NamedColorList(data)) |
             (ColorantTableOutTag, &Tag::NamedColorList(data)) |
             (CrdInfoTag, &Tag::NamedColorList(data)) |
-            (NamedColor2Tag, &Tag::NamedColorList(data)) => data as *const _ as *const u8,
+            (NamedColor2Tag, &Tag::NamedColorList(data)) => data.as_ptr() as *const u8,
             (DataTag, &Tag::ICCData(data)) |
             (Ps2CRD0Tag, &Tag::ICCData(data)) |
             (Ps2CRD1Tag, &Tag::ICCData(data)) |
             (Ps2CRD2Tag, &Tag::ICCData(data)) |
             (Ps2CRD3Tag, &Tag::ICCData(data)) |
             (Ps2CSATag, &Tag::ICCData(data)) => data as *const _ as *const u8,
-            (Ps2RenderingIntentTag, &Tag::ICCData(data)) => data as *const _ as *const u8,
+            (Ps2RenderingIntentTag, &Tag::ICCData(data)) => data as *const ffi::ICCData as *const u8,
             (AToB0Tag, &Tag::Pipeline(data)) |
             (AToB1Tag, &Tag::Pipeline(data)) |
             (AToB2Tag, &Tag::Pipeline(data)) |
@@ -84,29 +84,29 @@ impl<'a> Tag<'a> {
             (RedTRCTag, &Tag::ToneCurve(data)) => {
                 data.as_ptr() as *const _
             },
-            (ColorimetricIntentImageStateTag, &Tag::ColorimetricIntentImageState(ref data)) => {
-                data as *const ffi::ColorimetricIntentImageState as *const u8
+            (ColorimetricIntentImageStateTag, &Tag::ColorimetricIntentImageState(ref owned)) => {
+                owned as *const ffi::ColorimetricIntentImageState as *const u8
             },
-            (PerceptualRenderingIntentGamutTag, &Tag::Intent(ref data)) |
-            (SaturationRenderingIntentGamutTag, &Tag::Intent(ref data)) => {
-                data as *const ffi::Intent as *const u8
+            (PerceptualRenderingIntentGamutTag, &Tag::Intent(ref owned)) |
+            (SaturationRenderingIntentGamutTag, &Tag::Intent(ref owned)) => {
+                owned as *const ffi::Intent as *const u8
             },
             (TechnologyTag, &Tag::Technology(ref data)) => data as *const _ as *const u8,
             (MeasurementTag, &Tag::ICCMeasurementConditions(data)) => {
-                data as *const _ as *const u8
+                data as *const ffi::ICCMeasurementConditions as *const u8
             },
             (ProfileSequenceDescTag, &Tag::SEQ(data)) |
             (ProfileSequenceIdTag, &Tag::SEQ(data)) => {
-                data as *const _ as *const u8
+                data as *const ffi::SEQ as *const u8
             },
-            (ScreeningTag, &Tag::Screening(data)) => data as *const _ as *const u8,
-            (UcrBgTag, &Tag::UcrBg(data)) => data as *const _ as *const u8,
-            (VcgtTag, &Tag::VcgtCurves(arr)) => arr[0].as_ptr() as *const _,
+            (ScreeningTag, &Tag::Screening(data)) => data as *const ffi::Screening as *const u8,
+            (UcrBgTag, &Tag::UcrBg(data)) => data as *const ffi::UcrBg as *const u8,
+            (VcgtTag, &Tag::VcgtCurves(ref arr)) => arr as *const [_; 3] as *const _,
             (ViewingConditionsTag, &Tag::ICCViewingConditions(data)) => {
-                data as *const _ as *const u8
+                data as *const ffi::ICCViewingConditions as *const u8
             },
             (CicpTag, &Tag::VideoSignal(data)) => {
-                data as *const _ as *const u8
+                data as *const ffi::VideoSignalType as *const u8
             },
             (sig, _) => panic!("Signature type {sig:?} does not support this tag data type"),
         }
@@ -180,13 +180,45 @@ impl<'a> Tag<'a> {
             ProfileSequenceIdTag => Tag::SEQ(cast(data)),
             ScreeningTag => Tag::Screening(cast(data)),
             UcrBgTag => Tag::UcrBg(cast(data)),
-            VcgtTag => Tag::VcgtCurves([
-                ToneCurveRef::from_ptr(aligned_mut(data)),
-                ToneCurveRef::from_ptr(*(aligned_mut::<*mut ffi::ToneCurve>(data).offset(1))),
-                ToneCurveRef::from_ptr(*(aligned_mut::<*mut ffi::ToneCurve>(data).offset(2))),
-            ]),
+            VcgtTag => {
+                let ptrs = data as *const *mut u8; // array of pointers
+                Tag::VcgtCurves([
+                    ToneCurveRef::from_ptr(aligned_mut(*ptrs.offset(0))),
+                    ToneCurveRef::from_ptr(aligned_mut(*ptrs.offset(1))),
+                    ToneCurveRef::from_ptr(aligned_mut(*ptrs.offset(2))),
+                ])
+            },
             ViewingConditionsTag => Tag::ICCViewingConditions(cast(data)),
             _ => Tag::None,
         }
     }
+}
+
+#[test]
+fn tone_curves_tag() {
+    let mut icc = Profile::new_srgb();
+    let _ = icc.read_tag(TagSignature::VcgtTag);
+
+    icc.remove_tag(TagSignature::ProfileDescriptionTag);
+
+    let mut desc = MLU::new(1);
+    desc.set_text("Test ICC", Locale::none());
+    icc.write_tag(TagSignature::ProfileDescriptionTag, Tag::MLU(&desc));
+
+    let tc = ToneCurve::new(2.0);
+    let tc_refs: [&ToneCurveRef; 3] = [&tc, &tc, &tc];
+    let before = Tag::VcgtCurves(tc_refs);
+    icc.write_tag(TagSignature::VcgtTag, before);
+    let before = Tag::VcgtCurves(tc_refs);
+    let after = icc.read_tag(TagSignature::VcgtTag);
+
+    match (before, after) {
+        (Tag::VcgtCurves(a), Tag::VcgtCurves(b)) => {
+            assert_eq!(a[0].estimated_entries(), b[0].estimated_entries());
+            assert_eq!(a[1].estimated_entries(), b[1].estimated_entries());
+            assert_eq!(a[2].estimated_entries(), b[2].estimated_entries());
+        }
+        _ => panic!("bad tags"),
+    }
+    icc.icc().unwrap();
 }
