@@ -108,6 +108,9 @@ impl<'a> Tag<'a> {
             (CicpTag, &Tag::VideoSignal(data)) => {
                 data as *const ffi::VideoSignalType as *const u8
             },
+            (MHC2Tag, &Tag::MHC2(data)) => {
+                data as *const ffi::MHC2Type as *const u8
+            },
             (sig, _) => panic!("Signature type {sig:?} does not support this tag data type"),
         }
     }
@@ -189,6 +192,8 @@ impl<'a> Tag<'a> {
                 ])
             },
             ViewingConditionsTag => Tag::ICCViewingConditions(cast(data)),
+            CicpTag => Tag::VideoSignal(cast(data)),
+            MHC2Tag => Tag::MHC2(cast(data)),
             _ => Tag::None,
         }
     }

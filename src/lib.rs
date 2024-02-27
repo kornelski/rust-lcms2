@@ -98,6 +98,7 @@ pub enum Tag<'a> {
     UcrBg(&'a ffi::UcrBg),
     VcgtCurves([&'a ToneCurveRef; 3]),
     VideoSignal(&'a ffi::VideoSignalType),
+    MHC2(&'a ffi::MHC2Type),
     /// Unknown format or missing data
     None,
 }
