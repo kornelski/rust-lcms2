@@ -16,7 +16,7 @@ edition = "2021"
 [dependencies]
 bytemuck = "1.13.1"
 foreign-types = "0.5"
-lcms2-sys = { path = "./sys", version = "4.0.4" }
+lcms2-sys = { path = "./sys", version = "4.0.5" }
 
 [features]
 static = ["lcms2-sys/static"]
