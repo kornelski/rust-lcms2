@@ -1,6 +1,6 @@
 [package]
 name = "lcms2"
-version = "6.1.0"
+version = "6.1.1"
 authors = ["Kornel Lesiński <kornel@geekhood.net>"]
 description = "ICC color profile handling. Rusty wrapper for Little CMS"
 keywords = ["icc", "profile", "color", "lcms"]
@@ -12,11 +12,12 @@ documentation = "https://docs.rs/lcms2"
 repository = "https://github.com/kornelski/rust-lcms2.git"
 categories = ["multimedia::images", "api-bindings"]
 edition = "2021"
+rust-version = "1.65"
 
 [dependencies]
-bytemuck = "1.13.1"
+bytemuck = { version = "1.20", default-features = false, features = ["min_const_generics", "align_offset"] }
 foreign-types = "0.5"
-lcms2-sys = { path = "./sys", version = "4.0.5" }
+lcms2-sys = { path = "./sys", version = "4.0.6" }
 
 [features]
 static = ["lcms2-sys/static"]
