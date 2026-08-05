@@ -576,6 +576,12 @@ impl<Ctx: Context> Profile<Ctx> {
     pub fn new_lab4_context(context: impl AsRef<Ctx>, white_point: &CIExyY) -> LCMSResult<Self> {
         Self::new_handle(unsafe { ffi::cmsCreateLab4ProfileTHR(context.as_ref().as_ptr(), white_point) })
     }
+    
+    /// Creates a virtual Oklab profile.
+    #[inline]
+    pub fn new_oklab_context(context: impl AsRef<Ctx>) -> LCMSResult<Self> {
+        Self::new_handle(unsafe { ffi::cmsCreate_OkLabProfile(context.as_ref().as_ptr()) })
+    }
 }
 
 impl<Context> Drop for Profile<Context> {
