@@ -1,6 +1,6 @@
 [package]
 name = "lcms2"
-version = "6.1.1"
+version = "6.2.0"
 authors = ["Kornel Lesiński <kornel@geekhood.net>"]
 description = "ICC color profile handling. Rusty wrapper for Little CMS"
 keywords = ["icc", "profile", "color", "lcms"]
