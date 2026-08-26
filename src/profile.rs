@@ -409,7 +409,12 @@ impl<Ctx: Context> Profile<Ctx> {
 
     #[inline]
     pub fn write_tag(&mut self, sig: TagSignature, tag: Tag<'_>) -> bool {
-        unsafe { ffi::cmsWriteTag(self.handle, sig, tag.data_for_signature(sig).cast()) != 0 }
+        unsafe {
+            let Some(data_ptr) = tag.data_for_signature_opt(sig) else {
+                return false;
+            };
+            ffi::cmsWriteTag(self.handle, sig, data_ptr.cast()) != 0
+        }
     }
 
     #[inline]

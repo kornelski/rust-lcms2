@@ -1,6 +1,6 @@
 use crate::eval::FloatOrU16;
-use crate::{ffi, Error, LCMSResult};
-use foreign_types::{foreign_type, ForeignType, ForeignTypeRef};
+use crate::{Error, LCMSResult, ffi};
+use foreign_types::{ForeignType, ForeignTypeRef, foreign_type};
 use std::fmt;
 use std::ptr;
 
