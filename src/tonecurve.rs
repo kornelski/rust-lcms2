@@ -29,7 +29,7 @@ impl ToneCurve {
     #[inline]
     #[must_use]
     pub fn new_tabulated(values: &[u16]) -> Self {
-        assert!(values.len() < std::i32::MAX as usize);
+        assert!(values.len() < i32::MAX as usize);
         unsafe {
             Self::new_handle(ffi::cmsBuildTabulatedToneCurve16(
                 ptr::null_mut(),
@@ -44,7 +44,7 @@ impl ToneCurve {
     #[inline]
     #[must_use]
     pub fn new_tabulated_float(values: &[f32]) -> Self {
-        assert!(values.len() < std::i32::MAX as usize);
+        assert!(values.len() < i32::MAX as usize);
         unsafe {
             Self::new_handle(ffi::cmsBuildTabulatedToneCurveFloat(
                 ptr::null_mut(),
@@ -94,8 +94,10 @@ impl ToneCurve {
     #[track_caller]
     #[inline]
     unsafe fn new_handle(handle: *mut ffi::ToneCurve) -> Self {
-        assert!(!handle.is_null());
-        Self::from_ptr(handle)
+        unsafe {
+            assert!(!handle.is_null());
+            Self::from_ptr(handle)
+        }
     }
 }
 
@@ -174,7 +176,7 @@ impl ToneCurveRef {
     /// Smoothes tone curve according to the lambda parameter. From: Eilers, P.H.C. (1994) Smoothing and interpolation with finite differences. in: Graphic Gems IV, Heckbert, P.S. (ed.), Academic press.
     #[inline]
     pub fn smooth(&mut self, lambda: f64) -> bool {
-        unsafe { ffi::cmsSmoothToneCurve((self as *mut Self).cast(), lambda) != 0 }
+        unsafe { ffi::cmsSmoothToneCurve(ptr::from_mut::<Self>(self).cast(), lambda) != 0 }
     }
 
     /// Tone curves do maintain a shadow low-resolution tabulated representation of the curve. This function returns a pointer to this table.
@@ -222,7 +224,7 @@ fn tones() {
     assert!(z.smooth(0.5));
 
     assert_eq!(0, g.estimated_entries()[0]);
-    assert_eq!(std::u16::MAX, *g.estimated_entries().last().unwrap());
+    assert_eq!(u16::MAX, *g.estimated_entries().last().unwrap());
 
     assert!(ToneCurve::new_parametric(7, &[0.]).is_err());
 }

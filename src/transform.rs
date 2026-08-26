@@ -26,7 +26,7 @@ use std::os::raw::c_void;
 /// ```
 ///
 ///  * `InputPixelFormat` — e.g. `(u8,u8,u8)` or struct `RGB<u8>`, etc.
-///     The type must have appropriate number of bytes per pixel (i.e. you can't just use `[u8]` for everything).
+///    The type must have appropriate number of bytes per pixel (i.e. you can't just use `[u8]` for everything).
 ///  * `OutputPixelFormat` — similar to `InputPixelFormat`. If both are the same, then `transform_in_place()` function works.
 ///  * `Context` — it's `GlobalContext` for the default non-thread-safe version, or `ThreadContext` for thread-safe version.
 ///  * `Flags` — `AllowCache` or `DisallowCache`. If you disallow cache, then the transform will be accessible from multiple threads.
@@ -182,10 +182,10 @@ impl<InputPixelFormat: Copy + Pod, OutputPixelFormat: Copy + Pod, Ctx: Context, 
         }
         assert_eq!(
             format.bytes_per_pixel(),
-            std::mem::size_of::<P>(),
+            size_of::<P>(),
             "{format:?} has {} bytes per pixel, but the {io} format has {}",
             format.bytes_per_pixel(),
-            std::mem::size_of::<P>()
+            size_of::<P>()
         );
     }
 
@@ -371,7 +371,7 @@ impl<F, T, L> Transform<F, T, GlobalContext, L> {
 }
 
 fn is_u8<P: 'static>() -> bool {
-    std::mem::size_of::<P>() == 1 && std::mem::align_of::<P>() == 1 && std::any::TypeId::of::<P>() == std::any::TypeId::of::<u8>()
+    size_of::<P>() == 1 && align_of::<P>() == 1 && std::any::TypeId::of::<P>() == std::any::TypeId::of::<u8>()
 }
 
 impl<F, T, C, L> Drop for Transform<F, T, C, L> {

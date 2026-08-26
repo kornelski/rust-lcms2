@@ -78,13 +78,13 @@ pub use crate::ffi::ViewingConditions;
 #[non_exhaustive]
 /// Value of a tag in an ICC profile
 pub enum Tag<'a> {
-    CIExyYTRIPLE(&'a ffi::CIExyYTRIPLE),
-    CIEXYZ(&'a ffi::CIEXYZ),
+    CIExyYTRIPLE(&'a CIExyYTRIPLE),
+    CIEXYZ(&'a CIEXYZ),
     ICCData(&'a ffi::ICCData),
     ICCMeasurementConditions(&'a ffi::ICCMeasurementConditions),
     ICCViewingConditions(&'a ffi::ICCViewingConditions),
     /// Unicode string
-    MLU(&'a mlu::MLURef),
+    MLU(&'a MLURef),
     /// A palette
     NamedColorList(&'a NamedColorListRef),
     Pipeline(&'a PipelineRef),
@@ -96,7 +96,7 @@ pub enum Tag<'a> {
     ToneCurve(&'a ToneCurveRef),
     UcrBg(&'a ffi::UcrBg),
     VcgtCurves([&'a ToneCurveRef; 3]),
-    VideoSignal(&'a ffi::VideoSignalType),
+    VideoSignal(&'a VideoSignalType),
     MHC2(&'a ffi::MHC2Type),
     /// Unknown format or missing data
     None,
@@ -116,11 +116,10 @@ pub fn version() -> u32 {
 /// Higher color temperatures (5,000 K or more) are cool (bluish white) colors, and lower color temperatures (2,700–3,000 K) warm (yellowish white through red) colors.
 ///
 /// See `CIExzYExt::temp()`
-#[must_use] pub fn white_point_from_temp(temp: f64) -> Option<CIExyY> {
-    let mut res = CIExyY{x:0.,y:0.,Y:0.};
-    let ok = unsafe {
-        ffi::cmsWhitePointFromTemp(&mut res, temp) != 0
-    };
+#[must_use]
+pub fn white_point_from_temp(temp: f64) -> Option<CIExyY> {
+    let mut res = CIExyY { x: 0., y: 0., Y: 0. };
+    let ok = unsafe { ffi::cmsWhitePointFromTemp(&mut res, temp) != 0 };
     if ok { Some(res) } else { None }
 }
 
@@ -129,7 +128,7 @@ pub fn version() -> u32 {
 pub fn xyY2XYZ(xyY: &CIExyY) -> CIEXYZ {
     let mut xyz = CIEXYZ::default();
     unsafe {
-        crate::ffi::cmsxyY2XYZ(&mut xyz, xyY);
+        ffi::cmsxyY2XYZ(&mut xyz, xyY);
     }
     xyz
 }
@@ -139,7 +138,7 @@ pub fn xyY2XYZ(xyY: &CIExyY) -> CIEXYZ {
 pub fn XYZ2xyY(xyz: &CIEXYZ) -> CIExyY {
     let mut xyY = CIExyY::default();
     unsafe {
-        crate::ffi::cmsXYZ2xyY(&mut xyY, xyz);
+        ffi::cmsXYZ2xyY(&mut xyY, xyz);
     }
     xyY
 }

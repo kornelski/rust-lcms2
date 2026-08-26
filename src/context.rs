@@ -1,9 +1,8 @@
-use crate::{ffi, Intent};
+use crate::{Intent, ffi};
 use std::cell::UnsafeCell;
 use std::collections::HashMap;
 use std::ffi::CStr;
 use std::fmt;
-use std::mem;
 use std::os::raw::c_void;
 use std::ptr;
 use std::panic::{RefUnwindSafe, UnwindSafe};
@@ -39,7 +38,7 @@ impl AsRef<ThreadContext> for ThreadContext {
     fn as_ref(&self) -> &Self { self }
 }
 
-impl<'a> Context for &'a GlobalContext {
+impl Context for &GlobalContext {
     #[inline]
     fn as_ptr(&self) -> ffi::Context {
         ptr::null_mut()
@@ -58,21 +57,21 @@ struct YouMustUseThreadContextToShareBetweenThreads;
 
 unsafe impl Send for ThreadContext {}
 
-impl<'a> Context for &'a ThreadContext {
+impl Context for &ThreadContext {
     #[inline]
     fn as_ptr(&self) -> ffi::Context {
         self.handle
     }
 }
 
-impl<'a> Context for Arc<ThreadContext> {
+impl Context for Arc<ThreadContext> {
     #[inline]
     fn as_ptr(&self) -> ffi::Context {
         self.handle
     }
 }
 
-impl<'a> Context for Rc<ThreadContext> {
+impl Context for Rc<ThreadContext> {
     #[inline]
     fn as_ptr(&self) -> ffi::Context {
         self.handle
@@ -141,7 +140,7 @@ impl ThreadContext {
     }
 
     pub unsafe fn install_plugin(&mut self, plugin: *mut c_void) -> bool {
-        0 != ffi::cmsPluginTHR(self.handle, plugin)
+        unsafe { 0 != ffi::cmsPluginTHR(self.handle, plugin) }
     }
 
     pub fn unregister_plugins(&mut self) {
@@ -157,7 +156,7 @@ impl ThreadContext {
         let mut codes = [0u32; 32];
         let mut descs = [ptr::null_mut(); 32];
         let len = unsafe {
-            debug_assert_eq!(mem::size_of::<Intent>(), mem::size_of::<u32>());
+            debug_assert_eq!(size_of::<Intent>(), size_of::<u32>());
             ffi::cmsGetSupportedIntentsTHR(self.handle, 32, codes.as_mut_ptr(), descs.as_mut_ptr())
         };
         debug_assert!(len <= 32);
@@ -253,14 +252,14 @@ impl Default for ThreadContext {
 
 impl fmt::Debug for ThreadContext {
     #[cold]
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str("ThreadContext")
     }
 }
 
 impl fmt::Debug for GlobalContext {
     #[cold]
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str("GlobalContext")
     }
 }

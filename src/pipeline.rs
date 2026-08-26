@@ -1,7 +1,7 @@
 use crate::eval::FloatOrU16;
 use crate::stage::{StageRef, StagesIter};
-use crate::{ffi, Error, LCMSResult};
-use foreign_types::{foreign_type, ForeignTypeRef};
+use crate::{Error, LCMSResult, ffi};
+use foreign_types::{ForeignTypeRef, foreign_type};
 use std::fmt;
 use std::ptr;
 
@@ -35,7 +35,7 @@ impl PipelineRef {
         if append.input_channels() != self.output_channels() {
             return false;
         }
-        unsafe { ffi::cmsPipelineCat((self as *mut Self).cast(), append.as_ptr()) != 0 }
+        unsafe { ffi::cmsPipelineCat(ptr::from_mut::<Self>(self).cast(), append.as_ptr()) != 0 }
     }
 
     #[must_use]
@@ -47,11 +47,7 @@ impl PipelineRef {
     pub fn first_stage(&self) -> Option<&StageRef> {
         unsafe {
             let f = ffi::cmsPipelineGetPtrToFirstStage(self.as_ptr());
-            if !f.is_null() {
-                Some(ForeignTypeRef::from_ptr(f))
-            } else {
-                None
-            }
+            if !f.is_null() { Some(ForeignTypeRef::from_ptr(f)) } else { None }
         }
     }
 
@@ -59,11 +55,7 @@ impl PipelineRef {
     pub fn last_stage(&self) -> Option<&StageRef> {
         unsafe {
             let f = ffi::cmsPipelineGetPtrToLastStage(self.as_ptr());
-            if !f.is_null() {
-                Some(ForeignTypeRef::from_ptr(f))
-            } else {
-                None
-            }
+            if !f.is_null() { Some(ForeignTypeRef::from_ptr(f)) } else { None }
         }
     }
 
@@ -73,7 +65,7 @@ impl PipelineRef {
     }
 
     pub fn set_8bit(&mut self, on: bool) -> bool {
-        unsafe { ffi::cmsPipelineSetSaveAs8bitsFlag((self as *mut Self).cast(), i32::from(on)) != 0 }
+        unsafe { ffi::cmsPipelineSetSaveAs8bitsFlag(ptr::from_mut::<Self>(self).cast(), i32::from(on)) != 0 }
     }
 
     #[must_use]
@@ -98,7 +90,9 @@ impl PipelineRef {
     // You must ensure that input and output have length sufficient for channels
     #[inline]
     pub unsafe fn eval_unchecked<Value: FloatOrU16>(&self, input: &[Value], output: &mut [Value]) {
-        Value::eval_pipeline(self.as_ptr(), input, output);
+        unsafe {
+            Value::eval_pipeline(self.as_ptr(), input, output);
+        }
     }
 }
 

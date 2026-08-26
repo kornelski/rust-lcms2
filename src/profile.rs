@@ -18,7 +18,7 @@ pub struct Profile<Context = GlobalContext> {
     _context_ref: PhantomData<Context>,
 }
 
-unsafe impl<'a, C: Send> Send for Profile<C> {}
+unsafe impl<C: Send> Send for Profile<C> {}
 
 /// These are the basic functions on opening profiles.
 /// For simpler operation, you must open two profiles using `new_file`, and then create a transform with these open profiles with `Transform`.
@@ -121,7 +121,7 @@ impl<Ctx: Context> Profile<Ctx> {
     pub fn icc(&self) -> LCMSResult<Vec<u8>> {
         unsafe {
             let mut len = 0;
-            if ffi::cmsSaveProfileToMem(self.handle, std::ptr::null_mut(), &mut len) == 0 {
+            if ffi::cmsSaveProfileToMem(self.handle, ptr::null_mut(), &mut len) == 0 {
                 return Err(Error::ObjectCreationError);
             }
             let mut data = vec![0u8; len as usize];
@@ -163,7 +163,6 @@ impl<Ctx: Context> Profile<Ctx> {
     ///  * `Transparency`
     ///  * `Glossy`
     ///  * `Matte`
-
     #[inline]
     #[must_use]
     pub fn header_attributes(&self) -> u64 {
@@ -282,14 +281,14 @@ impl<Ctx: Context> Profile<Ctx> {
                                    info,
                                    locale.language_ptr(),
                                    locale.country_ptr(),
-                                   std::ptr::null_mut(),
+                                   ptr::null_mut(),
                                    0)
         };
         if 0 == size {
             return None;
         }
 
-        let wchar_bytes = std::mem::size_of::<ffi::wchar_t>();
+        let wchar_bytes = size_of::<ffi::wchar_t>();
         let mut data = vec![0; size as usize / wchar_bytes];
         unsafe {
             let len = data.len() * wchar_bytes;
@@ -339,11 +338,7 @@ impl<Ctx: Context> Profile<Ctx> {
     pub fn detect_black_point(&self, intent: Intent) -> Option<CIEXYZ> {
         unsafe {
             let mut b = CIEXYZ::default();
-            if ffi::cmsDetectBlackPoint(&mut b, self.handle, intent, 0) != 0 {
-                Some(b)
-            } else {
-                None
-            }
+            if ffi::cmsDetectBlackPoint(&mut b, self.handle, intent, 0) != 0 { Some(b) } else { None }
         }
     }
 
@@ -372,7 +367,7 @@ impl<Ctx: Context> Profile<Ctx> {
     pub fn color_space(&self) -> ColorSpaceSignature {
         unsafe {
             let v = ffi::cmsGetColorSpace(self.handle);
-            if 0 != v as u32 {v} else {ColorSpaceSignature::Sig1colorData}
+            if 0 != v as u32 { v } else { ColorSpaceSignature::Sig1colorData }
         }
     }
 
@@ -419,7 +414,7 @@ impl<Ctx: Context> Profile<Ctx> {
 
     #[inline]
     pub fn remove_tag(&mut self, sig: TagSignature) -> bool {
-        unsafe { ffi::cmsWriteTag(self.handle, sig, std::ptr::null()) != 0 }
+        unsafe { ffi::cmsWriteTag(self.handle, sig, ptr::null()) != 0 }
     }
 
     #[inline]
@@ -432,7 +427,7 @@ impl<Ctx: Context> Profile<Ctx> {
     #[must_use]
     pub fn profile_id(&self) -> ffi::ProfileID {
         unsafe {
-            debug_assert_eq!(16, std::mem::size_of::<ffi::ProfileID>());
+            debug_assert_eq!(16, size_of::<ffi::ProfileID>());
             let mut id = MaybeUninit::<ffi::ProfileID>::uninit();
             ffi::cmsGetHeaderProfileID(self.handle, id.as_mut_ptr().cast());
             id.assume_init()
@@ -455,7 +450,7 @@ impl<Ctx: Context> Profile<Ctx> {
     }
 
     pub fn save_profile_to_file(&mut self, path: &Path) -> io::Result<()> {
-        let profile = self.icc().map_err(|e| io::Error::new(io::ErrorKind::Other, e))?;
+        let profile = self.icc().map_err(io::Error::other)?;
         std::fs::write(path, profile)
     }
 }
@@ -511,8 +506,10 @@ impl<Ctx: Context> Profile<Ctx> {
     /// Number of tone curves must be sufficient for the color space.
     #[inline]
     pub unsafe fn new_linearization_device_link_context(context: impl AsRef<Ctx>, color_space: ColorSpaceSignature, curves: &[ToneCurveRef]) -> LCMSResult<Self> {
-        let v: Vec<_> = curves.iter().map(|c| c.as_ptr().cast_const()).collect();
-        Self::new_handle(ffi::cmsCreateLinearizationDeviceLinkTHR(context.as_ref().as_ptr(), color_space, v.as_ptr()))
+        unsafe {
+            let v: Vec<_> = curves.iter().map(|c| c.as_ptr().cast_const()).collect();
+            Self::new_handle(ffi::cmsCreateLinearizationDeviceLinkTHR(context.as_ref().as_ptr(), color_space, v.as_ptr()))
+        }
     }
 
     /// Creates an abstract devicelink operating in Lab for Bright/Contrast/Hue/Saturation and white point translation.
@@ -627,7 +624,7 @@ fn tags_write() {
 
 impl fmt::Debug for Profile {
     #[cold]
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut s = f.debug_struct("Profile");
         let l = Locale::none();
         s.field("Description", &self.info(InfoType::Description, l));

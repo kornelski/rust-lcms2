@@ -1,7 +1,7 @@
 use crate::context::Context;
 use crate::eval::FloatOrU16;
-use crate::{ffi, Error, GlobalContext, LCMSResult, ToneCurveRef};
-use foreign_types::{foreign_type, ForeignTypeRef};
+use crate::{Error, GlobalContext, LCMSResult, ToneCurveRef, ffi};
+use foreign_types::{ForeignTypeRef, foreign_type};
 use std::fmt;
 use std::ptr;
 
@@ -49,10 +49,8 @@ impl Stage {
         if matrix2d.len() < rows * cols {
             return Err(Error::MissingData);
         }
-        if let Some(offsets) = offsets {
-            if offsets.len() < cols {
-                return Err(Error::MissingData);
-            }
+        if let Some(offsets) = offsets && offsets.len() < cols {
+            return Err(Error::MissingData);
         }
         unsafe {
             Error::if_null(ffi::cmsStageAllocMatrix(
@@ -70,15 +68,18 @@ impl Stage {
     /// Each dimension has same resolution. The CLUT can be initialized by specifying values in Table parameter.
     /// The recommended way is to set Table to None and use `sample_clut` with a callback, because this way the implementation is independent of the selected number of grid points.
     pub fn new_clut<Value: FloatOrU16>(grid_point_nodes: usize, input_channels: u32, output_channels: u32, table: Option<&[Value]>) -> LCMSResult<Self> {
-        if let Some(table) = table {
-            if table.len() < grid_point_nodes {
-                return Err(Error::MissingData);
-            }
+        if let Some(table) = table && table.len() < grid_point_nodes {
+            return Err(Error::MissingData);
         }
-        unsafe {Error::if_null(
-            Value::stage_alloc_clut(GlobalContext::new().as_ptr(), grid_point_nodes as u32, input_channels, output_channels,
-                table.map(|p|p.as_ptr()).unwrap_or(ptr::null()))
-        )}
+        unsafe {
+            Error::if_null(Value::stage_alloc_clut(
+                GlobalContext::new().as_ptr(),
+                grid_point_nodes as u32,
+                input_channels,
+                output_channels,
+                table.map(|p| p.as_ptr()).unwrap_or(ptr::null()),
+            ))
+        }
     }
 }
 
@@ -108,11 +109,7 @@ impl<'a> Iterator for StagesIter<'a> {
         if let Some(mpe) = it {
             self.0 = unsafe {
                 let s = ffi::cmsStageNext(mpe.as_ptr());
-                if s.is_null() {
-                    None
-                } else {
-                    Some(ForeignTypeRef::from_ptr(s))
-                }
+                if s.is_null() { None } else { Some(ForeignTypeRef::from_ptr(s)) }
             };
         }
         it

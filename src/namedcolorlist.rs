@@ -1,5 +1,5 @@
-use crate::{ffi, Error, LCMSResult};
-use foreign_types::{foreign_type, ForeignTypeRef};
+use crate::{Error, LCMSResult, ffi};
+use foreign_types::{ForeignTypeRef, foreign_type};
 use std::ffi::{CStr, CString};
 use std::fmt;
 use std::os::raw::c_char;
@@ -102,7 +102,7 @@ impl NamedColorListRef {
     }
 }
 
-impl<'a> fmt::Debug for NamedColorListRef {
+impl fmt::Debug for NamedColorListRef {
     #[cold]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         if let Some(c) = self.get(0) {

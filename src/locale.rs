@@ -40,19 +40,19 @@ impl Locale {
     }
 
     pub(crate) fn language_ptr(&self) -> *const c_char {
-        &self.language as _
+        self.language.as_ptr()
     }
 
     pub(crate) fn country_ptr(&self) -> *const c_char {
-        &self.country as _
+        self.country.as_ptr()
     }
 
     pub(crate) fn language_ptr_mut(&mut self) -> *mut c_char {
-        std::ptr::addr_of!(self.language) as _
+        self.language.as_mut_ptr()
     }
 
     pub(crate) fn country_ptr_mut(&mut self) -> *mut c_char {
-        std::ptr::addr_of!(self.country) as _
+        self.country.as_mut_ptr()
     }
 }
 

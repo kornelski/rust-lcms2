@@ -1,4 +1,4 @@
-use crate::{ffi, CIELab, CIExyY, ColorSpaceSignature, CIEXYZ};
+use crate::{CIELab, CIEXYZ, CIExyY, ColorSpaceSignature, ffi};
 use ffi::PixelType;
 use std::mem::MaybeUninit;
 
@@ -42,11 +42,7 @@ impl CIEXYZExt for CIEXYZ {
         unsafe {
             let mut res = MaybeUninit::<CIEXYZ>::uninit();
             let ok = ffi::cmsAdaptToIlluminant(res.as_mut_ptr(), source_white_point, illuminant, self) != 0;
-            if ok {
-                Some(res.assume_init())
-            } else {
-                None
-            }
+            if ok { Some(res.assume_init()) } else { None }
         }
     }
 
@@ -79,11 +75,7 @@ impl CIExzYExt for CIExyY {
     #[inline]
     fn temp(&self) -> Option<f64> {
         let mut out = 0.;
-        if 0 != unsafe { ffi::cmsTempFromWhitePoint(&mut out, self) } {
-            Some(out)
-        } else {
-            None
-        }
+        if 0 != unsafe { ffi::cmsTempFromWhitePoint(&mut out, self) } { Some(out) } else { None }
     }
 }
 

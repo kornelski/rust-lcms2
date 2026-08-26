@@ -19,11 +19,7 @@ impl CIECAM02 {
     /// Please note those are CAM model viewing conditions, and not the ICC tag viewing conditions, which I'm naming `cmsICCViewingConditions` to make differences evident. Unfortunately, the tag cannot deal with surround La, Yb and D value so is basically useless to store CAM02 viewing conditions.
     pub fn new(conditions: ViewingConditions) -> LCMSResult<Self> {
         let handle = unsafe { ffi::cmsCIECAM02Init(ptr::null_mut(), &conditions) };
-        if !handle.is_null() {
-            Ok(Self { handle })
-        } else {
-            Err(Error::ObjectCreationError)
-        }
+        if !handle.is_null() { Ok(Self { handle }) } else { Err(Error::ObjectCreationError) }
     }
 
     /// Evaluates the CAM02 model in the forward direction

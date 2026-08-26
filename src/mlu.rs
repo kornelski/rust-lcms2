@@ -1,10 +1,9 @@
 use crate::ffi::wchar_t;
-use crate::{ffi, Error, LCMSResult, Locale};
-use foreign_types::{foreign_type, ForeignType, ForeignTypeRef};
-use std::char::{decode_utf16, REPLACEMENT_CHARACTER};
+use crate::{Error, LCMSResult, Locale, ffi};
+use foreign_types::{ForeignType, ForeignTypeRef, foreign_type};
+use std::char::{REPLACEMENT_CHARACTER, decode_utf16};
 use std::ffi::CString;
 use std::fmt;
-use std::mem;
 use std::ptr;
 
 foreign_type! {
@@ -54,7 +53,7 @@ impl MLURef {
 
         unsafe {
             ffi::cmsMLUsetWide(
-                (self as *mut Self).cast(),
+                ptr::from_mut::<Self>(self).cast(),
                 locale.language_ptr(),
                 locale.country_ptr(),
                 chars[..].as_ptr(),
@@ -85,7 +84,7 @@ impl MLURef {
                 buf[..].as_mut_ptr().cast(),
                 len,
             );
-            if let Some(0) = buf.pop() { // terminating zero
+            if buf.pop() == Some(0) { // terminating zero
                 String::from_utf8(buf).map_err(|_| Error::InvalidString)
             } else {
                 Err(Error::InvalidString)
@@ -96,15 +95,9 @@ impl MLURef {
     /// Gets a Unicode entry for the given Language and country
     pub fn text(&self, locale: Locale) -> LCMSResult<String> {
         let len_bytes = unsafe {
-            ffi::cmsMLUgetWide(
-                self.as_ptr(),
-                locale.language_ptr(),
-                locale.country_ptr(),
-                ptr::null_mut(),
-                0,
-            )
+            ffi::cmsMLUgetWide(self.as_ptr(), locale.language_ptr(), locale.country_ptr(), ptr::null_mut(), 0)
         };
-        let len_wchars = len_bytes as usize / mem::size_of::<wchar_t>();
+        let len_wchars = len_bytes as usize / size_of::<wchar_t>();
         if len_wchars == 0 || (len_bytes & 1) != 0 {
             return Err(Error::MissingData);
         }
@@ -117,7 +110,7 @@ impl MLURef {
                 buf[..].as_mut_ptr().cast::<wchar_t>(),
                 len_bytes,
             );
-            if let Some(0) = buf.pop() { // terminating zero
+            if buf.pop() == Some(0) { // terminating zero
                 Ok(decode_utf16(buf.into_iter().map(|c| c as u16))
                     .map(|r| r.unwrap_or(REPLACEMENT_CHARACTER))
                     .collect())
@@ -172,12 +165,7 @@ impl fmt::Debug for MLURef {
     #[cold]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let t = self.text(Locale::none());
-        write!(
-            f,
-            "MLU({:?} {:?})",
-            if let Ok(ref t) = t { t } else { "None" },
-            self.tanslations()
-        )
+        write!(f, "MLU({:?} {:?})", if let Ok(ref t) = t { t } else { "None" }, self.tanslations())
     }
 }
 
