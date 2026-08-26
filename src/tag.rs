@@ -222,7 +222,7 @@ fn tone_curves_tag() {
             assert_eq!(a[0].estimated_entries(), b[0].estimated_entries());
             assert_eq!(a[1].estimated_entries(), b[1].estimated_entries());
             assert_eq!(a[2].estimated_entries(), b[2].estimated_entries());
-        }
+        },
         _ => panic!("bad tags"),
     }
     icc.icc().unwrap();

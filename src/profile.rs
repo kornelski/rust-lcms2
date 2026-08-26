@@ -368,7 +368,8 @@ impl<Ctx: Context> Profile<Ctx> {
 
     /// Gets the color space used by the given profile, using the ICC convention.
     #[inline]
-    #[must_use] pub fn color_space(&self) -> ColorSpaceSignature {
+    #[must_use]
+    pub fn color_space(&self) -> ColorSpaceSignature {
         unsafe {
             let v = ffi::cmsGetColorSpace(self.handle);
             if 0 != v as u32 {v} else {ColorSpaceSignature::Sig1colorData}
@@ -539,10 +540,7 @@ impl<Ctx: Context> Profile<Ctx> {
         if handle.is_null() {
             return Err(Error::ObjectCreationError);
         }
-        Ok(Profile {
-            handle,
-            _context_ref: PhantomData,
-        })
+        Ok(Profile { handle, _context_ref: PhantomData })
     }
 
     /// This is a devicelink operating in CMYK for ink-limiting. Currently only `cmsSigCmykData` is supported.
@@ -576,7 +574,7 @@ impl<Ctx: Context> Profile<Ctx> {
     pub fn new_lab4_context(context: impl AsRef<Ctx>, white_point: &CIExyY) -> LCMSResult<Self> {
         Self::new_handle(unsafe { ffi::cmsCreateLab4ProfileTHR(context.as_ref().as_ptr(), white_point) })
     }
-    
+
     /// Creates a virtual Oklab profile.
     #[inline]
     pub fn new_oklab_context(context: impl AsRef<Ctx>) -> LCMSResult<Self> {
@@ -609,7 +607,7 @@ fn tags_write() {
     mlu.set_text_ascii("Testing", Locale::new("en_GB"));
     assert!(p.write_tag(TagSignature::CopyrightTag, Tag::MLU(&mlu)));
 
-    let xyz = CIEXYZ{X:1., Y:2., Z:3.};
+    let xyz = CIEXYZ { X: 1., Y: 2., Z: 3. };
     assert!(p.write_tag(TagSignature::RedColorantTag, Tag::CIEXYZ(&xyz)));
 
     assert!(p.has_tag(TagSignature::CopyrightTag));

@@ -174,28 +174,32 @@ impl<InputPixelFormat: Copy + Pod, OutputPixelFormat: Copy + Pod, Ctx: Context, 
 
     #[track_caller]
     fn check_format<P: Copy + Pod>(format: PixelFormat, input: bool) {
-        let io = if input {"input"} else {"output"};
+        let io = if input { "input" } else { "output" };
         assert!(!format.planar(), "Planar {format:?} {io} format not supported");
         // Special-case u8
         if is_u8::<P>() {
             return;
         }
-        assert_eq!(format.bytes_per_pixel(),
-                   std::mem::size_of::<P>(),
-                   "{format:?} has {} bytes per pixel, but the {io} format has {}",
-                   format.bytes_per_pixel(),
-                   std::mem::size_of::<P>());
+        assert_eq!(
+            format.bytes_per_pixel(),
+            std::mem::size_of::<P>(),
+            "{format:?} has {} bytes per pixel, but the {io} format has {}",
+            format.bytes_per_pixel(),
+            std::mem::size_of::<P>()
+        );
     }
 
     /// Description of the input pixel format this transform has been created for
     #[inline]
-    #[must_use] pub fn input_pixel_format(&self) -> PixelFormat {
+    #[must_use]
+    pub fn input_pixel_format(&self) -> PixelFormat {
         unsafe { ffi::cmsGetTransformInputFormat(self.handle) }
     }
 
     /// Description of the output pixel format this transform has been created for
     #[inline]
-    #[must_use] pub fn output_pixel_format(&self) -> PixelFormat {
+    #[must_use]
+    pub fn output_pixel_format(&self) -> PixelFormat {
         unsafe { ffi::cmsGetTransformOutputFormat(self.handle) }
     }
 

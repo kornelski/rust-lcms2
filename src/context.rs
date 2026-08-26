@@ -5,9 +5,8 @@ use std::ffi::CStr;
 use std::fmt;
 use std::mem;
 use std::os::raw::c_void;
-use std::panic::RefUnwindSafe;
-use std::panic::UnwindSafe;
 use std::ptr;
+use std::panic::{RefUnwindSafe, UnwindSafe};
 use std::rc::Rc;
 use std::sync::Arc;
 

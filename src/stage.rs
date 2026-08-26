@@ -24,10 +24,9 @@ impl Stage {
     /// Creates an empty (identity) stage that does no operation.
     ///
     /// May be needed in order to save the pipeline as AToB/BToA tags in ICC profiles.
-    #[must_use] pub fn new_identity(channels: u32) -> Stage {
-        unsafe {Error::if_null(
-            ffi::cmsStageAllocIdentity(GlobalContext::new().as_ptr(), channels)
-        )}.unwrap()
+    #[must_use]
+    pub fn new_identity(channels: u32) -> Stage {
+        unsafe { Error::if_null(ffi::cmsStageAllocIdentity(GlobalContext::new().as_ptr(), channels)) }.unwrap()
     }
 
     /// Creates a stage that contains nChannels tone curves, one per channel.
@@ -73,7 +72,7 @@ impl Stage {
     pub fn new_clut<Value: FloatOrU16>(grid_point_nodes: usize, input_channels: u32, output_channels: u32, table: Option<&[Value]>) -> LCMSResult<Self> {
         if let Some(table) = table {
             if table.len() < grid_point_nodes {
-                return Err(Error::MissingData)
+                return Err(Error::MissingData);
             }
         }
         unsafe {Error::if_null(

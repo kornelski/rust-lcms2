@@ -49,13 +49,9 @@ fn transform_gray_to_rgb() {
     let srgb = Profile::new_srgb();
 
     let tr = Transform::new(&gray, PixelFormat::GRAY_8, &srgb, PixelFormat::RGB_8, Intent::Perceptual).unwrap();
-    let mut dest = vec![[0u8,0u8,0u8]; 3];
-    tr.transform_pixels(&[0u8,100u8,255u8], &mut dest);
-    assert_eq!(&dest, &[
-        [0,0,0],
-        [119,119,119],
-        [255,255,255],
-    ]);
+    let mut dest = vec![[0u8, 0u8, 0u8]; 3];
+    tr.transform_pixels(&[0u8, 100u8, 255u8], &mut dest);
+    assert_eq!(&dest, &[[0, 0, 0], [119, 119, 119], [255, 255, 255],]);
 }
 
 #[test]
@@ -67,13 +63,9 @@ fn transform_gray_to_rgb_u8() {
     let srgb = Profile::new_srgb();
 
     let tr = Transform::new(&gray, PixelFormat::GRAY_8, &srgb, PixelFormat::RGB_8, Intent::Perceptual).unwrap();
-    let mut dest = vec![0u8; 3*3];
-    tr.transform_pixels(&[0u8,100u8,255u8], &mut dest);
-    assert_eq!(&dest, &[
-        0,0,0,
-        119,119,119,
-        255,255,255,
-    ]);
+    let mut dest = vec![0u8; 3 * 3];
+    tr.transform_pixels(&[0u8, 100u8, 255u8], &mut dest);
+    assert_eq!(&dest, &[0, 0, 0, 119, 119, 119, 255, 255, 255,]);
 }
 
 #[test]
@@ -86,13 +78,9 @@ fn transform_gray_to_rgb_u8_bad_size() {
     let srgb = Profile::new_srgb();
 
     let tr = Transform::new(&gray, PixelFormat::GRAY_8, &srgb, PixelFormat::RGB_8, Intent::Perceptual).unwrap();
-    let mut dest = vec![0u8; 3*3 - 1];
-    tr.transform_pixels(&[0u8,100u8,255u8], &mut dest);
-    assert_eq!(&dest, &[
-        0,0,0,
-        119,119,119,
-        255,255,255,
-    ]);
+    let mut dest = vec![0u8; 3 * 3 - 1];
+    tr.transform_pixels(&[0u8, 100u8, 255u8], &mut dest);
+    assert_eq!(&dest, &[0, 0, 0, 119, 119, 119, 255, 255, 255,]);
 }
 
 #[test]
@@ -124,25 +112,32 @@ fn transform() {
     let tiny2 = tiny.icc().unwrap();
     let tiny2 = Profile::new_icc(&tiny2).unwrap();
 
-    let tr = Transform::new_flags(&tiny, PixelFormat::RGBA_8, &tiny2, PixelFormat::RGB_16, Intent::Perceptual, Flags::default()).unwrap();
-    let src = vec![0xFFFFFFFFu32,0,0x7F7F7F7F,0x10101010];
-    let mut dst = vec![RGB16{r:0,g:1,b:2}; 4];
+    let tr = Transform::new_flags(&tiny, PixelFormat::RGBA_8, &tiny2, PixelFormat::RGB_16, Intent::Perceptual, Flags::default())
+        .unwrap();
+    let src = vec![0xFFFFFFFFu32, 0, 0x7F7F7F7F, 0x10101010];
+    let mut dst = vec![RGB16 { r: 0, g: 1, b: 2 }; 4];
     tr.transform_pixels(&src, &mut dst);
-    assert_eq!(vec![
-        RGB16{r:0xFFFF,g:0xFFFF,b:0xFFFF},
-        RGB16{r:0,g:0,b:0},
-        RGB16{r:0x7F7F,g:0x7F7F,b:0x7F7F},
-        RGB16{r:0x1010,g:0x1010,b:0x1010},
-    ], dst);
+    assert_eq!(
+        vec![
+            RGB16 { r: 0xFFFF, g: 0xFFFF, b: 0xFFFF },
+            RGB16 { r: 0, g: 0, b: 0 },
+            RGB16 { r: 0x7F7F, g: 0x7F7F, b: 0x7F7F },
+            RGB16 { r: 0x1010, g: 0x1010, b: 0x1010 },
+        ],
+        dst
+    );
 
     let tr = Transform::new(&tiny2, PixelFormat::RGB_16, &tiny, PixelFormat::RGB_16, Intent::Perceptual).unwrap();
     tr.transform_in_place(&mut dst);
-    assert_eq!(vec![
-        RGB16{r:0xFFFF,g:0xFFFF,b:0xFFFF},
-        RGB16{r:0,g:0,b:0},
-        RGB16{r:0x7F7F,g:0x7F7F,b:0x7F7F},
-        RGB16{r:0x1010,g:0x1010,b:0x1010},
-    ], dst);
+    assert_eq!(
+        vec![
+            RGB16 { r: 0xFFFF, g: 0xFFFF, b: 0xFFFF },
+            RGB16 { r: 0, g: 0, b: 0 },
+            RGB16 { r: 0x7F7F, g: 0x7F7F, b: 0x7F7F },
+            RGB16 { r: 0x1010, g: 0x1010, b: 0x1010 },
+        ],
+        dst
+    );
 }
 
 #[test]

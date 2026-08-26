@@ -57,14 +57,13 @@ pub use crate::stage::*;
 pub use crate::tonecurve::*;
 pub use crate::transform::*;
 
-pub use crate::ffi::CIELab;
 /// Part of [`CIExyYTRIPLE`]
 pub use crate::ffi::CIExyY;
 /// For [`Profile::new_rgb`]
 pub use crate::ffi::CIExyYTRIPLE;
 #[doc(hidden)]
 pub use crate::ffi::JCh;
-pub use crate::ffi::CIEXYZ;
+pub use crate::ffi::{CIELab, CIEXYZ};
 
 pub use crate::ffi::ColorSpaceSignature;
 pub use crate::ffi::InfoType;

@@ -74,13 +74,15 @@ impl NamedColorListRef {
             )
         };
         if ok {
-            Some(unsafe {NamedColorInfo {
-                name: CStr::from_ptr(name.as_ptr()).to_string_lossy().into_owned(),
-                prefix: CStr::from_ptr(prefix.as_ptr()).to_string_lossy().into_owned(),
-                suffix: CStr::from_ptr(suffix.as_ptr()).to_string_lossy().into_owned(),
-                pcs,
-                colorant,
-            }})
+            Some(unsafe {
+                NamedColorInfo {
+                    name: CStr::from_ptr(name.as_ptr()).to_string_lossy().into_owned(),
+                    prefix: CStr::from_ptr(prefix.as_ptr()).to_string_lossy().into_owned(),
+                    suffix: CStr::from_ptr(suffix.as_ptr()).to_string_lossy().into_owned(),
+                    pcs,
+                    colorant,
+                }
+            })
         } else {
             None
         }
@@ -114,11 +116,11 @@ impl<'a> fmt::Debug for NamedColorListRef {
 #[test]
 fn named() {
     let mut n = NamedColorList::new(10, 3, "hello", "world").unwrap();
-    assert!(n.append("yellow", [1,2,3], [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]));
+    assert!(n.append("yellow", [1, 2, 3], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]));
     assert_eq!(None, n.get(10000));
 
     let c = n.get(0).unwrap();
     assert_eq!("yellow", c.name);
     assert_eq!("hello", c.prefix);
-    assert_eq!([1,2,3], c.pcs);
+    assert_eq!([1, 2, 3], c.pcs);
 }

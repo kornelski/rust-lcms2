@@ -26,7 +26,7 @@ fn main() {
         Blue:  CIExyY{x:0.155, y:0.070, Y:1.0},
     };
 
-    let custom_gamma = &ToneCurve::new(1./0.4545455);
+    let custom_gamma = &ToneCurve::new(1. / 0.4545455);
     let custom_profile = Profile::new_rgb(CIExyY::d50(), &custom_primaries, &[custom_gamma, custom_gamma, custom_gamma]).unwrap();
 
     // Applies the profiles
@@ -34,13 +34,12 @@ fn main() {
 
     // Slices must contain pixels (not bytes), i.e. struct RGB, not Vec<u8>
     // and the pixels must have repr(C) layout compatible with the PixelFormat in Transform::new()
-    let source_pixels = &[RGB(0,100,254)];
-    let mut dest_pixels = vec![RGBA{r:0,g:0,b:0,a:0}];
+    let source_pixels = &[RGB(0, 100, 254)];
+    let mut dest_pixels = vec![RGBA { r: 0, g: 0, b: 0, a: 0 }];
     t.transform_pixels(source_pixels, &mut dest_pixels);
 
-    assert_eq!(RGBA{r:0, g: 25996, b: 64510, a:0}, dest_pixels[0]);
+    assert_eq!(RGBA { r: 0, g: 25996, b: 64510, a: 0 }, dest_pixels[0]);
 
     // Profile can be saved as ICC file
     let _ = custom_profile.icc();
 }
-
